@@ -1,3 +1,58 @@
 :root {
-  
+    --color-black: #000000;
+    --color-white: #FFFFFF;
+
+    /* --- PRIMARY --- */
+    --color-primary-700: #1228A6;
+    --color-primary-600: #3043B1;
+    --color-primary-500: #4D5EBC;
+    --color-primary-400: #6B79C7;
+    --color-primary-300: #8994D3;
+    --color-primary-200: #A6AEDE;
+    --color-primary-100: #C4C9E9;
+    --color-primary-50: #E1E4F4;
+
+    /* --- AUXILIARY --- */
+    --color-auxiliary-700: #F28A2E;
+    --color-auxiliary-600: #F29543;
+    --color-auxiliary-500: #F2A159;
+    --color-auxiliary-400: #F2AC6E;
+    --color-auxiliary-300: #F2B884;
+    --color-auxiliary-200: #F2C399;
+    --color-auxiliary-100: #F2CFAF;
+    --color-auxiliary-50: #F2DAC4;
+
+    /* --- DANGER --- */
+    --color-danger-700: #C6362E;
+    --color-danger-600: #CD4F48;
+    --color-danger-500: #D46862;
+    --color-danger-400: #DB817C;
+    --color-danger-300: #E39B97;
+    --color-danger-200: #EAB4B1;
+    --color-danger-100: #F1CDCB;
+    --color-danger-50: #F8E6E5;
+
+    /* --- WARNING --- */
+    --color-warning-700: #E6B325;
+    --color-warning-600: #E9BD40;
+    --color-warning-500: #ECC65C;
+    --color-warning-400: #EFD077;
+    --color-warning-300: #F3D992;
+    --color-warning-200: #F6E3AD;
+    --color-warning-100: #F9ECC9;
+    --color-warning-50: #FCF6E4;
+
+    /* --- SUCCESS --- */
+    --color-success-700: #2E8F5B;
+    --color-success-600: #489D70;
+    --color-success-500: #62AB84;
+    --color-success-400: #7CB999;
+    --color-success-300: #97C7AD;
+    --color-success-200: #B1D5C2;
+    --color-success-100: #CBE3D6;
+    --color-success-50: #E5F1EB;
+
+    /* --- TYPOGRAPHY --- */
+    --font-display: Montserrat, sans-serif, system-ui;
+    --font-body: Manrope, Consolas, ui-monospace;
 }
