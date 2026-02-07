@@ -14,12 +14,13 @@ export default function RegisteredNavbar() {
                 <Link to="/outfitCreator">Creador de conjuntos</Link>
                 <Link to="/outfits">Conjuntos</Link>
                 <Link to="/clothing">Subir prenda</Link>
-                <div className="profile-icon">
+                
+            </nav>
+            <div className="profile-icon">
                     <Link to="/profile">
                         <img src="/profileIcon.png" alt="Imagen de perfil del usuario" />
                     </Link>
                 </div>
-            </nav>
 
         </header>
     )

@@ -1,0 +1,15 @@
+/* src/styles/components.css */
+@layer components {
+  .btn {
+    /* Usamos px-4 py-2 que es la escala estándar */
+    @apply flex items-center justify-center rounded transition-colors px-4 py-2 font-medium;
+  }
+
+  .btn-primary {
+    @apply bg-primary-600 text-white hover:bg-primary-700;
+  }
+
+  .btn-auxiliar {
+    @apply bg-auxiliary-500 text-white hover:bg-auxiliary-600;
+  }
+}

@@ -1,0 +1,5 @@
+@layer base {
+    button {
+    @apply h-10 min-w-22.5 flex items-center px-2 gap-1 bg-primary-600 text-white rounded font-body font-normal text-base transition-colors hover:bg-primary-700;
+  }
+}
