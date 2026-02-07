@@ -1,15 +1,19 @@
 /* src/styles/components.css */
 @layer components {
-  .btn {
-    /* Usamos px-4 py-2 que es la escala estándar */
-    @apply flex items-center justify-center rounded transition-colors px-4 py-2 font-medium;
+  .btn-primary, .btn-secondary {
+    @apply text-white border-2 border-transparent;
+    @apply hover:bg-white;
   }
-
   .btn-primary {
-    @apply bg-primary-600 text-white hover:bg-primary-700;
+    @apply bg-primary-700;
+    @apply hover:text-primary-700 hover:border-primary-700;
   }
-
+  .btn-secondary {
+    @apply bg-auxiliary-700;
+    @apply hover:text-auxiliary-700 hover:border-auxiliary-700;
+  }
   .btn-auxiliar {
-    @apply bg-auxiliary-500 text-white hover:bg-auxiliary-600;
+    @apply bg-white text-black border-2 border-black;
+    @apply hover:bg-black hover:text-white hover:border-transparent;
   }
 }

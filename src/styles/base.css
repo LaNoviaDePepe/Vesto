@@ -1,5 +1,12 @@
 @layer base {
     button {
-    @apply h-10 min-w-22.5 flex items-center px-2 gap-1 bg-primary-600 text-white rounded font-body font-normal text-base transition-colors hover:bg-primary-700;
-  }
+        /* disposición, espaciados y forma */
+        @apply h-10 min-w-22.5 flex items-center px-2 gap-1 rounded;
+        /* tipografía y cursor */
+        @apply font-body font-normal text-base cursor-pointer;
+        /* transición hacia el hover */
+        @apply transition-all duration-300 ease-in-out;
+        @apply hover:font-medium hover:shadow-lg hover:-translate-y-0.5;
+        @apply active:scale-95 active:translate-y-0; /* Efecto de pulsación */
+    }
 }
