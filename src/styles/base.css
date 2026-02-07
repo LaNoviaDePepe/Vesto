@@ -1,7 +1,7 @@
 @layer base {
     button {
         /* disposición, espaciados y forma */
-        @apply h-10 min-w-22.5 flex items-center px-2 gap-1 rounded;
+        @apply h-10 min-w-22.5 flex items-center justify-center px-2 gap-1 rounded;
         /* tipografía y cursor */
         @apply font-body font-normal text-base cursor-pointer;
         /* transición hacia el hover */
