@@ -13,7 +13,7 @@
     @apply hover:text-auxiliary-700 hover:border-auxiliary-700;
   }
   .btn-auxiliar {
-    @apply bg-white text-black border-2 border-black;
+    @apply bg-transparent text-black border-2 border-black;
     @apply hover:bg-black hover:text-white hover:border-transparent;
   }
 }
