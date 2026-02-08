@@ -1,7 +1,7 @@
 import type { ButtonHTMLAttributes } from "react";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "primary" | "secondary" | "auxiliar";
+  variant: "primary" | "secondary" | "auxiliar";
 }
 
 export default function Button(

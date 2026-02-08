@@ -1,6 +1,9 @@
 import Conjunto from "../components/clothing/Conjunto.tsx";
 import Prenda, { type PrendaProps } from "../components/clothing/Prenda.tsx";
+import GuestHeader from "../components/common/GuestHeader.tsx";
+import Header from "../components/common/Header.tsx";
 import SelectForm from "../components/common/Select.tsx";
+import UserHeader from "../components/common/UserHeader.tsx";
 import Filter from "../components/filter/Filter.tsx";
 import PrendasLayout from "../layouts/PrendasLayout.tsx";
 
@@ -15,6 +18,10 @@ export default function TestingPage() {
     ];
 
     return (
+        <>
+        <GuestHeader></GuestHeader>
+        <UserHeader></UserHeader>
+        <Header/>
         <div className="w-full h-full bg-[var(--color-auxiliary-50)]" >
             <div className="w-96 m-20">
                 <SelectForm name="prueba" placeholder="Elige una opción" options={["una", "dos", "tres"]} />
@@ -39,5 +46,6 @@ export default function TestingPage() {
                 prendas={prendas}
             />
         </div>
+        </>
     )
 }

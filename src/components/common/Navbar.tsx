@@ -8,19 +8,21 @@ interface NavLinkItem {
 
 // El elemento recibe una lista de links de typo NavLinkItem
 interface NavbarProps {
-    links: NavLinkItem[];
+    links: NavLinkItem[],
+    isUser?: boolean //Determina si la navbar corresponde al usuario o no, para controlar el color del texto
 }
 
-export default function Navbar({ links }: NavbarProps) {
+export default function Navbar({ links, isUser = false }: NavbarProps) {
 
     return (
-        <nav className="flex items-center gap-4 p-4">
+        <nav className="flex items-center gap-6 p-4">
             {
                 links.map((link) => (
                     <Link
                         key={link.path}
                         to={link.path}
-                        className=""
+                        className={`font-medium ${
+                        isUser ? 'text-white hover:text-black hover:font-semibold' : 'text-black hover:text-white'}`}
                     >
                         {link.label}
                     </Link>
