@@ -41,12 +41,17 @@ export default function Header() {
                     </>
                 )
             }
-            
+
             {
                 isLoggedIn && (
 
                     <>
                         <Navbar links={userLinks} />
+                        <div className="profile-icon">
+                            <Link to="/profile">
+                                <img src="/profileIcon.png" alt="Imagen de perfil del usuario" />
+                            </Link>
+                        </div>
                     </>
                 )
             }
