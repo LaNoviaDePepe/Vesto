@@ -32,17 +32,17 @@ export default function Filter({ name, options, placeholder, disabled }: FilterP
                     }
                 }}
             >
-                <option value="" disabled className="bg-[var(--color-primary-50)] text-gray-400">
+                <option value="" disabled className="bg-primary-50 text-gray-400">
                     {placeholder}
                 </option>
 
                 {options.map((option) => (
-                    <option key={option} value={option} className="bg-[var(--color-primary-50)] text-black">
+                    <option key={option} value={option} className="bg-primary-50 text-black">
                         {option}
                     </option>
                 ))}
 
-                <option value="quitar" className="bg-[var(--color-primary-50)] text-black">
+                <option value="quitar" className="bg-primary-50 text-black">
                     Quitar ❌
                 </option>
             </select>

@@ -40,7 +40,7 @@ export default function Select({ name, options, placeholder, error, disabled }: 
             </select>
 
             {error && (
-                <span className="text-sm text-[var(--color-danger-600)]">
+                <span className="text-sm text-danger-600">
                     {error}
                 </span>
             )}

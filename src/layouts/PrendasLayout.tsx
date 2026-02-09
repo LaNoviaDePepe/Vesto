@@ -11,7 +11,7 @@ interface PrendasLayoutProps {
 
 export default function PrendasLayout({ prendas }: PrendasLayoutProps) {
     return (
-        <div className="flex flex-wrap justify-center gap-x-[50px] gap-y-[50px]">
+        <div className="flex flex-wrap justify-center gap-x-12.5 gap-y-12.5">
             {prendas.map((prenda, index) => (
                 <Prenda
                     key={index}

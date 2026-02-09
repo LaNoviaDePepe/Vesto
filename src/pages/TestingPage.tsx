@@ -22,7 +22,7 @@ export default function TestingPage() {
         <GuestHeader></GuestHeader>
         <UserHeader></UserHeader>
         <Header/>
-        <div className="w-full h-full bg-[var(--color-auxiliary-50)]" >
+        <div className="w-full h-full bg-auxiliary-50" >
             <div className="w-96 m-20">
                 <SelectForm name="prueba" placeholder="Elige una opción" options={["una", "dos", "tres"]} />
                 <SelectForm name="pruebaError" placeholder="Elige una opción" options={["una", "dos"]} error="hay un error" />

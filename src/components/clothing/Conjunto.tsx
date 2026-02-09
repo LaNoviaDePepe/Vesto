@@ -10,8 +10,8 @@ interface ConjuntoProps {
 
 export default function PrendasLayout({ name, url, descripcion, prendas }: ConjuntoProps) {
     return (
-        <div className="flex flex-col md:flex-row w-full gap-6 bg-[var(--color-primary-50)] p-10">
-            <div className="w-full md:w-1/3 bg-[var(--color-white)] p-4 rounded-[10px] self-start">
+        <div className="flex flex-col md:flex-row w-full gap-6 bg-primary-50 p-10">
+            <div className="w-full md:w-1/3 bg-white p-4 rounded-[10px] self-start">
                 <img
                     src={url}
                     alt={name}
@@ -21,7 +21,7 @@ export default function PrendasLayout({ name, url, descripcion, prendas }: Conju
             <div className="w-full md:w-2/3 flex flex-col gap-4">
                 <h2 className="text-xl font-bold">{name}</h2>
                 <p className="text-gray-700">{descripcion}</p>
-                <div className="flex flex-wrap justify-center gap-x-[50px] gap-y-[50px]">
+                <div className="flex flex-wrap justify-center gap-x-12.5 gap-y-12.5">
                     {prendas.map((prenda, index) => (
                         <Prenda
                             key={index}
