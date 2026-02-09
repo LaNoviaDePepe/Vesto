@@ -12,6 +12,7 @@ import ClosetPage from "./pages/ClosetPage";
 import ClothingPage from "./pages/ClothingPage";
 import OutfitsPage from "./pages/OutfitsPage";
 import OutfitCreatorPage from "./pages/OutfitCreatorPage";
+import ProfilePage from "./pages/ProfilePage";
 // import LandingPage from "./pages/LandingPage"; 
 // import PrendasPage from "./pages/PrendasPage"; 
 // import AddPrendaPage from "./pages/AddPrendaPage"; 
@@ -20,8 +21,6 @@ import OutfitCreatorPage from "./pages/OutfitCreatorPage";
 // import PerfilPage from "./pages/PerfilPage"; 
 
 export default function App() {
-  // Simulación de autenticación
-  const isUser = true;
 
   const router = createBrowserRouter([
     {
@@ -45,7 +44,7 @@ export default function App() {
         { path: "/clothing", element: <ClothingPage /> },
         { path: "/outfits", element: <OutfitsPage /> },
         { path: "/outfitCreator", element: <OutfitCreatorPage /> },
-        //{ path: "/profile", element: <ProfilePage /> },
+        { path: "/profile", element: <ProfilePage /> },
       ],
     },
   ]);
