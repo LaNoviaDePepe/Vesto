@@ -1,0 +1,23 @@
+@layer base {
+    body {
+        @apply font-normal font-body;
+    }
+
+    header {
+        @apply flex items-center justify-between px-6 py-4 h-20;
+    }
+    h1, h2, h3, h4, h5, h6 {
+        @apply font-display;
+    }
+    
+    button {
+        /* disposición, espaciados y forma */
+        @apply h-10 min-w-22.5 flex items-center justify-center px-2 gap-1 rounded;
+        /* tipografía y cursor */
+        @apply font-body font-normal text-base cursor-pointer;
+        /* transición hacia el hover */
+        @apply transition-all duration-300 ease-in-out;
+        @apply hover:font-medium hover:shadow-lg hover:-translate-y-0.5;
+        @apply active:scale-95 active:translate-y-0; /* Efecto de pulsación */
+    }
+}

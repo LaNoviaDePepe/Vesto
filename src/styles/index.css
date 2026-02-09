@@ -1,4 +1,9 @@
-:root {
+@import "tailwindcss";
+@import "./components.css";
+@import "./base.css";
+
+
+@theme {
     --color-black: #000000;
     --color-white: #FFFFFF;
 
@@ -56,3 +61,4 @@
     --font-display: Montserrat, sans-serif, system-ui;
     --font-body: Manrope, Consolas, ui-monospace;
 }
+
