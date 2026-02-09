@@ -54,7 +54,7 @@ export default function Input({ label, error, disabled, type, ...props }: InputP
                 {!isCheckbox && (
                     <div className="relative group w-full">
                         <input
-                            type={type}
+                            type={inputType}
                             className={`${baseClasses} ${borderClasses} ${textClasses} placeholder:text-gray-300 shadow-sm`}
                             disabled={disabled}
                             {...props}
