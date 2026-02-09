@@ -1,8 +1,8 @@
 import { BrowserRouter, Route, BrowserRouter as Router, Routes } from "react-router-dom";
-
-import TestingPage from "./pages/TestingPage";
 import NavbarPageFooterLayout from "./layouts/NavbarPageFooterLayout";
 import NavbarPageLayout from "./layouts/NavbarPageLayout";
+import LoginPage from "./pages/LoginPage";
+import SignUpPage from "./pages/SignUpPage";
 
 function App() {
   return (
