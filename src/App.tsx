@@ -29,11 +29,11 @@ const router = createBrowserRouter([
     // Grupo 2: Layout con Navbar y Página (sin Footer)
     element: <NavbarPageLayout />,
     children: [
-      { path: "/prendas", element: <PrendasPage /> },
-      { path: "/addPrenda", element: <AddPrendaPage /> },
-      { path: "/conjunto", element: <ConjuntoPage /> },
-      { path: "/addConjunto", element: <AddConjuntoPage /> },
-      { path: "/perfil", element: <PerfilPage /> },
+      { path: "/closet", element: <PrendasPage /> },
+      { path: "/clothing", element: <AddPrendaPage /> },
+      { path: "/outfits", element: <ConjuntoPage /> },
+      { path: "/outfitsCreator", element: <AddConjuntoPage /> },
+      { path: "/profile", element: <PerfilPage /> },
     ],
   },
 ]);
