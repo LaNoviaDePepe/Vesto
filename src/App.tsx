@@ -1,46 +1,48 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Navbar from './components/common/Navbar';
-import { GUEST_LINKS, USER_LINKS } from './constants/navLinks'; // Asegúrate que la ruta sea correcta
-import Home from "./pages/Home";
-import TestingPage from "./pages/TestingPage";
-import SignUp from "./pages/SignUp";
-import Login from "./pages/Login";
-import Closet from "./pages/Closet";
-import Clothing from "./pages/Clothing";
-import Outfits from "./pages/Outfits";
-import OutfitsCreator from "./pages/OutfitsCreator";
-import Profile from "./pages/Profile";
+import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom";
 
-function App() {
-  // Aquí simulo que el usuario está logueado. 
-  // Más adelante esto vendrá de la autenticación.
+// Layouts
+import NavbarPageFooterLayout from "./layouts/NavbarPageFooterLayout";
+import NavbarPageLayout from "./layouts/NavbarPageLayout";
+
+// Pages
+import LoginPage from "./pages/LoginPage";
+import SignUpPage from "./pages/SignUpPage";
+import LandingPage from "./pages/LandingPage"; 
+import PrendasPage from "./pages/PrendasPage"; 
+import AddPrendaPage from "./pages/AddPrendaPage"; 
+import ConjuntoPage from "./pages/ConjuntoPage"; 
+import AddConjuntoPage from "./pages/AddConjuntoPage"; 
+import PerfilPage from "./pages/PerfilPage"; 
+
+export default function App() {
+  // Simulación de autenticación
   const isUser = true; 
 
-  return (
-    <Router>
+  const router = createBrowserRouter([
+    {
+      // Grupo 1: Layout con Navbar, Página y Footer
+      element: <NavbarPageFooterLayout />,
+      children: [
+        { 
+          path: "/", 
+          element: isUser ? <Navigate to="/closet" replace /> : <LandingPage /> 
+        },
+        { path: "/login", element: <LoginPage /> },
+        { path: "/signup", element: <SignUpPage /> },
+      ],
+    },
+    {
+      // Grupo 2: Layout con Navbar y Página (sin Footer)
+      element: <NavbarPageLayout />,
+      children: [
+        { path: "/closet", element: <PrendasPage /> },
+        { path: "/clothing", element: <AddPrendaPage /> },
+        { path: "/outfits", element: <ConjuntoPage /> },
+        { path: "/outfitsCreator", element: <AddConjuntoPage /> },
+        { path: "/profile", element: <PerfilPage /> },
+      ],
+    },
+  ]);
 
-      <Navbar 
-        links={isUser ? USER_LINKS : GUEST_LINKS} 
-        isUser={isUser} 
-      />
-
-      <Routes>
-
-        <Route path="/testing" element={<TestingPage />} />
-
-        <Route path="/" element={<Home />} />
-        <Route path="/signup" element={<SignUp />} />
-        <Route path="/login" element={<Login />} />
-
-        <Route path="/closet" element={<Closet />} />
-        <Route path="/clothing" element={<Clothing />} />
-        <Route path="/outfits" element={<Outfits />} />
-        <Route path="/outfitCreator" element={<OutfitsCreator />} />
-        <Route path="/profile" element={<Profile />} />
-      </Routes>
-
-    </Router>
-  );
+  return <RouterProvider router={router} />; 
 }
-
-export default App;
