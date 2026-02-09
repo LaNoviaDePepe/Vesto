@@ -23,7 +23,7 @@ export default function App() {
       // Grupo 1: Layout con Navbar, Página y Footer
       element: <NavbarPageFooterLayout />,
       children: [
-        { path: "/", element: <LoginPage />
+        { path: "/", element: <SignUpPage />
           // path: "/", 
           // element: isUser ? <Navigate to="/closet" replace /> : <LandingPage /> 
         },
