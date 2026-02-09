@@ -6,9 +6,9 @@ export default function GuestHeader() {
     // Constante que almacena los links para los usuarios anónimos
     const guestLinks = [
         { label: 'Inicio', path: '/' },
-        { label: 'Sección1', path: '/seccion1' },
-        { label: 'Sección2', path: '/seccion2' },
-        { label: 'Productos', path: '/products' },
+        { label: 'Funcionamiento', path: '#funcionamiento' },
+        { label: 'Reviews', path: '#reviews' },
+        { label: 'Equipo', path: '#equipo' },
     ];
 
     return (
@@ -18,13 +18,13 @@ export default function GuestHeader() {
                     <img src="/img/black-logo.png" alt="Logo de Vesto" className="h-15 w-auto" />
                 </Link>
             </div>
-<div className='flex gap-3'>
-            <Navbar links={guestLinks} />
+            <div className='flex gap-3'>
+                <Navbar links={guestLinks} />
 
-            <div className='flex items-center gap-2'>
-                <Button variant='primary'>Iniciar sesión</Button>
-                <Button variant='auxiliar'>Registro</Button>
-            </div>
+                <div className='flex items-center gap-2'>
+                    <Link to="/login"><Button variant='primary'>Iniciar sesión</Button></Link>
+                    <Link to="/signup"><Button variant='auxiliar'>Registro</Button></Link>
+                </div>
             </div>
         </header>
     );

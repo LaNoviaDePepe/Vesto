@@ -7,7 +7,11 @@ import NavbarPageLayout from "./layouts/NavbarPageLayout";
 // Pages
 import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
-import AddPrendaPage from "./pages/AddPrendaPage";
+import LandingPage from "./pages/LandingPage";
+import ClosetPage from "./pages/ClosetPage";
+import ClothingPage from "./pages/ClothingPage";
+import OutfitsPage from "./pages/OutfitsPage";
+import OutfitCreatorPage from "./pages/OutfitCreatorPage";
 // import LandingPage from "./pages/LandingPage"; 
 // import PrendasPage from "./pages/PrendasPage"; 
 // import AddPrendaPage from "./pages/AddPrendaPage"; 
@@ -17,7 +21,7 @@ import AddPrendaPage from "./pages/AddPrendaPage";
 
 export default function App() {
   // Simulación de autenticación
-  const isUser = true; 
+  const isUser = true;
 
   const router = createBrowserRouter([
     {
@@ -28,6 +32,7 @@ export default function App() {
         //    path: "/", 
         //   element: isUser ? <Navigate to="/closet" replace /> : <LandingPage /> 
         // },
+        { path: "/", element: <LandingPage /> },
         { path: "/login", element: <LoginPage /> },
         { path: "/signup", element: <SignUpPage /> },
       ],
@@ -36,15 +41,14 @@ export default function App() {
       // Grupo 2: Layout con Navbar y Página (sin Footer)
       element: <NavbarPageLayout />,
       children: [
-        { path: "/", element: <AddPrendaPage /> },
-        // { path: "/closet", element: <PrendasPage /> },
-        // { path: "/clothing", element: <AddPrendaPage /> },
-        // { path: "/outfits", element: <ConjuntoPage /> },
-        // { path: "/outfitsCreator", element: <AddConjuntoPage /> },
-        // { path: "/profile", element: <PerfilPage /> },
+        { path: "/closet", element: <ClosetPage /> },
+        { path: "/clothing", element: <ClothingPage /> },
+        { path: "/outfits", element: <OutfitsPage /> },
+        { path: "/outfitCreator", element: <OutfitCreatorPage /> },
+        //{ path: "/profile", element: <ProfilePage /> },
       ],
     },
   ]);
 
-  return <RouterProvider router={router} />; 
+  return <RouterProvider router={router} />;
 }

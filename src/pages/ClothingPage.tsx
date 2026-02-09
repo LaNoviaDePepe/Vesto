@@ -1,8 +1,8 @@
 import AddItemForm from "../components/forms/AddItemForm";
 
 
-export default function AddPrendaPage() {
+export default function ClothingPage() {
   return (
-    <AddItemForm/>
+    <AddItemForm />
   )
 }
