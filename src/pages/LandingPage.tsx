@@ -1,8 +1,26 @@
-
-import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom'; 
 import Button from '../components/common/Button';
 
 export default function LandingPage() {
+
+    // Obtenemos el hash de la URL (ej: #funcionamiento)
+    const { hash } = useLocation();
+
+    // Este efecto se ejecuta cada vez que el hash cambia
+    useEffect(() => {
+        if (hash) {
+            // Quitamos el símbolo '#' para obtener solo el ID
+            const id = hash.replace('#', '');
+            const element = document.getElementById(id);
+
+            if (element) {
+                // Hacemos scroll suave hacia el elemento
+                element.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+    }, [hash]);
+
     return (
 
         <main className="w-full bg-auxiliary-50">

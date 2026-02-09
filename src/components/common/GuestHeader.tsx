@@ -6,9 +6,9 @@ export default function GuestHeader() {
     // Constante que almacena los links para los usuarios anónimos
     const guestLinks = [
         { label: 'Inicio', path: '/' },
-        { label: 'Funcionamiento', path: '#funcionamiento' },
-        { label: 'Reviews', path: '#reviews' },
-        { label: 'Equipo', path: '#equipo' },
+        { label: 'Funcionamiento', path: '/#funcionamiento' },
+        { label: 'Reviews', path: '/#reviews' },
+        { label: 'Equipo', path: '/#equipo' },
     ];
 
     return (
