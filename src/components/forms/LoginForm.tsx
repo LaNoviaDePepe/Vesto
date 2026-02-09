@@ -78,10 +78,11 @@ export default function LoginForm() {
     };
 
     return (
+        <div className="py-5 px-7.5 max-w-md mx-auto bg-white border-2 border-auxiliary-700 rounded-2xl shadow-xl">
         <form onSubmit={handleSubmit} className="max-w-sm mx-auto space-y-4">
             <h3>Login</h3>
             <Input
-                label={"Usuario "}
+                label={"Nombre de usuario "}
                 name="usuario"
                 type="text"
                 value={formData.usuario}
@@ -103,7 +104,7 @@ export default function LoginForm() {
             >
             </Input>
             <Input
-                label={"Recuerdame "}
+                label={"Recuérdame "}
                 name="rememberMe"
                 type="checkbox"
                 checked={formData.rememberMe}
@@ -115,5 +116,6 @@ export default function LoginForm() {
 
             <Button type="submit" className="btn btn-primary">Acceder</Button>
         </form>
+        </div>
     );
 }
