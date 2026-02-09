@@ -1,9 +1,9 @@
 import { useState, type ChangeEvent, type FocusEvent } from "react";
 import { validateVestoField } from "../../utils/regex";
 import Button from "../common/Button";
-import InputFieldClase from "./InputFieldClase";
 import type { RegisterData } from "../../interfaces/RegisterData";
 import { createUserRepository } from "../../database/repositories/repositories";
+import Input from "../common/Input";
 
 const userRepository = createUserRepository();
 
@@ -93,7 +93,7 @@ export default function SignUpForm() {
     return (
         <form onSubmit={handleSubmit} className="max-w-sm mx-auto space-y-4">
 
-            <InputFieldClase
+            <Input
                 label={"Nombre y apellidos"}
                 name="nombreApellidos"
                 type="text"
@@ -103,8 +103,8 @@ export default function SignUpForm() {
                 onBlur={handleBlur}
                 error={errors.nombreApellidos}
             >
-            </InputFieldClase>
-            <InputFieldClase
+            </Input>
+            <Input
                 label={"Email"}
                 name="email"
                 type="email"
@@ -114,8 +114,8 @@ export default function SignUpForm() {
                 onBlur={handleBlur}
                 error={errors.email}
             >
-            </InputFieldClase>
-            <InputFieldClase
+            </Input>
+            <Input
                 label={"Usuario"}
                 name="usuario"
                 type="text"
@@ -125,8 +125,8 @@ export default function SignUpForm() {
                 onBlur={handleBlur}
                 error={errors.usuario}
             >
-            </InputFieldClase>
-            <InputFieldClase
+            </Input>
+            <Input
                 label={"password"}
                 name="password"
                 type="password"
@@ -136,8 +136,8 @@ export default function SignUpForm() {
                 onBlur={handleBlur}
                 error={errors.password}
             >
-            </InputFieldClase>
-            <InputFieldClase
+            </Input>
+            <Input
                 label={"Repite contraseña"}
                 name="verifPassword"
                 type="password"
@@ -147,7 +147,7 @@ export default function SignUpForm() {
                 onBlur={handleBlur}
                 error={errors.verifPassword}
             >
-            </InputFieldClase>
+            </Input>
 
             <Button type="submit">Enviar</Button>
         </form>

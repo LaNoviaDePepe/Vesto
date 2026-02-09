@@ -1,7 +1,7 @@
 import { useState, type ChangeEvent, type FocusEvent } from "react";
 import { validateVestoField } from "../../utils/regex";
 import Button from "../common/Button";
-import InputFieldClase from "./InputFieldClase";
+import Input from "../common/Input";
 
 interface AddItemFormProps {
     nombre: string;
@@ -89,7 +89,7 @@ export default function AddItemForm() {
     return (
         <form onSubmit={handleSubmit} className="max-w-sm mx-auto space-y-4">
 
-            <InputFieldClase
+            <Input
                 label="Nombre de la prenda"
                 name="nombre"
                 type="text"
