@@ -41,6 +41,9 @@ export default function AddItemForm() {
         imagen: ""
     });
 
+    // Lógica de previsualización de imagen
+    const [preview, setPreview] = useState<string | null>(null);
+
     // Maneja inputs y selects
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
@@ -58,7 +61,9 @@ export default function AddItemForm() {
 
     const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files[0]) {
-            setFormData((prev) => ({ ...prev, imagen: e.target.files![0] }));
+            const file = e.target.files[0];
+            setFormData((prev) => ({ ...prev, imagen: file }));
+            setPreview(URL.createObjectURL(file)); // Crea URL temporal para la imagen
             setErrors((prev) => ({ ...prev, imagen: "" }));
         }
     };
@@ -87,73 +92,105 @@ export default function AddItemForm() {
     };
 
     return (
-        
-        <form onSubmit={handleSubmit} className="max-w-sm mx-auto space-y-4">
+        <div className="py-5 px-7.5 max-w-4xl mx-auto bg-white border-2 border-auxiliary-700 rounded-2xl shadow-xl">
+            <h3 className="text-center mb-8">Subir prenda/Modificar prenda</h3>
 
-            <Input
-                label="Nombre de la prenda"
-                name="nombre"
-                type="text"
-                value={formData.nombre}
-                autoComplete="off"
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={errors.nombre}
-            />
+            <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-8">
 
-            <div>
-                <label className="block mb-2 text-sm font-medium text-gray-900">Tipo de Prenda</label>
-                <Select
-                    name="tipoPrenda"
-                    value={formData.tipoPrenda}
-                    options={PRENDA_OPTIONS}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    error={errors.tipoPrenda}
-                    placeholder="Selecciona tipo..."
-                />
-            </div>
+                {/* COLUMNA IZQUIERDA: Formulario */}
+                <div className="flex flex-col space-y-6">
+                    <Input
+                        label="Nombre de la prenda"
+                        name="nombre"
+                        type="text"
+                        value={formData.nombre}
+                        autoComplete="off"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        error={errors.nombre}
+                    />
 
-            <div>
-                <label className="block mb-2 text-sm font-medium text-gray-900">Color</label>
-                <Select
-                    name="color"
-                    value={formData.color}
-                    options={COLOR_OPTIONS}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    error={errors.color}
-                    placeholder="Selecciona color..."
-                />
-            </div>
+                    <div>
+                        <label className="block mb-2 text-sm font-normal text-gray-900">Tipo de Prenda</label>
+                        <Select
+                            name="tipoPrenda"
+                            value={formData.tipoPrenda}
+                            options={PRENDA_OPTIONS}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            error={errors.tipoPrenda}
+                            placeholder="Selecciona tipo..."
+                        />
+                    </div>
 
-            <div>
-                <label className="block mb-2 text-sm font-medium text-gray-900">Temporada</label>
-                <Select
-                    name="temporada"
-                    value={formData.temporada}
-                    options={TEMPORADA_OPTIONS}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    error={errors.temporada}
-                    placeholder="Selecciona temporada..."
-                />
-            </div>
+                    <div>
+                        <label className="block mb-2 text-sm font-normal text-gray-700">Color</label>
+                        <Select
+                            name="color"
+                            value={formData.color}
+                            options={COLOR_OPTIONS}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            error={errors.color}
+                            placeholder="Selecciona color..."
+                        />
+                    </div>
 
-            <div>
-                <label className="block mb-2 text-sm font-medium text-gray-900">Imagen</label>
-                <input
-                    type="file"
-                    name="imagen"
-                    accept="image/*"
-                    onChange={handleFileChange}
-                    className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none"
-                />
-                {errors.imagen && <p className="mt-2 text-sm text-red-600">{errors.imagen}</p>}
-            </div>
+                    <div>
+                        <label className="block mb-2 text-sm font-normal text-gray-700">Temporada</label>
+                        <Select
+                            name="temporada"
+                            value={formData.temporada}
+                            options={TEMPORADA_OPTIONS}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            error={errors.temporada}
+                            placeholder="Selecciona temporada..."
+                        />
+                    </div>
 
-            <Button type="submit" className="btn btn-primary">Guardar</Button>
-            <Button type="button" className="btn btn-secondary">Cancelar</Button>
-        </form>
+                    {/* Botones de acción */}
+                    <div className="flex gap-4 pt-4">
+                        <Button type="submit" className="btn btn-primary">
+                            Guardar
+                        </Button>
+                        <Button type="button" className="btn btn-secondary">
+                            Cancelar
+                        </Button>
+                    </div>
+                </div>
+
+                {/* COLUMNA DERECHA: Imagen */}
+                <div className="flex flex-col items-center justify-center space-y-6">
+                    <div className="w-full aspect-square max-w-90 rounded-2xl overflow-hidden border-2 border-dashed border-gray-300 bg-gray-50 flex items-center justify-center relative">
+                        {preview ? (
+                            <img src={preview} alt="Vista previa" className="w-full h-full object-cover" />
+                        ) : (
+                            <div className="text-center p-6">
+                                {/* Icono de "No image available" con gradiente naranja */}
+                                <div className="w-20 h-20 mx-auto mb-4 bg-linear-to-br from-auxiliary-300 to-auxiliary-700 rounded-lg flex items-center justify-center text-white opacity-50">
+                                    <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                    </svg>
+                                </div>
+                                <p className="text-gray-400 font-medium">No Image Available</p>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Input File */}
+                    <div className="w-full max-w-75">
+                        <input
+                            type="file"
+                            name="imagen"
+                            accept="image/*"
+                            onChange={handleFileChange}
+                            className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200 cursor-pointer border rounded-md"
+                        />
+                        {errors.imagen && <p className="mt-2 text-sm text-danger-600 font-medium">{errors.imagen}</p>}
+                    </div>
+                </div>
+            </form>
+        </div>
     );
 }
