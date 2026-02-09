@@ -104,8 +104,10 @@ export default function SignUpForm() {
 
     return (
         <div className="py-5 px-7.5 max-w-md mx-auto bg-white border-2 border-auxiliary-700 rounded-2xl shadow-xl">
+            <h3 className="text-center mb-8">Registro</h3>
+
             <form onSubmit={handleSubmit} className="max-w-sm mx-auto space-y-8">
-                <h3>Registro</h3>
+                
                 <Input
                     label={"Nombre y apellidos"}
                     name="nombreApellidos"
