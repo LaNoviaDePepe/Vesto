@@ -79,7 +79,7 @@ export default function LoginForm() {
 
     return (
         <form onSubmit={handleSubmit} className="max-w-sm mx-auto space-y-4">
-
+            <h3>Login</h3>
             <Input
                 label={"Usuario "}
                 name="usuario"
@@ -113,7 +113,7 @@ export default function LoginForm() {
             >
             </Input>
 
-            <Button type="submit">Enviar</Button>
+            <Button type="submit" className="btn btn-primary">Acceder</Button>
         </form>
     );
 }

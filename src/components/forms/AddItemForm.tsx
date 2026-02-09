@@ -87,6 +87,7 @@ export default function AddItemForm() {
     };
 
     return (
+        
         <form onSubmit={handleSubmit} className="max-w-sm mx-auto space-y-4">
 
             <Input
@@ -151,7 +152,8 @@ export default function AddItemForm() {
                 {errors.imagen && <p className="mt-2 text-sm text-red-600">{errors.imagen}</p>}
             </div>
 
-            <Button type="submit">Guardar Prenda</Button>
+            <Button type="submit" className="btn btn-primary">Guardar</Button>
+            <Button type="button" className="btn btn-secondary">Cancelar</Button>
         </form>
     );
 }

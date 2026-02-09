@@ -10,6 +10,9 @@
         @apply font-display;
     }
     
+    h3 {
+        @apply text-3xl font-medium font-display;
+    }
     button {
         /* disposición, espaciados y forma */
         @apply h-10 min-w-22.5 flex items-center justify-center px-2 gap-1 rounded;

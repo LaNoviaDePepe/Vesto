@@ -1,12 +1,11 @@
 import { BrowserRouter as Router } from "react-router-dom";
-
-import TestingPage from "./pages/TestingPage";
+import FormTestingPages from "./pages/FormTestingPages";
 
 function App() {
   return (
     <Router> 
       {/* Ahora Header y Navbar pueden usar Links porque están dentro del Router */}
-      <TestingPage />
+      <FormTestingPages />
       
       
     </Router>
