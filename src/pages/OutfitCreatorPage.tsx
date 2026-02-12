@@ -4,10 +4,9 @@ import PrendasLayout from "../layouts/PrendasLayout";
 
 export default function OutfitCreatorPage() {
   return (
-    <div className="grid grid-cols-2 gap-6" >
-      {/* Left column */}
-      <div>
-        <Filter />
+    <div className="grid grid-cols-2 " >
+      <div className="border-r-5 border-primary-50 pr-20">
+        <Filter width={50}/>
         <PrendasLayout
           prendas={[
             { name: "Camiseta blanca", url: "/img/prenda.jpg", color: "blanco", temporada: "verano" },
@@ -35,7 +34,6 @@ export default function OutfitCreatorPage() {
         />
       </div>
 
-      {/* Right column */}
       <div>
         En construcción...
       </div>
