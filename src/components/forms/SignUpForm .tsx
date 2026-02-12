@@ -2,16 +2,13 @@ import { useState, type ChangeEvent, type FocusEvent } from "react";
 import { validateVestoField } from "../../utils/regex";
 import Button from "../common/Button";
 import type { RegisterData } from "../../interfaces/RegisterData";
-import { createUserRepository } from "../../database/repositories/repositories";
 import Input from "../common/Input";
-import { Link } from "react-router-dom";
-
-const userRepository = createUserRepository();
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../../hooks/useAuth";
 
 interface SignUpFormProps {
     nombreApellidos: string;
     email: string;
-    usuario: string;
     password: string;
     verifPassword: string;
     acceptTerms: boolean;
@@ -20,17 +17,18 @@ interface SignUpFormProps {
 interface ErrorsProps {
     nombreApellidos: string;
     email: string;
-    usuario: string;
     password: string;
     verifPassword: string;
     acceptTerms: string;
 }
 
 export default function SignUpForm() {
+    const { register, loading, error: authError } = useAuth();
+    const navigate = useNavigate();
+
     const [formData, setFormData] = useState<SignUpFormProps>({
         nombreApellidos: "",
         email: "",
-        usuario: "",
         password: "",
         verifPassword: "",
         acceptTerms: false
@@ -39,7 +37,6 @@ export default function SignUpForm() {
     const [errors, setErrors] = useState<ErrorsProps>({
         nombreApellidos: "",
         email: "",
-        usuario: "",
         password: "",
         verifPassword: "",
         acceptTerms: ""
@@ -48,12 +45,10 @@ export default function SignUpForm() {
     // Actualiza el valor del campo mientras el usuario escribe.
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value, type, checked } = e.target;
-
         setFormData((prev) => ({
             ...prev,
-            [name]: type === "checkbox" ? checked : value // Lógica para checkbox
+            [name]: type === "checkbox" ? checked : value
         }));
-
         setErrors((prev) => ({ ...prev, [name]: "" }));
     };
 
@@ -61,8 +56,6 @@ export default function SignUpForm() {
     const handleBlur = (e: FocusEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         let error = "";
-
-        // Solo para verifPassword pasamos la contraseña
         if (name === "verifPassword") {
             error = validateVestoField(name, value, formData.password);
         } else {
@@ -71,34 +64,37 @@ export default function SignUpForm() {
         setErrors((prev) => ({ ...prev, [name]: error }));
     };
 
-    const handleSubmit = (e: React.SubmitEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => { // Async
         e.preventDefault();
 
         const newErrors = {
             nombreApellidos: validateVestoField("nombreApellidos", formData.nombreApellidos),
             email: validateVestoField("email", formData.email),
-            usuario: validateVestoField("usuario", formData.usuario),
             password: validateVestoField("password", formData.password),
             verifPassword: validateVestoField("verifPassword", formData.verifPassword, formData.password),
-            // Validación manual del checkbox
             acceptTerms: formData.acceptTerms ? "" : "Debes aceptar los términos y condiciones"
         };
-        setErrors(newErrors);
+        setErrors(newErrors as any);
 
-        // Comprueba si hay algún valor en el array newErrors (true si hay alguno)
         const hasErrors = Object.values(newErrors).some(Boolean);
+
         if (!hasErrors) {
-            alert("Formulario válido ✅");
+            // Preparamos los datos
             const newUser: RegisterData = {
                 email: formData.email,
                 password: formData.password,
-                username: formData.usuario,
                 full_name: formData.nombreApellidos,
                 role: "user",
                 avatar_url: ""
-            }
-            userRepository.createUser(newUser);
+            };
 
+            // Llamamos a register desde el hook
+            const success = await register(newUser);
+
+            if (success) {
+                alert("Usuario registrado y logueado ✅");
+                navigate('/'); 
+            }
         }
     };
 
@@ -106,8 +102,15 @@ export default function SignUpForm() {
         <div className="py-5 px-7.5 max-w-md mx-auto bg-white border-2 border-auxiliary-700 rounded-2xl shadow-xl">
             <h3 className="text-center mb-8">Registro</h3>
 
+            {/* Mostrar errores de Supabase */}
+            {authError && (
+                <div className="bg-red-100 text-red-600 p-2 mb-4 rounded text-center text-sm">
+                    {authError}
+                </div>
+            )}
+
             <form onSubmit={handleSubmit} className="max-w-sm mx-auto space-y-8">
-                
+
                 <Input
                     label={"Nombre y apellidos"}
                     name="nombreApellidos"
@@ -128,17 +131,6 @@ export default function SignUpForm() {
                     onChange={handleChange}
                     onBlur={handleBlur}
                     error={errors.email}
-                >
-                </Input>
-                <Input
-                    label={"Usuario"}
-                    name="usuario"
-                    type="text"
-                    value={formData.usuario}
-                    autoComplete="off"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    error={errors.usuario}
                 >
                 </Input>
                 <Input
@@ -171,7 +163,9 @@ export default function SignUpForm() {
                     error={errors.acceptTerms}
                 />
 
-                <Button type="submit" className="btn btn-primary">Dar de alta</Button>
+                <Button type="submit" disabled={loading} className="btn btn-primary w-full">
+                    {loading ? "Registrando..." : "Dar de alta"}
+                </Button>
                 <p className="mt-8 text-start text-sm text-gray-600">
                     ¿Ya tienes una cuenta? Ingresa{" "}
                     <Link to="/login" className="text-primary-500 text-sm hover:underline hover:text-primary-700 hover:font-semibold">

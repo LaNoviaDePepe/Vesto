@@ -1,47 +1,41 @@
 import { useState, type ChangeEvent, type FocusEvent } from "react";
 import { validateVestoField } from "../../utils/regex";
 import Button from "../common/Button";
-import { createUserRepository } from "../../database/repositories/repositories";
 import Input from "../common/Input";
-
-const userRepository = createUserRepository();
+import { useAuth } from "../../hooks/useAuth";
 
 interface LoginFormProps {
-    usuario: string;
+    email: string; 
     password: string;
     rememberMe: boolean;
 }
 
 interface ErrorsProps {
-    usuario: string;
+    email: string;
     password: string;
     rememberMe: string;
 }
 
 export default function LoginForm() {
+    // Extraemos las funciones y estados del hook
+    const { login, loading, error: authError } = useAuth();
+
     const [formData, setFormData] = useState<LoginFormProps>({
-        usuario: "",
+        email: "",
         password: "",
         rememberMe: false
     });
 
     const [errors, setErrors] = useState<ErrorsProps>({
-        usuario: "",
+        email: "",
         password: "",
         rememberMe: ""
     });
 
-    // Actualiza el valor del campo mientras el usuario escribe.
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value, type, checked } = e.target;
-
-        // Si es checkbox usamos 'checked', si es texto usamos 'value'
         const finalValue = type === "checkbox" ? checked : value;
-
-        // Aquí 'prev' ya no dará error porque TypeScript sabe el tipo correcto
         setFormData((prev) => ({ ...prev, [name]: finalValue }));
-
-        // Limpiamos el error al escribir (excepto si es el checkbox)
         if (type !== "checkbox") {
             setErrors((prev) => ({ ...prev, [name]: "" }));
         }
@@ -49,31 +43,32 @@ export default function LoginForm() {
 
     const handleBlur = (e: FocusEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-
-        // No validamos en onBlur si es el checkbox
         if (e.target.type !== "checkbox") {
             const error = validateVestoField(name, value);
-            // Reemplazar any por el tipo que es.
             setErrors((prev) => ({ ...prev, [name]: error }));
         }
     };
 
-    const handleSubmit = async (e: React.SubmitEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        // Validamos antes de enviar
         const newErrors = {
-            usuario: validateVestoField("usuario", formData.usuario),
+            email: validateVestoField("email", formData.email),
             password: validateVestoField("password", formData.password),
-            rememberMe: validateVestoField("rememberMe", formData.rememberMe)
+            rememberMe: "" // Generalmente el checkbox no bloquea el login
         };
         setErrors(newErrors);
 
         const hasErrors = Object.values(newErrors).some(Boolean);
 
         if (!hasErrors) {
-            await userRepository.loginUser();
-            alert("Iniciando sesión...");
+            // Llamamos a la función login del Hook
+            const success = await login(formData.email, formData.password);
+
+            if (success) {
+                alert("¡Sesión iniciada con éxito!");
+                // Aquí podrías usar un navigate('/dashboard') si usas react-router
+            }
         }
     };
 
@@ -81,41 +76,47 @@ export default function LoginForm() {
         <div className="py-5 px-7.5 max-w-md mx-auto bg-white border-2 border-auxiliary-700 rounded-2xl shadow-xl">
             <h3 className="text-center mb-8">Login</h3>
 
+            {/* Mostrar error general de Supabase si existe */}
+            {authError && (
+                <div className="bg-red-100 text-red-600 p-2 mb-4 rounded text-center text-sm">
+                    {authError}
+                </div>
+            )}
+
             <form onSubmit={handleSubmit} className="max-w-sm mx-auto space-y-4">
                 <Input
-                    label={"Nombre de usuario "}
-                    name="usuario"
-                    type="text"
-                    value={formData.usuario}
-                    autoComplete="off"
+                    label="Email"
+                    name="email" 
+                    type="email"
+                    value={formData.email}
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    error={errors.usuario}
-                >
-                </Input>
+                    error={errors.email}
+                />
+
                 <Input
-                    label={"Contraseña "}
+                    label="Contraseña"
                     name="password"
                     type="password"
                     value={formData.password}
-                    autoComplete="off"
                     onChange={handleChange}
                     onBlur={handleBlur}
                     error={errors.password}
-                >
-                </Input>
+                />
+
                 <Input
-                    label={"Recuérdame "}
+                    label="Recuérdame"
                     name="rememberMe"
                     type="checkbox"
                     checked={formData.rememberMe}
                     onChange={handleChange}
-                    onBlur={handleBlur}
                     error={errors.rememberMe}
-                >
-                </Input>
+                />
 
-                <Button type="submit" className="btn btn-primary">Acceder</Button>
+                {/* Deshabilitar botón mientras carga */}
+                <Button type="submit" disabled={loading} className="btn btn-primary w-full">
+                    {loading ? "Cargando..." : "Acceder"}
+                </Button>
             </form>
         </div>
     );

@@ -1,4 +1,4 @@
-import { useState, type ChangeEvent, type FocusEvent } from "react"; // <--- 1. CORREGIDO: añadido 'type'
+import { useState, type ChangeEvent, type FocusEvent } from "react"; 
 import { validateVestoField } from "../../utils/regex";
 import Button from "../common/Button";
 import Input from "../common/Input";
