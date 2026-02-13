@@ -12,13 +12,12 @@ export default function LandingLayout() {
 
     return (
         <div className="min-h-screen flex flex-col">
-            <div className="sticky top-0 z-50">
+
                 <Header isLoggedIn={isLoggedIn} onToggleLogin={toggleLogin} />
-            </div>
-                
+
             
 
-
+            
                 <Outlet />
 
 

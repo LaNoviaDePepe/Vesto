@@ -23,7 +23,7 @@ export default function LandingPage() {
 
     return (
 
-        <main className="w-full bg-auxiliary-50 mt-5">
+        <main className="w-full bg-auxiliary-50 py-5">
 
             {/* --- SECCIÓN 1: HERO --- */}
             <section className="min-h-screen w-full bg-linear-to-br from-auxiliary-700 to-auxiliary-50 flex items-center justify-center font-sans px-32 py-12">
@@ -67,7 +67,7 @@ export default function LandingPage() {
             <section className="w-full py-20 px-32 flex flex-col items-center gap-16">
 
                 {/* CARD 1: CÓMO FUNCIONA */}
-                <div id="funcionamiento" className="w-full max-w-7xl bg-white rounded-4xl shadow-xl p-12 grid grid-cols-2 gap-16 items-center">
+                <div id="funcionamiento" className="scroll-mt-25 w-full max-w-7xl bg-white rounded-4xl shadow-xl p-12 grid grid-cols-2 gap-16 items-center">
                     <div className="flex flex-col gap-6">
                         <h2 className="text-4xl font-bold text-black font-(--font-display)">
                             ¿Cómo funciona Vesto?
@@ -86,7 +86,7 @@ export default function LandingPage() {
                 </div>
 
                 {/* CARD 2: RECOMENDACIONES */}
-                <div id="reviews" className="w-full max-w-7xl bg-white rounded-4xl shadow-xl p-12 flex flex-col items-center gap-12">
+                <div id="reviews" className="scroll-mt-25 w-full max-w-7xl bg-white rounded-4xl shadow-xl p-12 flex flex-col items-center gap-12">
                     <h2 className="text-4xl font-bold text-black text-center font-(--font-display)">
                         +50K usuarios nos recomiendan
                     </h2>
@@ -115,7 +115,7 @@ export default function LandingPage() {
                 </div>
 
                 {/* CARD 3: EQUIPO */}
-                <div id="equipo" className="w-full max-w-7xl bg-white rounded-4xl shadow-xl p-12 flex flex-col items-center gap-12">
+                <div id="equipo" className="scroll-mt-25 w-full max-w-7xl bg-white rounded-4xl shadow-xl p-12 flex flex-col items-center gap-12">
                     <div className="text-center max-w-3xl">
                         <h2 className="text-4xl font-bold text-black mb-4 font-(--font-display)">
                             Nuestro equipo

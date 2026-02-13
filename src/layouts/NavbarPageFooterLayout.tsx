@@ -12,14 +12,9 @@ export default function NavbarPageFooterLayout() {
 
     return (
         <div className="min-h-screen flex flex-col">
-            <div className="sticky top-0 z-50">
-                <Header isLoggedIn={isLoggedIn} onToggleLogin={toggleLogin} />
-            </div>
-            
-
             <Header isLoggedIn={isLoggedIn} onToggleLogin={toggleLogin} />
 
-            <main className="flex-1 bg-auxiliary-50">
+            <main className="flex-1 bg-auxiliary-50 py-25">
                 <Outlet />
             </main>
 

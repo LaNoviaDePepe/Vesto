@@ -1,7 +1,7 @@
 import Header from "../components/common/Header";
 import { Outlet } from "react-router-dom";
 
-export default function NavbarPageFooterLayout() {
+export default function NavbarPageLayout() {
     return (
         <div className="min-h-screen flex flex-col">
 
