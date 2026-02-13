@@ -1,5 +1,11 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Navbar from './Navbar';
+import Button from './Button';
+import { createUserRepository } from '../../database/repositories';
+import { useAuthStore } from '../../stores/authStore';
+import toast from 'react-hot-toast';
+import { LogOut } from 'lucide-react';
+
 
 export default function UserHeader() {
     // Constante que almacena los links para los usuarios registrados
@@ -9,6 +15,29 @@ export default function UserHeader() {
         { label: 'Subir prenda', path: '/clothing' },
         { label: 'Crear conjunto', path: '/outfitCreator' },
     ];
+
+    const state = useAuthStore();
+    const userRepository = createUserRepository();
+    const navigate = useNavigate();
+
+    const handleLogout = async () => {
+
+        try {
+            const result = await userRepository.logout();
+            if (result.error) {
+                toast.error('Error al cerrar sesión');
+
+                return;
+            }
+            // Limpiamos sesión usando la función del store y redirigimos a otra página
+            state.clearSession();
+            navigate('/');
+
+        } catch (error) {
+            toast.error('Ocurrió un error inesperado');
+            console.log(error);
+        }
+    }
 
     return (
         <header className="bg-primary-700 fixed top-0 w-full z-50">
@@ -29,6 +58,10 @@ export default function UserHeader() {
                             className="h-full w-full object-cover shadow-sm"
                         />
                     </Link>
+
+                    <Button variant='out' onClick={handleLogout} className='rounded-full min-w-0 ml-3'>
+                        <LogOut size={20} strokeWidth={2.5} />
+                    </Button>                       
                 </div>
             </div>
         </header>

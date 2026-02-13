@@ -2,6 +2,11 @@ import { useState, type ChangeEvent, type FocusEvent } from "react";
 import { validateVestoField } from "../../utils/regex";
 import Button from "../common/Button";
 import Input from "../common/Input";
+import { LogOut } from "lucide-react";
+import toast from "react-hot-toast";
+import { useAuthStore } from "../../stores/authStore";
+import { createUserRepository } from "../../database/repositories";
+import { useNavigate } from "react-router-dom";
 
 // Interfaz para los datos del formulario
 interface UserProfileProps {
@@ -39,6 +44,29 @@ export default function ProfileForm() {
         newPassword: "",
         avatar: ""
     });
+
+    const state = useAuthStore();
+    const userRepository = createUserRepository();
+    const navigate = useNavigate();
+
+    const handleLogout = async () => {
+
+        try {
+            const result = await userRepository.logout();
+            if (result.error) {
+                toast.error('Error al cerrar sesión');
+
+                return;
+            }
+            
+            state.clearSession();
+            navigate('/');
+
+        } catch (error) {
+            toast.error('Ocurrió un error inesperado');
+            console.log(error);
+        }
+    }
 
     // Estado para previsualización de imagen (Avatar)
     const [preview, setPreview] = useState<string | null>(null);
@@ -154,13 +182,18 @@ export default function ProfileForm() {
                     />
 
                     <div className="flex gap-4 pt-4 mt-8">
-                        <Button type="submit" className="btn btn-primary bg-blue-700 hover:bg-blue-800 text-white px-6 py-2 rounded-md">
+                        <Button type="submit" variant="primary">
                             Guardar cambios
                         </Button>
                         <Button
-                            type="button"
-                            className="bg-orange-500 hover:bg-orange-600 text-white font-medium py-2 px-6 rounded-md transition-colors"
-                            onClick={() => console.log("Cancelar acción")}
+                            type="button" variant="secondary"
+                            onClick={() => console.log("Cerrar sesión")}
+                        >
+                            Cerrar sesión
+                        </Button>
+                        <Button
+                            type="button" variant="auxiliar"
+                            onClick={handleLogout}
                         >
                             Cancelar
                         </Button>
@@ -201,6 +234,7 @@ export default function ProfileForm() {
                         />
                         {errors.avatar && <p className="mt-2 text-sm text-red-600">{errors.avatar}</p>}
                     </div>
+                    
                 </div>
 
             </form>
