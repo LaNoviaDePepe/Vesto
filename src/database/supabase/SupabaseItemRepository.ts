@@ -13,6 +13,23 @@ export interface PrendaData {
 
 export class SupabaseItemRepository implements ItemRepository {
 
+    async getPrendas(id_usuario: string) {
+        const { data, error } = await supabase
+            .from('prendas')
+            .select('*')
+            .eq('id_usuario', id_usuario);
+
+        const prendasMapped = data?.map(p => ({
+            name: p.nombre,
+            url: p.url_imagen,
+            color: p.color,
+            temporada: p.temporada,
+        })) || [];
+
+        return { data: prendasMapped, error };
+
+    }
+
     async createPrenda(data: PrendaData) {
         try {
             // Subir la imagen al Storage
@@ -22,7 +39,7 @@ export class SupabaseItemRepository implements ItemRepository {
             const filePath = `${fileName}`;
 
             const { error: uploadError } = await supabase.storage
-                .from('prendas') 
+                .from('prendas')
                 .upload(filePath, data.imagen);
 
             if (uploadError) {
