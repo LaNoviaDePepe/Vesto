@@ -1,8 +1,10 @@
-import { useState, type ChangeEvent, type FocusEvent } from "react"; 
+import { useState, type ChangeEvent, type FocusEvent } from "react";
 import { validateVestoField } from "../../utils/regex";
 import Button from "../common/Button";
 import Input from "../common/Input";
 import Select from "../common/Select";
+import { SupabaseItemRepository } from "../../database/supabase/SupabaseItemRepository";
+import { useAuthStore } from "../../stores/useAuthStore ";
 
 interface AddItemFormProps {
     nombre: string;
@@ -20,11 +22,18 @@ interface ErrorsProps {
     imagen: string;
 }
 
-const PRENDA_OPTIONS = ["Cabeza", "ParteArriba", "ParteAbajo", "Complemento", "Calzado"];
-const COLOR_OPTIONS = ["NEGRO", "BLANCO", "GRIS", "ROJO", "AZUL", "AMARILLO", "VERDE", "NARANJA", "MORADO", "ROSA", "MARRON", "CELESTE", "TURQUESA", "VIOLETA", "BEIGE", "DORADO", "PLATEADO", "CIAN", "MAGENTA"];
-const TEMPORADA_OPTIONS = ["Otoño", "Invierno", "Primavera", "Verano"];
+const PRENDA_OPTIONS = ["cabeza", "partearriba", "parteabajo", "complemento", "calzado"];
+const COLOR_OPTIONS = ["negro", "blanco", "gris", "rojo", "azul", "amarillo", "verde", "naranja", "morado", "rosa", "marron", "celeste", "turquesa", "violeta", "beige", "dorado", "plateado", "cian", "magenta"];
+const TEMPORADA_OPTIONS = ["otoño", "invierno", "primavera", "verano"];
 
 export default function AddItemForm() {
+
+    // Instanciar el repo y obtener el usuario
+    const itemRepository = new SupabaseItemRepository();
+    const { sessionUser } = useAuthStore();
+
+    const [loading, setLoading] = useState(false);
+
     const [formData, setFormData] = useState<AddItemFormProps>({
         nombre: "",
         tipoPrenda: "",
@@ -68,10 +77,10 @@ export default function AddItemForm() {
         }
     };
 
-    const handleSubmit = (e: React.SubmitEvent) => {
+    const handleSubmit = async (e: React.SubmitEvent) => {
         e.preventDefault();
 
-        // Validación simple
+        // Necesitamos volver a declarar las validaciones aquí para calcular la variable
         const newErrors = {
             nombre: validateVestoField("nombre", formData.nombre) as string,
             tipoPrenda: formData.tipoPrenda ? "" : "Selecciona una prenda",
@@ -82,12 +91,40 @@ export default function AddItemForm() {
 
         setErrors(newErrors);
 
-        // Si algún valor en newErrors no es string vacío, hay error
+        // Aquí definimos la variable que te faltaba
         const hasErrors = Object.values(newErrors).some(err => err !== "");
 
         if (!hasErrors) {
-            console.log("Artículo válido:", formData);
-            alert("Artículo creado correctamente");
+            // Verificamos sesión
+            if (!sessionUser) {
+                alert("Debes iniciar sesión para subir prendas");
+                return;
+            }
+
+            setLoading(true);
+
+            // Llamamos al repositorio
+            const result = await itemRepository.createPrenda({
+                nombre: formData.nombre,
+                tipoPrenda: formData.tipoPrenda,
+                color: formData.color,
+                temporada: formData.temporada,
+                imagen: formData.imagen!,
+                userId: sessionUser.user.id
+            });
+
+            setLoading(false);
+
+            if (result.error) {
+                // Usamos 'any' temporalmente o verificamos si message existe para calmar a TypeScript
+                const errorMsg = (result.error as any).message || "Error desconocido";
+                alert("Error al subir la prenda: " + errorMsg);
+            } else {
+                alert("Prenda creada correctamente ✅");
+                // Resetear formulario
+                setFormData({ nombre: "", tipoPrenda: "", color: "", temporada: "", imagen: null });
+                setPreview(null);
+            }
         }
     };
 
@@ -151,8 +188,8 @@ export default function AddItemForm() {
 
                     {/* Botones de acción */}
                     <div className="flex gap-4 pt-4">
-                        <Button type="submit" className="btn btn-primary">
-                            Guardar
+                        <Button type="submit" disabled={loading} className="btn btn-primary">
+                            {loading ? "Guardando..." : "Guardar"}
                         </Button>
                         <Button type="button" className="btn btn-secondary">
                             Cancelar
