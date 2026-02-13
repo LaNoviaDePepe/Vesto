@@ -3,6 +3,7 @@ import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom"
 // Layouts
 import NavbarPageFooterLayout from "./layouts/NavbarPageFooterLayout";
 import NavbarPageLayout from "./layouts/NavbarPageLayout";
+import LandingLayout from "./layouts/LandingLayout";
 
 // Pages
 import LoginPage from "./pages/LoginPage";
@@ -13,6 +14,7 @@ import ClothingPage from "./pages/ClothingPage";
 import OutfitsPage from "./pages/OutfitsPage";
 import OutfitCreatorPage from "./pages/OutfitCreatorPage";
 import ProfilePage from "./pages/ProfilePage";
+
 // import LandingPage from "./pages/LandingPage"; 
 // import PrendasPage from "./pages/PrendasPage"; 
 // import AddPrendaPage from "./pages/AddPrendaPage"; 
@@ -24,6 +26,17 @@ export default function App() {
 
   const router = createBrowserRouter([
     {
+      element: <LandingLayout />,
+      children: [
+        // { 
+        //    path: "/", 
+        //   element: isUser ? <Navigate to="/closet" replace /> : <LandingPage /> 
+        // },
+        { path: "/", element: <LandingPage /> },
+      ],
+
+    },
+    {
       // Grupo 1: Layout con Navbar, Página y Footer
       element: <NavbarPageFooterLayout />,
       children: [
@@ -31,7 +44,6 @@ export default function App() {
         //    path: "/", 
         //   element: isUser ? <Navigate to="/closet" replace /> : <LandingPage /> 
         // },
-        { path: "/", element: <LandingPage /> },
         { path: "/login", element: <LoginPage /> },
         { path: "/signup", element: <SignUpPage /> },
       ],

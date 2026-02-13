@@ -3,7 +3,7 @@ import Footer from "../components/common/Footer";
 import Header from "../components/common/Header";
 import { Outlet } from "react-router-dom";
 
-export default function NavbarPageFooterLayout() {
+export default function LandingLayout() {
 
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const toggleLogin = () => {
@@ -15,11 +15,12 @@ export default function NavbarPageFooterLayout() {
             <div className="sticky top-0 z-50">
                 <Header isLoggedIn={isLoggedIn} onToggleLogin={toggleLogin} />
             </div>
+                
             
 
-            <main className="flex-1 container">
+
                 <Outlet />
-            </main>
+
 
             <Footer />
 

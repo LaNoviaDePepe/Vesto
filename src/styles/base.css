@@ -4,8 +4,9 @@
     }
 
     header {
-        @apply flex items-center justify-between px-6 py-4 h-20;
+        @apply flex items-center justify-between px-6 py-4 h-20 ;
     }
+
     h1, h2, h3, h4, h5, h6 {
         @apply font-display;
     }
