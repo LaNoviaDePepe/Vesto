@@ -1,8 +1,14 @@
 import type { ChangeEvent, FocusEvent } from "react";
+
+type FilterOption = {
+    value: string;
+    label: string;
+};
+
 interface SelectProps {
     name: string;
     value: string;
-    options: string[];
+    options: FilterOption[];
     placeholder?: string;
     error?: string;
     disabled?: boolean;
@@ -46,8 +52,8 @@ export default function Select({
                         {placeholder}
                     </option>
                     {options.map((option) => (
-                        <option key={option} value={option} className="text-gray-900">
-                            {option}
+                        <option key={option.value} value={option.value} className="text-gray-900">
+                            {option.label}
                         </option>
                     ))}
                 </select>
