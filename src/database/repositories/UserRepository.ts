@@ -1,5 +1,5 @@
 import type { RegisterData } from "../../interfaces/RegisterData";
-import type { SessionUser } from "../../interfaces/SessionUsers";
+import type { SessionUser } from "../../interfaces/SessionUser";
 
 /**
  * Define las operaciones relacionadas con los usuarios de la aplicación.
@@ -21,4 +21,6 @@ export interface UserRepository {
     login(email: string, password: string): Promise<{ data?: SessionUser; error?: any }>
 
     logout(): Promise<{ error?: any }>;
+
+    //resetPasswordForEmail(email: string): Promise<{ error?: any }>;
 }

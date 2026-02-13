@@ -1,7 +1,7 @@
 import { useState } from 'react';// Ajusta la ruta
 import type { RegisterData } from '../interfaces/RegisterData';
 import { SupabaseUserRepository } from '../database/supabase/SupabaseUserRepository';
-import { useAuthStore } from '../stores/useAuthStore ';
+import { useAuthStore } from '../stores/authStore';
 
 export const useAuth = () => {
     // Instanciamos el repositorio 

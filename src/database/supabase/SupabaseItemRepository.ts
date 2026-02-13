@@ -1,3 +1,4 @@
+import type { ItemRepository } from "../repositories/ItemRepository";
 import { supabase } from "./Client";
 
 // Definimos la interfaz del objeto que vamos a guardar
@@ -10,7 +11,7 @@ export interface PrendaData {
     userId: string; // Necesitamos saber de quién es la prenda
 }
 
-export class SupabaseItemRepository {
+export class SupabaseItemRepository implements ItemRepository {
 
     async createPrenda(data: PrendaData) {
         try {

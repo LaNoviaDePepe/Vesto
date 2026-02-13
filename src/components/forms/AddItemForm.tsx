@@ -4,7 +4,8 @@ import Button from "../common/Button";
 import Input from "../common/Input";
 import Select from "../common/Select";
 import { SupabaseItemRepository } from "../../database/supabase/SupabaseItemRepository";
-import { useAuthStore } from "../../stores/useAuthStore ";
+import { useAuthStore } from "../../stores/authStore";
+import * as CONSTANTES from '../../utils/constants';
 
 interface AddItemFormProps {
     nombre: string;
@@ -21,10 +22,6 @@ interface ErrorsProps {
     temporada: string;
     imagen: string;
 }
-
-const PRENDA_OPTIONS = ["cabeza", "partearriba", "parteabajo", "complemento", "calzado"];
-const COLOR_OPTIONS = ["negro", "blanco", "gris", "rojo", "azul", "amarillo", "verde", "naranja", "morado", "rosa", "marron", "celeste", "turquesa", "violeta", "beige", "dorado", "plateado", "cian", "magenta"];
-const TEMPORADA_OPTIONS = ["otoño", "invierno", "primavera", "verano"];
 
 export default function AddItemForm() {
 
@@ -152,7 +149,7 @@ export default function AddItemForm() {
                         <Select
                             name="tipoPrenda"
                             value={formData.tipoPrenda}
-                            options={PRENDA_OPTIONS}
+                            options={CONSTANTES.CATEGORIA_PRENDA}
                             onChange={handleChange}
                             onBlur={handleBlur}
                             error={errors.tipoPrenda}
@@ -165,7 +162,7 @@ export default function AddItemForm() {
                         <Select
                             name="color"
                             value={formData.color}
-                            options={COLOR_OPTIONS}
+                            options={CONSTANTES.COLOR_PRENDA}
                             onChange={handleChange}
                             onBlur={handleBlur}
                             error={errors.color}
@@ -178,7 +175,7 @@ export default function AddItemForm() {
                         <Select
                             name="temporada"
                             value={formData.temporada}
-                            options={TEMPORADA_OPTIONS}
+                            options={CONSTANTES.TEMPORADA_PRENDA}
                             onChange={handleChange}
                             onBlur={handleBlur}
                             error={errors.temporada}

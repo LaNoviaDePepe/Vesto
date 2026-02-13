@@ -1,22 +1,14 @@
+import { useAuthStore } from "../../stores/authStore";
 import GuestHeader from "./GuestHeader";
 import UserHeader from "./UserHeader";
 
-interface HeaderProps {
-    isLoggedIn: boolean;
-    onToggleLogin: () => void;
-}
 
-export default function Header({ isLoggedIn, onToggleLogin }: HeaderProps) {
+export default function Header() {
+
+    const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
     return (
         <>
-            {isLoggedIn ? <UserHeader /> : <GuestHeader />}
-
-            <button 
-                onClick={onToggleLogin}
-                className="bottom-5 right-5 px-4 py-2 bg-black text-white text-xs rounded-full opacity-50 hover:opacity-100 transition-opacity shadow-2xl border border-white/20"
-            >
-                Simular: {isLoggedIn ? 'LOGOUT 🚪' : 'LOGIN 🔑'}
-            </button>
+            {isAuthenticated ? <UserHeader /> : <GuestHeader />}
         </>
     );
 }

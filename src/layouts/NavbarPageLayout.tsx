@@ -5,9 +5,7 @@ export default function NavbarPageLayout() {
     return (
         <div className="min-h-screen flex flex-col">
 
-            <Header isLoggedIn={false} onToggleLogin={function (): void {
-                throw new Error("Function not implemented.");
-            } } />
+            <Header />
 
             <main className="flex-1 bg-auxiliary-50">
                 <Outlet />
