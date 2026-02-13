@@ -89,7 +89,7 @@ export default function OutfitCreatorPage({ userId="4e9535ea-72b9-4dd2-8d96-e185
       
       {/* COLUMNA IZQUIERDA: ARMARIO */}
       <div className="flex-1 flex flex-col overflow-hidden border-r border-gray-100">
-        <Filter />
+        <Filter width={700} />
         <div className="flex-1 overflow-y-auto p-6 bg-gray-50/50">
           <div className="grid grid-cols-2 xl:grid-cols-3 gap-6">
             {mockPrendasBD
@@ -115,7 +115,7 @@ export default function OutfitCreatorPage({ userId="4e9535ea-72b9-4dd2-8d96-e185
       </div>
 
       {/* COLUMNA DERECHA: CREADOR (GRID DE SLOTS) */}
-      <div className="w-full lg:w-[500px] xl:w-[600px] bg-auxiliary-50 flex flex-col p-8 overflow-y-auto">
+      <div className="w-full lg:w-125 xl:w-150 bg-auxiliary-50 flex flex-col p-8 overflow-y-auto">
         
         <div className="flex gap-3 mb-10">
           <input 

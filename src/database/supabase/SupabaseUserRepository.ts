@@ -1,5 +1,5 @@
 import type { RegisterData } from "../../interfaces/RegisterData";
-import type { SessionUser } from "../../interfaces/SessionUsers";
+import type { SessionUser } from "../../interfaces/SessionUser";
 import type { UserRepository } from "../repositories/UserRepository";
 import { supabase } from "./Client";
 
@@ -100,4 +100,8 @@ export class SupabaseUserRepository implements UserRepository {
         }
         return { error };
     }
+
+    // resetPasswordForEmail(email: string): Promise<{ error?: any }>{
+
+    // }
 }
