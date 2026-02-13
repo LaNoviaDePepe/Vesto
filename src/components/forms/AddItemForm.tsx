@@ -4,7 +4,7 @@ import Button from "../common/Button";
 import Input from "../common/Input";
 import Select from "../common/Select";
 import { SupabaseItemRepository } from "../../database/supabase/SupabaseItemRepository";
-import { useAuthStore } from "../../stores/useAuthStore ";
+import { useAuthStore } from "../../stores/authStore ";
 
 interface AddItemFormProps {
     nombre: string;
