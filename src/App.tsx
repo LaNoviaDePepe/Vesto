@@ -1,4 +1,4 @@
-import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 // Layouts
 import NavbarPageFooterLayout from "./layouts/NavbarPageFooterLayout";
@@ -43,7 +43,7 @@ export default function App() {
         { path: "/closet", element: <ClosetPage /> },
         { path: "/clothing", element: <ClothingPage /> },
         { path: "/outfits", element: <OutfitsPage /> },
-        { path: "/outfitCreator", element: <OutfitCreatorPage /> },
+        { path: "/outfitCreator", element: <OutfitCreatorPage userId={"4e9535ea-72b9-4dd2-8d96-e185da7c0d33"} /> },
         { path: "/profile", element: <ProfilePage /> },
       ],
     },
