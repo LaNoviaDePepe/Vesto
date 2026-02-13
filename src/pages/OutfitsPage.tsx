@@ -13,7 +13,7 @@ export default function OutfitsPage() {
   ];
 
   return (
-    <div className="flex flex-col gap-10 p-10">
+    <div className="flex flex-col gap-10 px-10">
       <Conjunto
         name="Conjunto Casual"
         url="/img/conjunto.png"

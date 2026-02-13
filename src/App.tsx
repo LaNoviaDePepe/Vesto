@@ -20,7 +20,7 @@ import ProtectedRoute from "./router/ProtectedRoute";
 const router = createBrowserRouter([
   {
     // Ruta compartida: LandingPage
-    element: <NavbarPageFooterLayout />,
+    element: <LandingLayout />,
     children: [
       { path: "/", element: <LandingPage /> }
     ],

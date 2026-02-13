@@ -7,7 +7,7 @@ export default function NavbarPageLayout() {
 
             <Header />
 
-            <main className="flex-1 bg-auxiliary-50">
+            <main className="flex-1 bg-auxiliary-50 pt-12">
                 <Outlet />
             </main>
 

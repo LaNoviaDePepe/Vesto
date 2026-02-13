@@ -23,7 +23,7 @@ export default function LandingPage() {
 
     return (
 
-        <main className="w-full bg-auxiliary-50 py-5">
+        <main className="w-full bg-auxiliary-50">
 
             {/* --- SECCIÓN 1: HERO --- */}
             <section className="min-h-screen w-full bg-linear-to-br from-auxiliary-700 to-auxiliary-50 flex items-center justify-center font-sans px-32 py-12">

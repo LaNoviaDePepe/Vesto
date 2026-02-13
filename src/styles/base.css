@@ -1,6 +1,7 @@
 @layer base {
+    
     body {
-        @apply font-normal font-body;
+        @apply font-normal font-body ;
     }
 
     header {

@@ -13,10 +13,7 @@ export default function LandingLayout() {
     return (
         <div className="min-h-screen flex flex-col">
 
-                <Header isLoggedIn={isLoggedIn} onToggleLogin={toggleLogin} />
-
-            
-
+                <Header />
             
                 <Outlet />
 
