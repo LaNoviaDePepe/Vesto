@@ -7,7 +7,6 @@ import Input from "../common/Input";
 interface UserProfileProps {
     nombreApellidos: string;
     email: string;
-    usuario: string;
     password: string;
     newPassword: string;
     avatar: File | null;
@@ -17,7 +16,6 @@ interface UserProfileProps {
 interface ErrorsProps {
     nombreApellidos: string;
     email: string;
-    usuario: string;
     password: string;
     newPassword: string;
     avatar: string;
@@ -28,7 +26,6 @@ export default function ProfileForm() {
     const [formData, setFormData] = useState<UserProfileProps>({
         nombreApellidos: "Pepito Pérez",
         email: "miemail123@vesto.com",
-        usuario: "",
         password: "",
         newPassword: "",
         avatar: null
@@ -38,7 +35,6 @@ export default function ProfileForm() {
     const [errors, setErrors] = useState<ErrorsProps>({
         nombreApellidos: "",
         email: "",
-        usuario: "",
         password: "",
         newPassword: "",
         avatar: ""
@@ -87,7 +83,6 @@ export default function ProfileForm() {
         const newErrors = {
             nombreApellidos: validateVestoField("nombreApellidos", formData.nombreApellidos),
             email: validateVestoField("email", formData.email),
-            usuario: validateVestoField("usuario", formData.usuario),
             // Asumimos que la contraseña actual es obligatoria para guardar cambios sensibles
             password: formData.password ? validateVestoField("password", formData.password) : "La contraseña es requerida para guardar",
             newPassword: "", // Opcional
@@ -132,18 +127,6 @@ export default function ProfileForm() {
                         onChange={handleChange}
                         onBlur={handleBlur}
                         error={errors.email}
-                    />
-
-                    <Input
-                        label="Nombre de usuario"
-                        name="usuario"
-                        type="text"
-                        value={formData.usuario}
-                        placeholder="Text input"
-                        autoComplete="username"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        error={errors.usuario}
                     />
 
                     <Input

@@ -7,7 +7,7 @@ export interface PrendaProps {
 
 export default function Prenda({ name, url, color, temporada }: PrendaProps) {
     return (
-        <div className="w-59.5 h-90.5 p-1.75 m-2.5 rounded-[10px] bg-white flex flex-col items-center">
+        <div className="w-59.5 h-70 p-1.75 m-2.5 rounded-[10px] bg-white flex flex-col items-center">
             <img
                 src={url}
                 alt={name}

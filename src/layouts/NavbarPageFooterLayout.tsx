@@ -17,7 +17,9 @@ export default function NavbarPageFooterLayout() {
             </div>
             
 
-            <main className="flex-1 container">
+            <Header isLoggedIn={isLoggedIn} onToggleLogin={toggleLogin} />
+
+            <main className="flex-1 bg-auxiliary-50">
                 <Outlet />
             </main>
 

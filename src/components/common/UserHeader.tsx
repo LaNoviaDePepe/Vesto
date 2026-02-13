@@ -11,7 +11,7 @@ export default function UserHeader() {
     ];
 
     return (
-        <header className="bg-primary-700">
+        <header className="bg-primary-700 fixed top-0 w-full z-50">
 
             <div className="logo">
                 <Link to="/">

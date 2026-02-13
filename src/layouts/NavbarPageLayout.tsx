@@ -9,7 +9,7 @@ export default function NavbarPageFooterLayout() {
                 throw new Error("Function not implemented.");
             } } />
 
-            <main className="flex-1 container">
+            <main className="flex-1 bg-auxiliary-50">
                 <Outlet />
             </main>
 

@@ -13,7 +13,7 @@ export default function OutfitsPage() {
   ];
 
   return (
-    <>
+    <div className="flex flex-col gap-10 p-10">
       <Conjunto
         name="Conjunto Casual"
         url="/img/conjunto.png"
@@ -32,7 +32,7 @@ export default function OutfitsPage() {
         descripcion="Este conjunto combina prendas casuales perfectas para cualquier temporada. Incluye camiseta, pantalón, chaqueta y accesorios."
         prendas={prendas}
       />
-    </>
+    </div>
 
   )
 }
