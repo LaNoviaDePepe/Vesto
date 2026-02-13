@@ -12,7 +12,7 @@ export default function GuestHeader() {
     ];
 
     return (
-        <header className="bg-auxiliary-700">
+        <header className="bg-auxiliary-700 fixed top-0 w-full z-50">
             <div className="logo">
                 <Link to="/">
                     <img src="/img/black-logo.png" alt="Logo de Vesto" className="h-15 w-auto" />

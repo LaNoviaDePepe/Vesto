@@ -8,9 +8,9 @@ interface ConjuntoProps {
     prendas: PrendaProps[];
 }
 
-export default function PrendasLayout({ name, url, descripcion, prendas }: ConjuntoProps) {
+export default function Conjunto({ name, url, descripcion, prendas }: ConjuntoProps) {
     return (
-        <div className="flex flex-col md:flex-row w-full gap-6 bg-primary-50 p-10">
+        <div className="flex flex-col md:flex-row w-full gap-6 bg-primary-50 p-10 rounded-3xl">
             <div className="w-full md:w-1/3 bg-white p-4 rounded-[10px] self-start">
                 <img
                     src={url}

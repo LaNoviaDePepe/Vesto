@@ -1,8 +1,13 @@
 import { useState } from "react";
 
+
+type FilterOption = {
+    value: string;
+    label: string;
+};
 interface FilterProps {
     name: string;
-    options: string[];
+    options: FilterOption[];
     placeholder: string;
     disabled?: boolean;
 }
@@ -37,8 +42,8 @@ export default function Filter({ name, options, placeholder, disabled }: FilterP
                 </option>
 
                 {options.map((option) => (
-                    <option key={option} value={option} className="bg-primary-50 text-black">
-                        {option}
+                    <option key={option.value} value={option.value} className="bg-primary-50 text-black">
+                        {option.label}
                     </option>
                 ))}
 

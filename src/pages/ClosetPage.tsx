@@ -5,7 +5,7 @@ import PrendasLayout from "../layouts/PrendasLayout";
 export default function ClosetPage() {
   return (
     <>
-      <Filter />
+      <Filter width={100}/>
       <PrendasLayout
         prendas={[
           { name: "Camiseta blanca", url: "/img/prenda.jpg", color: "blanco", temporada: "verano" },

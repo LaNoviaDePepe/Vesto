@@ -1,11 +1,17 @@
 import FilterSelect from "./FilterSelect";
+import * as CONSTANTES from '../../utils/constants';
 
-export default function Filter() {
+interface FilterProps {
+    width: number;
+}
+
+export default function Filter({ width }: FilterProps) {
     return (
-        <div className="w-full bg-primary-50 flex justify-evenly items-center py-4">
-            <FilterSelect name="filtro" placeholder="Elige un tipo" options={["gorro", "camiseta", "pantalón", "complemento", "calzado"]} />
-            <FilterSelect name="filtro" placeholder="Elige un color" options={["negro", "blanco", "rojo", "azul", "verde", "marrón", "amarillo", "gris", "morado"]} />
-            <FilterSelect name="filtro" placeholder="Elige una temporada" options={["primavera", "verano", "otoño", "invierno"]} />
+        <div className=" bg-primary-50 flex justify-evenly items-center py-4 fixed top-0 z-50 mt-20"
+            style={{ width: `${width}%` }}>
+            <FilterSelect name="categoria" placeholder="Elige una categoría" options={CONSTANTES.CATEGORIA_PRENDA} />
+            <FilterSelect name="temporada" placeholder="Elige una temporada" options={CONSTANTES.TEMPORADA_PRENDA} />
+            <FilterSelect name="color" placeholder="Elige un color" options={CONSTANTES.COLOR_PRENDA} />
         </div>
     )
 }
