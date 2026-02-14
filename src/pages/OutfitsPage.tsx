@@ -1,38 +1,47 @@
+import { useEffect, useState } from "react";
 import Conjunto from "../components/clothing/Conjunto";
-import type { PrendaProps } from "../components/clothing/Prenda";
-
+import { SupabaseOutfitRepository } from "../database/supabase/SupabaseOutfitRepository";
+import { useAuthStore } from "../stores/authStore";
 
 export default function OutfitsPage() {
 
-  const prendas: PrendaProps[] = [
-    { name: "Camiseta blanca", url: "/img/prenda.jpg", color: "blanco", temporada: "verano" },
-    { name: "Pantalón negro", url: "/img/prenda.jpg", color: "negro", temporada: "invierno" },
-    { name: "Camiseta blanca", url: "error", color: "blanco", temporada: "verano" }, // intentionally "error" for testing
-    { name: "Chaqueta roja", url: "/img/prenda.jpg", color: "rojo", temporada: "otoño" },
-    { name: "Sombrero azul", url: "/img/prenda.jpg", color: "azul", temporada: "primavera" },
-  ];
+  const [conjuntos, setConjuntos] = useState<any[]>([]);
+  const outfitRepository = new SupabaseOutfitRepository();
+  const { sessionUser } = useAuthStore();
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function load() {
+
+      if (!sessionUser) return;
+
+      const { data, error } = await outfitRepository.getConjuntos(sessionUser.user.id);
+
+      if (error) {
+        console.error(error);
+      } else {
+        setConjuntos(data);
+      }
+
+      setLoading(false);
+    }
+
+    load();
+  }, []);
+
+  if (loading) return <div>Loading outfits...</div>;
 
   return (
     <div className="flex flex-col gap-10 px-10">
-      <Conjunto
-        name="Conjunto Casual"
-        url="/img/conjunto.png"
-        descripcion="Este conjunto combina prendas casuales perfectas para cualquier temporada. Incluye camiseta, pantalón, chaqueta y accesorios."
-        prendas={prendas}
-      />
-      <Conjunto
-        name="Conjunto Normal"
-        url="/img/conjunto.png"
-        descripcion="Este conjunto combina prendas casuales perfectas para cualquier temporada. Incluye camiseta, pantalón, chaqueta y accesorios."
-        prendas={prendas}
-      />
-      <Conjunto
-        name="Conjunto Sexy"
-        url="/img/conjunto.png"
-        descripcion="Este conjunto combina prendas casuales perfectas para cualquier temporada. Incluye camiseta, pantalón, chaqueta y accesorios."
-        prendas={prendas}
-      />
+      {conjuntos.map(conjunto => (
+        <Conjunto
+          key={conjunto.id}
+          name={conjunto.nombre}
+          descripcion={conjunto.descripcion}
+          prendas={conjunto.prendas}
+          url="/img/conjunto.png"
+        />
+      ))}
     </div>
-
-  )
+  );
 }

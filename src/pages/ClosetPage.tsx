@@ -6,8 +6,8 @@ import { useAuthStore } from "../stores/authStore";
 
 
 export default function ClosetPage() {
+  
   const [prendas, setPrendas] = useState([]);
-
   const itemRepository = new SupabaseItemRepository();
   const { sessionUser } = useAuthStore();
 
@@ -38,28 +38,3 @@ export default function ClosetPage() {
     </>
   );
 }
-
-
-/* ={[
-          { name: "Camiseta blanca", url: "/img/prenda.jpg", color: "blanco", temporada: "verano" },
-          { name: "Pantalón negro", url: "/img/prenda.jpg", color: "negro", temporada: "invierno" },
-          { name: "Camiseta blanca", url: "error", color: "blanco", temporada: "verano" },
-          { name: "Chaqueta roja", url: "/img/prenda.jpg", color: "rojo", temporada: "otoño" },
-          { name: "Sombrero azul", url: "/img/prenda.jpg", color: "azul", temporada: "primavera" },
-          { name: "Pantalón negro", url: "/img/prenda.jpg", color: "negro", temporada: "invierno" },
-          { name: "Chaqueta roja", url: "/img/prenda.jpg", color: "rojo", temporada: "otoño" },
-          { name: "Camiseta blanca", url: "/img/prenda.jpg", color: "blanco", temporada: "verano" },
-          { name: "Pantalón negro", url: "/img/prenda.jpg", color: "negro", temporada: "invierno" },
-          { name: "Camiseta blanca", url: "error", color: "blanco", temporada: "verano" },
-          { name: "Chaqueta roja", url: "/img/prenda.jpg", color: "rojo", temporada: "otoño" },
-          { name: "Sombrero azul", url: "/img/prenda.jpg", color: "azul", temporada: "primavera" },
-          { name: "Pantalón negro", url: "/img/prenda.jpg", color: "negro", temporada: "invierno" },
-          { name: "Chaqueta roja", url: "/img/prenda.jpg", color: "rojo", temporada: "otoño" },
-          { name: "Camiseta blanca", url: "/img/prenda.jpg", color: "blanco", temporada: "verano" },
-          { name: "Pantalón negro", url: "/img/prenda.jpg", color: "negro", temporada: "invierno" },
-          { name: "Camiseta blanca", url: "error", color: "blanco", temporada: "verano" },
-          { name: "Chaqueta roja", url: "/img/prenda.jpg", color: "rojo", temporada: "otoño" },
-          { name: "Sombrero azul", url: "/img/prenda.jpg", color: "azul", temporada: "primavera" },
-          { name: "Pantalón negro", url: "/img/prenda.jpg", color: "negro", temporada: "invierno" },
-          { name: "Chaqueta roja", url: "/img/prenda.jpg", color: "rojo", temporada: "otoño" },
-        ]} */
