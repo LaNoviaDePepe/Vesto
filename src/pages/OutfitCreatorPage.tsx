@@ -90,6 +90,7 @@ export default function OutfitCreatorPage({ userId="4e9535ea-72b9-4dd2-8d96-e185
       
       {/* COLUMNA IZQUIERDA: ARMARIO */}
       <div className="flex-1 flex flex-col overflow-hidden border-r border-gray-100">
+        
         <Filter width={100} />
         <div className="flex-1 overflow-y-auto p-6  bg-gray-50/50">
           <div className="flex flex-wrap gap-6 justify-center">

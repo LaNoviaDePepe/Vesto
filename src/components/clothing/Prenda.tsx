@@ -12,7 +12,7 @@ export default function Prenda({ name, url, color, temporada }: PrendaProps) {
                 src={url}
                 alt={name}
                 title={`${color} - ${temporada}`}
-                className=" rounded-[10px] object-cover"
+                className=" rounded-[10px] object-cover h-60 w-80"
             />
             <span className="mt-1.25 text-center">{name}</span>
         </div>
