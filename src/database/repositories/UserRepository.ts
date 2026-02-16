@@ -42,7 +42,7 @@ export interface UserRepository {
         userId: string,
         data: {
             nombre_apellidos: string;
-            email: string;
+            email?: string;
             currentPassword?: string;
             newPassword?: string;
             avatarUrl?: string

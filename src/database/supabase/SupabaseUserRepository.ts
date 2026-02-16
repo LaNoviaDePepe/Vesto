@@ -25,11 +25,11 @@ export class SupabaseUserRepository implements UserRepository {
 
             // Insertar en tu tabla 'perfiles' 
             const { data: profileData, error: profileError } = await supabase
-                .from('perfiles') 
+                .from('perfiles')
                 .insert({
                     id: authData.user.id, // El ID viene de Auth
                     nombre_apellidos: data.nombre_apellidos,
-                    rol: 'user', 
+                    rol: 'user',
                 })
                 .select()
                 .single();
@@ -111,60 +111,31 @@ export class SupabaseUserRepository implements UserRepository {
      */
     async updateProfile(
         userId: string,
-        data: {
-            nombre_apellidos: string;
-            email: string;
-            currentPassword?: string;
-            newPassword?: string;
-            avatarUrl?: string
-        }
+        data: { nombre_apellidos: string; currentPassword?: string; newPassword?: string; avatarUrl?: string }
     ): Promise<{ data?: any; error?: any }> {
         try {
-            // Obtenemos el usuario ACTUAL de la sesión segura
             const { data: userData, error: userError } = await supabase.auth.getUser();
-
-            if (userError || !userData.user) {
-                return { error: { message: "No se pudo verificar la sesión actual." } };
-            }
+            if (userError || !userData.user) return { error: { message: "Sesión no válida" } };
 
             const currentEmail = userData.user.email;
 
-            // LÓGICA DE SEGURIDAD (Cambio de Contraseña)
+            // SOLO gestionamos Contraseña
             if (data.newPassword) {
-                if (!data.currentPassword) {
-                    return { error: { message: "Debes ingresar tu contraseña actual para cambiarla." } };
-                }
+                if (!data.currentPassword) return { error: { message: "Falta contraseña actual" } };
 
                 const { error: reAuthError } = await supabase.auth.signInWithPassword({
-                    email: currentEmail!, // Usamos el email real de la sesión, ponemos ! para decir que no va a ser null
+                    email: currentEmail!,
                     password: data.currentPassword
                 });
+                if (reAuthError) return { error: { message: "Contraseña actual incorrecta" } };
 
-                if (reAuthError) {
-                    return { error: { message: "La contraseña actual es incorrecta." } };
-                }
-
-                const { error: updatePassError } = await supabase.auth.updateUser({
-                    password: data.newPassword
-                });
-
+                const { error: updatePassError } = await supabase.auth.updateUser({ password: data.newPassword });
                 if (updatePassError) return { error: updatePassError };
             }
 
-            // Actualizar Email (Solo si es diferente al actual)
-            if (data.email && data.email !== currentEmail) {
-                const { error: emailError } = await supabase.auth.updateUser({ email: data.email });
-                if (emailError) return { error: emailError };
-            }
-
-            // Actualizar Datos en Tabla 'perfiles'
-            const updates: any = {
-                nombre_apellidos: data.nombre_apellidos,
-            };
-
-            if (data.avatarUrl !== undefined) {
-                updates.url_avatar = data.avatarUrl;
-            }
+            // Actualizar Tabla 'perfiles'
+            const updates: any = { nombre_apellidos: data.nombre_apellidos };
+            if (data.avatarUrl) updates.url_avatar = data.avatarUrl;
 
             const { data: updatedProfile, error: profileError } = await supabase
                 .from('perfiles')
@@ -174,12 +145,9 @@ export class SupabaseUserRepository implements UserRepository {
                 .single();
 
             if (profileError) return { error: profileError };
-
             return { data: updatedProfile };
 
-        } catch (error) {
-            return { error };
-        }
+        } catch (error) { return { error }; }
     }
 
     /**

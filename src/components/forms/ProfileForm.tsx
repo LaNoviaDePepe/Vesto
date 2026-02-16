@@ -7,6 +7,7 @@ import { useAuthStore } from "../../stores/authStore";
 import { useNavigate } from "react-router-dom";
 import { SupabaseUserRepository } from "../../database/supabase/SupabaseUserRepository";
 
+const userRepository = new SupabaseUserRepository();
 interface UserProfileProps {
     nombreApellidos: string;
     email: string;
@@ -37,7 +38,6 @@ export default function ProfileForm() {
 
     const state = useAuthStore();
     // Instancia correcta del repositorio
-    const userRepository = new SupabaseUserRepository();
     const navigate = useNavigate();
 
     const [formData, setFormData] = useState<UserProfileProps>({
@@ -130,68 +130,51 @@ export default function ProfileForm() {
     const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        // VALIDACIONES
+        // Limpieza (Solo nombre, email ya no se toca)
+        const cleanNombre = formData.nombreApellidos.trim();
+
+        // Validaciones (Sin validación de email)
         const newErrors = {
-            nombreApellidos: validateVestoField("nombreApellidos", formData.nombreApellidos),
-            email: validateVestoField("email", formData.email),
-            // Validamos currentPassword solo si hay newPassword
-            currentPassword: (formData.newPassword && !formData.currentPassword) ? "Debes ingresar tu contraseña actual" : "",
+            nombreApellidos: validateVestoField("nombreApellidos", cleanNombre),
+            currentPassword: (formData.newPassword && !formData.currentPassword) ? "Requerida" : "",
             newPassword: formData.newPassword ? validateVestoField("password", formData.newPassword) : "",
+            email: "", 
             avatar: ""
         };
 
         setErrors(newErrors);
-        if (Object.values(newErrors).some((err) => err !== "")) {
-            toast.error("Por favor, revisa los errores");
-            return;
-        }
+        if (Object.values(newErrors).some(err => err !== "")) return;
 
         setLoading(true);
         const userId = state.sessionUser?.user.id;
 
-        if (!userId) {
-            toast.error("Sesión no válida");
-            setLoading(false);
-            return;
-        }
-
         try {
             let avatarUrl = undefined;
-
             if (formData.avatar) {
-                const uploadRes = await userRepository.updateAvatar(userId, formData.avatar);
-                if (uploadRes.error) throw new Error("Error imagen: " + uploadRes.error.message);
+                const uploadRes = await userRepository.updateAvatar(userId!, formData.avatar);
                 avatarUrl = uploadRes.data;
             }
 
-            // ENVIAMOS DATOS AL REPO
+            // ENVIAMOS DATOS 
             const updateData = {
-                nombre_apellidos: formData.nombreApellidos,
-                email: formData.email,
-                currentPassword: formData.currentPassword || undefined, // Enviamos la actual
-                newPassword: formData.newPassword || undefined,         // Enviamos la nueva
+                nombre_apellidos: cleanNombre,
+                currentPassword: formData.currentPassword || undefined,
+                newPassword: formData.newPassword || undefined,
                 avatarUrl: avatarUrl
             };
 
-            const profileRes = await userRepository.updateProfile(userId, updateData);
-
+            const profileRes = await userRepository.updateProfile(userId!, updateData);
             if (profileRes.error) throw new Error(profileRes.error.message);
 
-            // ACTUALIZAR STORE
+            // Actualizar Store (Solo perfil, el email no ha cambiado)
             if (state.updateSessionProfile) {
                 state.updateSessionProfile(profileRes.data);
             }
-            if (state.updateSessionUser && formData.email !== state.sessionUser?.user.email) {
-                state.updateSessionUser({ email: formData.email });
-                toast("Verifica tu correo si has cambiado el email.", { icon: '📧' });
-            }
 
-            toast.success("Perfil actualizado correctamente ✅");
-            // Limpiamos campos de contraseña
+            toast.success("Perfil actualizado ✅");
             setFormData(prev => ({ ...prev, currentPassword: "", newPassword: "" }));
 
         } catch (error: any) {
-            console.error(error);
             toast.error(error.message || "Error al guardar");
         } finally {
             setLoading(false);
@@ -219,9 +202,7 @@ export default function ProfileForm() {
                         name="email"
                         type="email"
                         value={formData.email}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        error={errors.email}
+                        disabled={true}
                     />
 
                     {/* SECCIÓN DE SEGURIDAD VISUALMENTE SEPARADA */}
