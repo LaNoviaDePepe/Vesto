@@ -3,6 +3,7 @@ import Filter from "../components/filter/Filter";
 import Prenda from "../components/clothing/Prenda";
 import Button from "../components/common/Button";
 import { SupabaseOutfitRepository } from "../database/supabase/SupabaseOutfitRepository";
+import { ChevronsUp, CircleChevronUp } from "lucide-react";
 
 type CategoriaPrenda = "cabeza" | "parte_arriba" | "parte_abajo" | "complemento" | "calzado";
 type ColorPrenda = "negro" | "blanco" | "gris" | "rojo" | "azul" | "amarillo" | "verde" | "naranja" | "morado" | "rosa" | "marron" | "celeste" | "turquesa" | "beige" | "dorado" | "plateado";
@@ -10,7 +11,7 @@ type TemporadaPrenda = "otonio" | "invierno" | "primavera" | "verano" | "todo";
 
 interface PrendaBD {
   id: number;
-  id_usuario: string; 
+  id_usuario: string;
   nombre: string;
   categoria: CategoriaPrenda;
   color: ColorPrenda;
@@ -25,7 +26,7 @@ interface OutfitCreatorPageProps {
 
 const outfitRepo = new SupabaseOutfitRepository();
 
-export default function OutfitCreatorPage({ userId="4e9535ea-72b9-4dd2-8d96-e185da7c0d33" }: OutfitCreatorPageProps) {
+export default function OutfitCreatorPage({ userId = "4e9535ea-72b9-4dd2-8d96-e185da7c0d33" }: OutfitCreatorPageProps) {
   const [nombreConjunto, setNombreConjunto] = useState("");
   const [loading, setLoading] = useState(false);
   const [outfit, setOutfit] = useState<Record<CategoriaPrenda, PrendaBD | null>>({
@@ -61,8 +62,8 @@ export default function OutfitCreatorPage({ userId="4e9535ea-72b9-4dd2-8d96-e185
     // 2. Llamada al repositorio
     const { error } = await outfitRepo.createConjunto({
       nombre: nombreConjunto,
-      id_usuario: userId, 
-      prendasIds: prendasSeleccionadas.map(p => p.id), 
+      id_usuario: userId,
+      prendasIds: prendasSeleccionadas.map(p => p.id),
       favorito: false
     });
 
@@ -84,15 +85,25 @@ export default function OutfitCreatorPage({ userId="4e9535ea-72b9-4dd2-8d96-e185
     }
   };
 
+  // Controla la función de subida en el div de prendas
+  const scrollToTopArmario = () => {
+    const element = document.getElementById("closet-container");
+    element?.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  };
+
   return (
-    
+
     <div className="flex flex-col lg:flex-row h-[calc(100vh-80px)] overflow-hidden bg-primary-300 ">
-      
+
       {/* COLUMNA IZQUIERDA: ARMARIO */}
-      <div className="flex-1 flex flex-col overflow-hidden border-r border-gray-100">
-        
+      {/* Este div queda en posición 'relative' para colocar el botón de volver arriba respecto al conjunto de prendas. */}
+      <div className="relative flex-1 flex flex-col overflow-hidden border-r border-gray-100">
+
         <Filter width={100} />
-        <div className="flex-1 overflow-y-auto p-6  bg-gray-50/50">
+        <div className="flex-1 overflow-y-auto p-6  bg-gray-50/50" id="closet-container">
           <div className="flex flex-wrap gap-6 justify-center">
             {mockPrendasBD
               .filter(p => p.id_usuario === userId)
@@ -100,27 +111,36 @@ export default function OutfitCreatorPage({ userId="4e9535ea-72b9-4dd2-8d96-e185
                 <div
                   key={prenda.id}
                   onClick={() => handleSelectPrenda(prenda)}
-                  className={`cursor-pointer transition-all duration-200 ${
-                    outfit[prenda.categoria]?.id === prenda.id ? 'ring-4 ring-primary-700 rounded-xl shadow-lg' : 'hover:opacity-80'
-                  }`}
+                  className={`cursor-pointer transition-all duration-200 ${outfit[prenda.categoria]?.id === prenda.id ? 'ring-4 ring-primary-700 rounded-xl shadow-lg' : 'hover:opacity-80'
+                    }`}
                 >
-                  <Prenda 
-                    name={prenda.nombre} 
-                    url={prenda.url_imagen} 
-                    color={prenda.color} 
-                    temporada={prenda.temporada} 
+                  <Prenda
+                    name={prenda.nombre}
+                    url={prenda.url_imagen}
+                    color={prenda.color}
+                    temporada={prenda.temporada}
                   />
                 </div>
               ))}
           </div>
+          <div className="absolute bottom-6 right-6 z-20">
+            <Button
+              variant="out"
+              className="border-0 hover:bg-transparent hover:shadow-none"
+              onClick={scrollToTopArmario}
+            >
+              <CircleChevronUp size={28} strokeWidth={2.25} className="text-white bg-auxiliary-700 rounded-full hover:bg-primary-700"/>
+            </Button>
+          </div>
+
         </div>
       </div>
 
       {/* COLUMNA DERECHA: CREADOR (GRID DE SLOTS) */}
       <div className="w-full lg:w-125 xl:w-150 bg-auxiliary-50 flex flex-col p-8 h-svh ">
-        
+
         <div className="flex gap-3 mb-10">
-          <input 
+          <input
             type="text"
             placeholder="Nombre del conjunto"
             className="flex-1 px-4 py-3 rounded-xl border-2 border-primary-100 bg-white shadow-sm"
@@ -157,9 +177,8 @@ function OutfitSlot({ label, item }: { label: string; item: PrendaBD | null }) {
   return (
     <div className="flex flex-col items-center gap-2">
       <span className="text-[10px] font-bold text-primary-700 uppercase">{label}</span>
-      <div className={`w-28 h-36 bg-white border-2 rounded-2xl flex items-center justify-center p-2 shadow-sm transition-all ${
-        item ? 'border-primary-700 shadow-md' : 'border-dashed border-gray-300'
-      }`}>
+      <div className={`w-28 h-36 bg-white border-2 rounded-2xl flex items-center justify-center p-2 shadow-sm transition-all ${item ? 'border-primary-700 shadow-md' : 'border-dashed border-gray-300'
+        }`}>
         <div className="w-full h-full bg-gray-50 rounded-lg overflow-hidden flex items-center justify-center border border-gray-100">
           {item ? (
             <img src={item.url_imagen} alt={item.nombre} className="w-full h-full object-cover" />
