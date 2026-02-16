@@ -20,8 +20,40 @@ export interface UserRepository {
      */
     login(email: string, password: string): Promise<{ data?: SessionUser; error?: any }>
 
+    /**
+     * Cierra la sesión activa del usuario actual.
+     * * @returns Una promesa que indica si hubo algún error durante el cierre de sesión.
+     */
     logout(): Promise<{ error?: any }>;
 
-    updateProfile(userId: string, data: any): Promise<{ data?: any; error?: any }>;
+    /**
+     * Actualiza la información del perfil y/o las credenciales de seguridad del usuario.
+     * * Este método maneja tanto datos públicos (nombre, avatar) como privados (email, password).
+     * * @param userId - El identificador único (UUID) del usuario a actualizar.
+     * @param data - Objeto con los campos a modificar.
+     * @param data.nombre_apellidos - Nuevo nombre para mostrar.
+     * @param data.email - Nuevo correo electrónico (puede requerir confirmación).
+     * @param data.currentPassword - (Requerido para seguridad) La contraseña actual. Obligatoria si se intenta cambiar la contraseña (`newPassword`).
+     * @param data.newPassword - (Opcional) La nueva contraseña que se desea establecer.
+     * @param data.avatarUrl - (Opcional) La URL pública de la nueva imagen de perfil ya subida.
+     * * @returns Una promesa con los datos del perfil actualizado o un error si la validación falla (ej. password actual incorrecta).
+     */
+    updateProfile(
+        userId: string,
+        data: {
+            nombre_apellidos: string;
+            email: string;
+            currentPassword?: string;
+            newPassword?: string;
+            avatarUrl?: string
+        }
+    ): Promise<{ data?: any; error?: any }>;
+
+    /**
+     * Sube un archivo de imagen al almacenamiento y devuelve su URL pública.
+     * * @param userId - El ID del usuario, utilizado para generar una ruta única de archivo.
+     * @param file - El archivo de imagen (File) proveniente de un input HTML.
+     * @returns Una promesa con la URL pública de la imagen subida o un error de almacenamiento.
+     */
     updateAvatar(userId: string, file: File): Promise<{ data?: string; error?: any }>;
 }

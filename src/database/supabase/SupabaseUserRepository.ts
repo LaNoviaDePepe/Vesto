@@ -8,11 +8,11 @@ export class SupabaseUserRepository implements UserRepository {
     // Implementación de crear usuario (Registro)
     async createUser(data: RegisterData): Promise<{ data?: SessionUser; error?: any }> {
         try {
-            // 1. Crear el usuario en Supabase Auth (Esto no cambia)
+            // Crear el usuario en Supabase Auth (Esto no cambia)
             const { data: authData, error: authError } = await supabase.auth.signUp({
                 email: data.email,
                 password: data.password,
-                // Opcional: guardar metadatos en auth
+                // Guardar metadatos en auth
                 options: {
                     data: {
                         nombre_apellidos: data.nombre_apellidos // Guardamos también aquí por si acaso
@@ -23,21 +23,19 @@ export class SupabaseUserRepository implements UserRepository {
             if (authError) return { error: authError };
             if (!authData.user) return { error: { message: "No se creó el usuario en Auth" } };
 
-            // 2. Insertar en tu tabla 'perfiles' (AQUÍ ESTÁ EL CAMBIO)
-            // La imagen muestra la tabla 'perfiles' y la columna 'nombre_apellidos'
+            // Insertar en tu tabla 'perfiles' 
             const { data: profileData, error: profileError } = await supabase
-                .from('perfiles') // <--- Cambio: Nombre exacto de tu tabla en la foto
+                .from('perfiles') 
                 .insert({
                     id: authData.user.id, // El ID viene de Auth
                     nombre_apellidos: data.nombre_apellidos,
-                    rol: 'user', // Asegúrate que coincida con tu tipo ENUM 'rol_usuario'
-                    // fecha_alta se pone sola si tienes default now() en la BBDD
+                    rol: 'user', 
                 })
                 .select()
                 .single();
 
             if (profileError) {
-                // Si falla la creación del perfil, es buena práctica borrar el usuario de Auth
+                // Si falla la creación del perfil, borramos el usuario de Auth
                 // para no dejar datos corruptos, o al menos loguearlo.
                 console.error("Error creando perfil:", profileError);
                 return { error: profileError };
@@ -58,7 +56,7 @@ export class SupabaseUserRepository implements UserRepository {
     // Implementación de Login
     async login(email: string, password: string): Promise<{ data?: SessionUser; error?: any }> {
         try {
-            // 1. Login en Auth
+            // Login en Auth
             const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
                 email,
                 password,
@@ -67,7 +65,7 @@ export class SupabaseUserRepository implements UserRepository {
             if (authError) return { error: authError };
             if (!authData.user) return { error: { message: "Usuario no encontrado" } };
 
-            // 2. Obtener perfil asociado
+            // Obtener perfil asociado
             const { data: profile, error: profileError } = await supabase
                 .from('perfiles')
                 .select('*')
@@ -79,7 +77,7 @@ export class SupabaseUserRepository implements UserRepository {
                 return { error: profileError };
             }
 
-            // 3. Construir respuesta
+            // Construir respuesta
             const sessionUser: SessionUser = {
                 user: authData.user,
                 profile: profile
@@ -102,31 +100,70 @@ export class SupabaseUserRepository implements UserRepository {
     }
 
     /**
-         * Actualiza la contraseña (Auth) y los datos del perfil (Tabla 'perfiles')
-         */
-    async updateProfile(userId: string, data: { nombre: string; email: string; password?: string; avatarUrl?: string }): Promise<{ data?: any; error?: any }> {
+     * Actualiza el perfil del usuario y sus credenciales de autenticación.
+     * * @param userId - El UUID del usuario a actualizar.
+     * @param data - Objeto con los datos a modificar.
+     * @param data.nombre_apellidos - Nuevo nombre para la tabla 'perfiles'.
+     * @param data.email - Nuevo email (Cuidado: Supabase enviará un correo de confirmación al nuevo email).
+     * @param data.password - (Opcional) Nueva contraseña. Si no se envía, no se cambia.
+     * @param data.avatarUrl - (Opcional) URL pública de la nueva imagen de perfil.
+     * * @returns Un objeto con `data` (el perfil actualizado) o `error`.
+     */
+    async updateProfile(
+        userId: string,
+        data: {
+            nombre_apellidos: string;
+            email: string;
+            currentPassword?: string;
+            newPassword?: string;
+            avatarUrl?: string
+        }
+    ): Promise<{ data?: any; error?: any }> {
         try {
-            // Si viene password, actualizamos en Supabase Auth
-            if (data.password) {
-                const { error: authError } = await supabase.auth.updateUser({ password: data.password });
-                if (authError) return { error: authError };
+            // Obtenemos el usuario ACTUAL de la sesión segura
+            const { data: userData, error: userError } = await supabase.auth.getUser();
+
+            if (userError || !userData.user) {
+                return { error: { message: "No se pudo verificar la sesión actual." } };
             }
 
-            // Mapeo exacto a tus columnas de la tabla 'perfiles'
+            const currentEmail = userData.user.email;
+
+            // LÓGICA DE SEGURIDAD (Cambio de Contraseña)
+            if (data.newPassword) {
+                if (!data.currentPassword) {
+                    return { error: { message: "Debes ingresar tu contraseña actual para cambiarla." } };
+                }
+
+                const { error: reAuthError } = await supabase.auth.signInWithPassword({
+                    email: currentEmail!, // Usamos el email real de la sesión, ponemos ! para decir que no va a ser null
+                    password: data.currentPassword
+                });
+
+                if (reAuthError) {
+                    return { error: { message: "La contraseña actual es incorrecta." } };
+                }
+
+                const { error: updatePassError } = await supabase.auth.updateUser({
+                    password: data.newPassword
+                });
+
+                if (updatePassError) return { error: updatePassError };
+            }
+
+            // Actualizar Email (Solo si es diferente al actual)
+            if (data.email && data.email !== currentEmail) {
+                const { error: emailError } = await supabase.auth.updateUser({ email: data.email });
+                if (emailError) return { error: emailError };
+            }
+
+            // Actualizar Datos en Tabla 'perfiles'
             const updates: any = {
-                nombre_apellidos: data.nombre,
+                nombre_apellidos: data.nombre_apellidos,
             };
 
-            // SOLO si existe avatar nuevo
             if (data.avatarUrl !== undefined) {
                 updates.url_avatar = data.avatarUrl;
-            }
-
-            if (data.email) {
-                const { error: emailError } = await supabase.auth.updateUser({
-                    email: data.email
-                });
-                if (emailError) return { error: emailError };
             }
 
             const { data: updatedProfile, error: profileError } = await supabase
@@ -146,25 +183,28 @@ export class SupabaseUserRepository implements UserRepository {
     }
 
     /**
-     * Sube la imagen al Storage y devuelve la URL pública
+     * Sube una imagen al bucket 'avatars' de Supabase y retorna su URL pública.
+     * * @param userId - El ID del usuario (usado para nombrar el archivo y evitar colisiones).
+     * @param file - El objeto File proveniente del input HTML.
+     * * @returns La URL pública de la imagen o un error.
      */
     async updateAvatar(userId: string, file: File): Promise<{ data?: string; error?: any }> {
         try {
-            // Generar nombre único para evitar caché
+            // Generamos un nombre único usando timestamp para evitar problemas de caché del navegador
             const fileExt = file.name.split('.').pop();
             const fileName = `${userId}-${Date.now()}.${fileExt}`;
             const filePath = `avatars/${fileName}`;
 
-            // Subir archivo al bucket 'avatars' (DEBES CREARLO EN SUPABASE STORAGE)
+            // Subida al Storage
             const { error: uploadError } = await supabase.storage
                 .from('avatars')
                 .upload(filePath, file, {
-                    upsert: true // Sobrescribir si existe
+                    upsert: true
                 });
 
             if (uploadError) return { error: uploadError };
 
-            // Obtener URL pública
+            // Obtención de URL Pública
             const { data } = supabase.storage
                 .from('avatars')
                 .getPublicUrl(filePath);
