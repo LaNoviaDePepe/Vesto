@@ -42,7 +42,7 @@ export default function Footer({ isUser = false }: FooterProps) {
             </div>
 
             {/* Alineación a la derecha para "Download" */}
-            <div className="flex flex-col items-center md:items-end gap-5 md:ml-auto">
+            <div className="flex flex-col items-center md:items-end gap-5 md:ml-auto pr-4">
                 <span className="text-sm font-bold tracking-wide">Download</span>
 
                 <div className="flex items-center gap-6">
@@ -60,16 +60,6 @@ export default function Footer({ isUser = false }: FooterProps) {
                             <path d="M325.3 234.3L104.6 13l280.8 161.2-60.1 60.1zM47 0C34 6.8 25.3 19.2 25.3 35.3v441.3c0 16.1 8.7 28.5 21.7 35.3l256.6-256L47 0zm425.2 225.6l-58.9-34.1-65.7 64.5 65.7 64.5 60.1-34.1c18-14.3 18-46.5-1.2-60.8zM104.6 499l220.7-221.3-60.1-60.1L69.6 462.9l-22.6 36.1H104.6z" />
                         </svg>
                     </a>
-
-                    <button
-                        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-                        className="ml-4"
-                        aria-label="Volver arriba"
-                    >
-                        <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M5 11l7-7 7 7M5 19l7-7 7 7" />
-                        </svg>
-                    </button>
                 </div>
             </div>
         </footer>
