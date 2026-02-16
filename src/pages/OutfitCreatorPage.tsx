@@ -3,7 +3,8 @@ import Filter from "../components/filter/Filter";
 import Prenda from "../components/clothing/Prenda";
 import Button from "../components/common/Button";
 import { SupabaseOutfitRepository } from "../database/supabase/SupabaseOutfitRepository";
-import { ChevronsUp, CircleChevronUp } from "lucide-react";
+import { CircleChevronUp } from "lucide-react";
+import Input from "../components/common/Input";
 
 type CategoriaPrenda = "cabeza" | "parte_arriba" | "parte_abajo" | "complemento" | "calzado";
 type ColorPrenda = "negro" | "blanco" | "gris" | "rojo" | "azul" | "amarillo" | "verde" | "naranja" | "morado" | "rosa" | "marron" | "celeste" | "turquesa" | "beige" | "dorado" | "plateado";
@@ -28,6 +29,7 @@ const outfitRepo = new SupabaseOutfitRepository();
 
 export default function OutfitCreatorPage({ userId = "4e9535ea-72b9-4dd2-8d96-e185da7c0d33" }: OutfitCreatorPageProps) {
   const [nombreConjunto, setNombreConjunto] = useState("");
+  const [descripcion, setDescripcion] = useState("");
   const [loading, setLoading] = useState(false);
   const [outfit, setOutfit] = useState<Record<CategoriaPrenda, PrendaBD | null>>({
     cabeza: null,
@@ -62,6 +64,7 @@ export default function OutfitCreatorPage({ userId = "4e9535ea-72b9-4dd2-8d96-e1
     // 2. Llamada al repositorio
     const { error } = await outfitRepo.createConjunto({
       nombre: nombreConjunto,
+      descripcion: descripcion,
       id_usuario: userId,
       prendasIds: prendasSeleccionadas.map(p => p.id),
       favorito: false
@@ -75,6 +78,7 @@ export default function OutfitCreatorPage({ userId = "4e9535ea-72b9-4dd2-8d96-e1
       alert(`¡Conjunto '${nombreConjunto}' guardado con éxito!`);
 
       setNombreConjunto("");
+      setDescripcion("");
       setOutfit({
         cabeza: null,
         parte_arriba: null,
@@ -129,7 +133,7 @@ export default function OutfitCreatorPage({ userId = "4e9535ea-72b9-4dd2-8d96-e1
               className="border-0 hover:bg-transparent hover:shadow-none"
               onClick={scrollToTopArmario}
             >
-              <CircleChevronUp size={28} strokeWidth={2.25} className="text-white bg-auxiliary-700 rounded-full hover:bg-primary-700"/>
+              <CircleChevronUp size={28} strokeWidth={2.25} className="text-white bg-auxiliary-700 rounded-full hover:bg-primary-700" />
             </Button>
           </div>
 
@@ -137,20 +141,34 @@ export default function OutfitCreatorPage({ userId = "4e9535ea-72b9-4dd2-8d96-e1
       </div>
 
       {/* COLUMNA DERECHA: CREADOR (GRID DE SLOTS) */}
-      <div className="w-full lg:w-125 xl:w-150 bg-auxiliary-50 flex flex-col p-8 h-svh ">
+      <div className="w-full lg:w-125 xl:w-150 bg-auxiliary-50 flex flex-col p-8 h-svh overflow-y-auto">
 
-        <div className="flex gap-3 mb-10">
-          <input
-            type="text"
-            placeholder="Nombre del conjunto"
-            className="flex-1 px-4 py-3 rounded-xl border-2 border-primary-100 bg-white shadow-sm"
-            value={nombreConjunto}
-            disabled={loading}
-            onChange={(e) => setNombreConjunto(e.target.value)}
-          />
-          <Button variant="primary" onClick={handleSaveOutfit} disabled={loading}>
-            {loading ? "Guardando..." : "Guardar"}
-          </Button>
+        <div className="flex flex-col gap-4 mb-10">
+          {/* Fila del Nombre y Botón */}
+          <div className="flex gap-3 ">
+            <Input
+              placeholder="Nombre del conjunto"
+              value={nombreConjunto}
+              disabled={loading}
+              onChange={(e) => setNombreConjunto(e.target.value)}
+            />
+            <Button variant="primary" onClick={handleSaveOutfit} disabled={loading}
+            className="min-w-30 self-center">
+              {loading ? "Guardando..." : "Guardar"}
+            </Button>
+          </div>
+
+          {/* Textarea para la descripción */}
+          <div className="flex flex-col gap-2 w-full">
+            <textarea
+              placeholder="Descripción del conjunto, ocasión, etc..."
+              value={descripcion}
+              disabled={loading}
+              onChange={(e) => setDescripcion(e.target.value)}
+              rows={2}
+              className="w-full rounded-md text-sm border border-gray-300 px-4 py-3 outline-none  bg-white transition-all font-body focus:border-auxiliary-700 focus:ring-1 focus:ring-auxiliary-700 placeholder:text-gray-300 shadow-sm resize-none disabled:bg-gray-50 disabled:cursor-not-allowed"
+            />
+          </div>
         </div>
 
         {/* Disposición de Slots en Grid sin Maniquí */}

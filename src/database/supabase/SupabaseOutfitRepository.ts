@@ -1,13 +1,15 @@
+import type { OutfitRepository } from "../repositories/OutfitRepository";
 import { supabase } from "./Client";
 
 export interface ConjuntoData {
     nombre: string;
     id_usuario: string; 
     prendasIds: number[]; 
+    descripcion?: string;
     favorito?: boolean;
 }
 
-export class SupabaseOutfitRepository {
+export class SupabaseOutfitRepository implements OutfitRepository{
 
     async createConjunto(data: ConjuntoData) {
         try {
@@ -15,6 +17,7 @@ export class SupabaseOutfitRepository {
                 .from('conjuntos')
                 .insert({
                     nombre: data.nombre,
+                    descripcion: data.descripcion,
                     id_usuario: data.id_usuario,
                     favorito: data.favorito || false
                 })

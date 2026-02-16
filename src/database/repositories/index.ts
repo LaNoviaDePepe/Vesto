@@ -1,6 +1,8 @@
 import { SupabaseItemRepository } from "../supabase/SupabaseItemRepository";
+import { SupabaseOutfitRepository } from "../supabase/SupabaseOutfitRepository";
 import { SupabaseUserRepository } from "../supabase/SupabaseUserRepository";
 import type { ItemRepository } from "./ItemRepository";
+import type { OutfitRepository } from "./OutfitRepository";
 import type { UserRepository } from "./UserRepository";
 
 /**
@@ -20,4 +22,8 @@ export const createUserRepository = (): UserRepository => {
 
 export const createItemRepository = (): ItemRepository => {
     return new SupabaseItemRepository();
+};
+
+export const createOutfitRepository = (): OutfitRepository => {
+    return new SupabaseOutfitRepository();
 };
