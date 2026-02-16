@@ -1,8 +1,7 @@
-import { useState, type ChangeEvent, type FocusEvent } from "react";
+import { useState, useEffect, type ChangeEvent, type FocusEvent } from "react";
 import { validateVestoField } from "../../utils/regex";
 import Button from "../common/Button";
 import Input from "../common/Input";
-import { LogOut } from "lucide-react";
 import toast from "react-hot-toast";
 import { useAuthStore } from "../../stores/authStore";
 import { createUserRepository } from "../../database/repositories";
@@ -27,10 +26,15 @@ interface ErrorsProps {
 }
 
 export default function ProfileForm() {
+
+    const state = useAuthStore();
+    const userRepository = createUserRepository();
+    const navigate = useNavigate();
+
     // Estado del formulario
     const [formData, setFormData] = useState<UserProfileProps>({
-        nombreApellidos: "Pepito Pérez",
-        email: "miemail123@vesto.com",
+        nombreApellidos: "",
+        email: "",
         password: "",
         newPassword: "",
         avatar: null
@@ -45,31 +49,42 @@ export default function ProfileForm() {
         avatar: ""
     });
 
-    const state = useAuthStore();
-    const userRepository = createUserRepository();
-    const navigate = useNavigate();
+    const [preview, setPreview] = useState<string | null>(null);
+    const [loading, setLoading] = useState(false);
+
+    // CARGAR DATOS DEL USUARIO
+    useEffect(() => {
+        const session = state.sessionUser;
+
+        if (session?.user && session?.profile) {
+            setFormData(prev => ({
+                ...prev,
+                nombreApellidos: session?.profile?.nombre_apellidos || "", email: session.user.email || "",
+                password: "",
+                newPassword: ""
+            }));
+
+            // Si ya tiene avatar guardado, lo mostramos
+            if (session.profile.url_avatar) {
+                setPreview(session.profile.url_avatar);
+            }
+        }
+    }, [state.sessionUser]);
 
     const handleLogout = async () => {
-
         try {
             const result = await userRepository.logout();
             if (result.error) {
                 toast.error('Error al cerrar sesión');
-
                 return;
             }
-            
             state.clearSession();
             navigate('/');
-
         } catch (error) {
             toast.error('Ocurrió un error inesperado');
             console.log(error);
         }
     }
-
-    // Estado para previsualización de imagen (Avatar)
-    const [preview, setPreview] = useState<string | null>(null);
 
     // Maneja cambios en Inputs de texto
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -82,9 +97,7 @@ export default function ProfileForm() {
     const handleBlur = (e: FocusEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
 
-        // Validación específica para la nueva contraseña
         if (name === "newPassword" && value.length > 0) {
-            // Aquí podrías validar complejidad si fuera necesario
             const error = validateVestoField("password", value);
             setErrors((prev) => ({ ...prev, [name]: error }));
         } else if (name !== "avatar" && name !== "newPassword") {
@@ -93,7 +106,7 @@ export default function ProfileForm() {
         }
     };
 
-    // Maneja la subida de imagen
+    // Maneja la subida de imagen (Preview local)
     const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files[0]) {
             const file = e.target.files[0];
@@ -103,28 +116,82 @@ export default function ProfileForm() {
         }
     };
 
-    // Envío del formulario
-    const handleSubmit = (e: React.SubmitEvent) => {
+    // ENVIO DEL FORMULARIO 
+    const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         // Validaciones
         const newErrors = {
             nombreApellidos: validateVestoField("nombreApellidos", formData.nombreApellidos),
             email: validateVestoField("email", formData.email),
-            // Asumimos que la contraseña actual es obligatoria para guardar cambios sensibles
-            password: formData.password ? validateVestoField("password", formData.password) : "La contraseña es requerida para guardar",
-            newPassword: "", // Opcional
+            password: "",
+            newPassword: "",
             avatar: ""
         };
 
-        setErrors(newErrors as ErrorsProps);
+        if (formData.newPassword) {
+            newErrors.newPassword = validateVestoField("password", formData.newPassword);
+        }
 
+        setErrors(newErrors as ErrorsProps);
         const hasErrors = Object.values(newErrors).some((err) => err !== "");
 
-        if (!hasErrors) {
-            console.log("Datos actualizados:", formData);
-            alert("Cambios guardados correctamente ✅");
-            // Aquí llamaríamos al repositorio: userRepository.updateUser(...)
+        if (hasErrors) {
+            toast.error("Por favor, revisa los errores del formulario");
+            return;
+        }
+
+        // COMIENZA EL PROCESO DE GUARDADO
+        setLoading(true);
+        const userId = state.sessionUser?.user.id;
+
+        if (!userId) {
+            toast.error("Error: No se encuentra la sesión del usuario.");
+            setLoading(false);
+            return;
+        }
+
+        try {
+            let avatarUrl = undefined;
+
+            // Subir Avatar (Solo si hay un archivo nuevo seleccionado)
+            if (formData.avatar) {
+                const uploadRes = await userRepository.updateAvatar(userId, formData.avatar);
+                if (uploadRes.error) {
+                    throw new Error("Error al subir la imagen: " + uploadRes.error.message);
+                }
+                avatarUrl = uploadRes.data;
+            }
+
+            // Actualizar Perfil y Password
+            const updateData = {
+                nombre: formData.nombreApellidos,
+                email: formData.email,
+                password: formData.newPassword || undefined, // Solo envía si hay pass nueva
+                avatarUrl: avatarUrl // Envía la URL si se subió nueva
+            };
+
+            const profileRes = await userRepository.updateProfile(userId, updateData);
+
+            if (profileRes.error) {
+                throw new Error(profileRes.error.message || "Error al actualizar perfil");
+            }
+
+            // Actualizar el Store Global (Para ver cambios sin recargar)
+            if (state.updateSessionProfile) {
+                state.updateSessionProfile(profileRes.data);
+            }
+
+            toast.success("Cambios guardados correctamente ✅");
+
+            // Limpiamos el campo de nueva contraseña tras guardar
+            setFormData(prev => ({ ...prev, newPassword: "" }));
+
+        } catch (error: any) {
+            console.error(error);
+            toast.error(error.message || "Ocurrió un error al guardar");
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -155,14 +222,15 @@ export default function ProfileForm() {
                         onChange={handleChange}
                         onBlur={handleBlur}
                         error={errors.email}
+                    // Si no quieres permitir cambiar email, añade: disabled={true}
                     />
 
                     <Input
-                        label="Contraseña *"
+                        label="Contraseña (Opcional si cambias datos)"
                         name="password"
                         type="password"
                         value={formData.password}
-                        placeholder="Text input"
+                        placeholder="Solo requerida en algunos casos"
                         autoComplete="current-password"
                         onChange={handleChange}
                         onBlur={handleBlur}
@@ -170,11 +238,11 @@ export default function ProfileForm() {
                     />
 
                     <Input
-                        label="Nueva contraseña *"
+                        label="Nueva contraseña (Opcional)"
                         name="newPassword"
                         type="password"
                         value={formData.newPassword}
-                        placeholder="Text input"
+                        placeholder="Rellena solo para cambiarla"
                         autoComplete="new-password"
                         onChange={handleChange}
                         onBlur={handleBlur}
@@ -182,20 +250,15 @@ export default function ProfileForm() {
                     />
 
                     <div className="flex gap-4 pt-4 mt-8">
-                        <Button type="submit" variant="primary">
-                            Guardar cambios
-                        </Button>
-                        <Button
-                            type="button" variant="secondary"
-                            onClick={() => console.log("Cerrar sesión")}
-                        >
-                            Cerrar sesión
+                        <Button type="submit" variant="primary" disabled={loading}>
+                            {loading ? "Guardando..." : "Guardar cambios"}
                         </Button>
                         <Button
                             type="button" variant="auxiliar"
                             onClick={handleLogout}
+                            disabled={loading}
                         >
-                            Cancelar
+                            Cerrar sesión
                         </Button>
                     </div>
                 </div>
@@ -234,7 +297,7 @@ export default function ProfileForm() {
                         />
                         {errors.avatar && <p className="mt-2 text-sm text-red-600">{errors.avatar}</p>}
                     </div>
-                    
+
                 </div>
 
             </form>

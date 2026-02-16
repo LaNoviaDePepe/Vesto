@@ -15,7 +15,7 @@ export class SupabaseUserRepository implements UserRepository {
                 // Opcional: guardar metadatos en auth
                 options: {
                     data: {
-                        nombre_apellidos: data.full_name // Guardamos también aquí por si acaso
+                        nombre_apellidos: data.nombre_apellidos // Guardamos también aquí por si acaso
                     }
                 }
             });
@@ -29,7 +29,7 @@ export class SupabaseUserRepository implements UserRepository {
                 .from('perfiles') // <--- Cambio: Nombre exacto de tu tabla en la foto
                 .insert({
                     id: authData.user.id, // El ID viene de Auth
-                    nombre_apellidos: data.full_name, // <--- Cambio: Mapeamos full_name a nombre_apellidos
+                    nombre_apellidos: data.nombre_apellidos,
                     rol: 'user', // Asegúrate que coincida con tu tipo ENUM 'rol_usuario'
                     // fecha_alta se pone sola si tienes default now() en la BBDD
                 })
@@ -69,7 +69,7 @@ export class SupabaseUserRepository implements UserRepository {
 
             // 2. Obtener perfil asociado
             const { data: profile, error: profileError } = await supabase
-                .from('perfiles') 
+                .from('perfiles')
                 .select('*')
                 .eq('id', authData.user.id)
                 .single();
@@ -101,7 +101,78 @@ export class SupabaseUserRepository implements UserRepository {
         return { error };
     }
 
-    // resetPasswordForEmail(email: string): Promise<{ error?: any }>{
+    /**
+         * Actualiza la contraseña (Auth) y los datos del perfil (Tabla 'perfiles')
+         */
+    async updateProfile(userId: string, data: { nombre: string; email: string; password?: string; avatarUrl?: string }): Promise<{ data?: any; error?: any }> {
+        try {
+            // Si viene password, actualizamos en Supabase Auth
+            if (data.password) {
+                const { error: authError } = await supabase.auth.updateUser({ password: data.password });
+                if (authError) return { error: authError };
+            }
 
-    // }
+            // Mapeo exacto a tus columnas de la tabla 'perfiles'
+            const updates: any = {
+                nombre_apellidos: data.nombre,
+            };
+
+            // SOLO si existe avatar nuevo
+            if (data.avatarUrl !== undefined) {
+                updates.url_avatar = data.avatarUrl;
+            }
+
+            if (data.email) {
+                const { error: emailError } = await supabase.auth.updateUser({
+                    email: data.email
+                });
+                if (emailError) return { error: emailError };
+            }
+
+            const { data: updatedProfile, error: profileError } = await supabase
+                .from('perfiles')
+                .update(updates)
+                .eq('id', userId)
+                .select()
+                .single();
+
+            if (profileError) return { error: profileError };
+
+            return { data: updatedProfile };
+
+        } catch (error) {
+            return { error };
+        }
+    }
+
+    /**
+     * Sube la imagen al Storage y devuelve la URL pública
+     */
+    async updateAvatar(userId: string, file: File): Promise<{ data?: string; error?: any }> {
+        try {
+            // Generar nombre único para evitar caché
+            const fileExt = file.name.split('.').pop();
+            const fileName = `${userId}-${Date.now()}.${fileExt}`;
+            const filePath = `avatars/${fileName}`;
+
+            // Subir archivo al bucket 'avatars' (DEBES CREARLO EN SUPABASE STORAGE)
+            const { error: uploadError } = await supabase.storage
+                .from('avatars')
+                .upload(filePath, file, {
+                    upsert: true // Sobrescribir si existe
+                });
+
+            if (uploadError) return { error: uploadError };
+
+            // Obtener URL pública
+            const { data } = supabase.storage
+                .from('avatars')
+                .getPublicUrl(filePath);
+
+            return { data: data.publicUrl };
+
+        } catch (error) {
+            return { error };
+        }
+    }
 }

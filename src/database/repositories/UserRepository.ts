@@ -22,5 +22,6 @@ export interface UserRepository {
 
     logout(): Promise<{ error?: any }>;
 
-    //resetPasswordForEmail(email: string): Promise<{ error?: any }>;
+    updateProfile(userId: string, data: any): Promise<{ data?: any; error?: any }>;
+    updateAvatar(userId: string, file: File): Promise<{ data?: string; error?: any }>;
 }

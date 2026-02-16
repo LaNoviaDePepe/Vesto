@@ -8,6 +8,7 @@ interface AuthState {
 
     setSession: (sessionUser: SessionUser) => void
     clearSession: () => void
+    updateSessionProfile: (profile: any) => void
 }
 
 export const useAuthStore = create<AuthState>()(
@@ -15,14 +16,20 @@ export const useAuthStore = create<AuthState>()(
         (set) => ({
             sessionUser: null,
             isAuthenticated: false,
-            // Cuando hacemos login, guardamos el usuario y ponemos auth a true
+
             setSession: (sessionUser) => set({ sessionUser, isAuthenticated: true }),
-            // Cuando hacemos logout, limpiamos todo
+
             clearSession: () => set({ sessionUser: null, isAuthenticated: false }),
+
+            updateSessionProfile: (newProfile) => set((state) => ({
+                sessionUser: state.sessionUser
+                    ? { ...state.sessionUser, profile: { ...state.sessionUser.profile, ...newProfile } }
+                    : null
+            })),
         }),
         {
-            name: 'auth-v1', // Nombre en localStorage
-            partialize: (state) => ({ 
+            name: 'auth-v1',
+            partialize: (state) => ({
                 sessionUser: state.sessionUser,
                 isAuthenticated: state.isAuthenticated,
             }),
