@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import Filter from "../components/filter/Filter";
 import PrendasLayout from "../layouts/PrendasLayout";
 import { SupabaseItemRepository } from "../database/supabase/SupabaseItemRepository";

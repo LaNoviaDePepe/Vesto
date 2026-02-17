@@ -6,6 +6,7 @@ interface PrendasLayoutProps {
         url: string;
         color: string;
         temporada: string;
+        categoria: string;
     }[];
 }
 
@@ -19,6 +20,7 @@ export default function PrendasLayout({ prendas }: PrendasLayoutProps) {
                     url={prenda.url}
                     color={prenda.color}
                     temporada={prenda.temporada}
+                    categoria={prenda.categoria}
                 />
             ))}
         </div>

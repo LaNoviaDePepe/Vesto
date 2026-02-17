@@ -20,6 +20,7 @@ export class SupabaseItemRepository implements ItemRepository {
             .eq('id_usuario', id_usuario);
 
         const prendasMapped = data?.map(p => ({
+            id: p.id,
             name: p.nombre,
             url: p.url_imagen,
             color: p.color,
