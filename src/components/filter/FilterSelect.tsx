@@ -1,18 +1,19 @@
-import { useState } from "react";
+import { useState, type SelectHTMLAttributes } from "react";
 
 
-type FilterOption = {
+type FilterSelectOption = {
     value: string;
     label: string;
 };
-interface FilterProps {
+interface FilterSelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
     name: string;
-    options: FilterOption[];
+    options: FilterSelectOption[];
     placeholder: string;
     disabled?: boolean;
+
 }
 
-export default function Filter({ name, options, placeholder, disabled }: FilterProps) {
+export default function FilterSelect({ name, options, placeholder, disabled, onChange }: FilterSelectProps) {
 
     const [value, setValue] = useState("");
 
@@ -27,13 +28,27 @@ export default function Filter({ name, options, placeholder, disabled }: FilterP
                 name={name}
                 disabled={disabled}
                 value={value}
+                // Si 'isPlaceholder' es true (value está vacío), el texto es gris.
+                // Si hay un valor seleccionado, el texto es negro.
                 className={`${baseClasses} ${isPlaceholder ? "text-gray-400" : "text-black"}`}
+
+                // Este onChange refiere al evento REAL del navegador (el click del usuario)
                 onChange={(e) => {
-                    const selected = e.target.value;
+                    const selected = e.target.value; // Guarda la opción seleccionada
                     if (selected === "quitar") {
-                        setValue(""); // reset to placeholder
+                        // Si elige la opción "Quitar ❌",
+                        // forzamos el estado a "" (vacío).
+                        // Esto hace que el select vuelva a mostrar el Placeholder gris ("Elige un color").
+                        setValue(""); 
                     } else {
+                        //Si es otra, cambia el estado para que el texto sea negro
                         setValue(selected);
+                    }
+
+                    // Sea cual sea la opción, incluirá este otro onChange que nos llega por parámetros
+                    // y le pasamos el evento 'e' a Filter.tsx sepa qué filtrar (ej: mostrar solo partes de arriba).
+                    if (onChange) {
+                        onChange(e);
                     }
                 }}
             >
