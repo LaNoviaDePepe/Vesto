@@ -16,50 +16,56 @@ import OutfitCreatorPage from "./pages/OutfitCreatorPage";
 import ProfilePage from "./pages/ProfilePage";
 import PublicRoute from "./router/PublicRoute";
 import ProtectedRoute from "./router/ProtectedRoute";
+import GlobalLayout from "./layouts/GlobalLayout";
 
 const router = createBrowserRouter([
   {
-    // Ruta compartida: LandingPage
-    element: <LandingLayout />,
-    children: [
-      { path: "/", element: <LandingPage /> }
-    ],
-  },
-  {
-    // Rutas accesible para usuarios no logueados
-    element: <PublicRoute />,
+    element: <GlobalLayout />,
     children: [
       {
-        element: <NavbarPageFooterLayout />,
+        // Ruta compartida: LandingPage
+        element: <LandingLayout />,
         children: [
-          { path: "/login", element: <LoginPage /> },
-          { path: "/signUp", element: <SignUpPage /> },
-        ]
-      }
-    ]
-  },
-  {
-    // Rutas accesibles para usuarios logueados
-    element: <ProtectedRoute />,
-    children: [
+          { path: "/", element: <LandingPage /> }
+        ],
+      },
       {
-        element: <NavbarPageLayout />,
+        // Rutas accesible para usuarios no logueados
+        element: <PublicRoute />,
         children: [
-          { path: "/closet", element: <ClosetPage /> },
-          { path: "/clothing", element: <ClothingPage /> },
-          { path: "/outfits", element: <OutfitsPage /> },
-          { path: "/outfitCreator", element: <OutfitCreatorPage userId="4e9535ea-72b9-4dd2-8d96-e185da7c0d33" /> },
-          { path: "/profile", element: <ProfilePage /> },
+          {
+            element: <NavbarPageFooterLayout />,
+            children: [
+              { path: "/login", element: <LoginPage /> },
+              { path: "/signUp", element: <SignUpPage /> },
+            ]
+          }
         ]
       },
-    ]
-  },
+      {
+        // Rutas accesibles para usuarios logueados
+        element: <ProtectedRoute />,
+        children: [
+          {
+            element: <NavbarPageLayout />,
+            children: [
+              { path: "/closet", element: <ClosetPage /> },
+              { path: "/clothing", element: <ClothingPage /> },
+              { path: "/outfits", element: <OutfitsPage /> },
+              { path: "/outfitCreator", element: <OutfitCreatorPage userId="4e9535ea-72b9-4dd2-8d96-e185da7c0d33" /> },
+              { path: "/profile", element: <ProfilePage /> },
+            ]
+          },
+        ]
+      },
 
-  // RUTA POR DEFECTO para redirigir a la raíz en caso de introducir una ruta incorrecta
-  {
-    path: "*",
-    element: <Navigate to="/" replace />, 
-  },
+      // RUTA POR DEFECTO para redirigir a la raíz en caso de introducir una ruta incorrecta
+      {
+        path: "*",
+        element: <Navigate to="/" replace />,
+      },
+    ]
+  }
 ]);
 
 export default function App() {

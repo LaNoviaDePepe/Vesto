@@ -1,130 +1,183 @@
-import { useState, type ChangeEvent, type FocusEvent } from "react";
+import { useState, useEffect, type ChangeEvent, type FocusEvent } from "react";
 import { validateVestoField } from "../../utils/regex";
 import Button from "../common/Button";
 import Input from "../common/Input";
-import { LogOut } from "lucide-react";
 import toast from "react-hot-toast";
 import { useAuthStore } from "../../stores/authStore";
-import { createUserRepository } from "../../database/repositories";
 import { useNavigate } from "react-router-dom";
+import { SupabaseUserRepository } from "../../database/supabase/SupabaseUserRepository";
 
-// Interfaz para los datos del formulario
+const userRepository = new SupabaseUserRepository();
 interface UserProfileProps {
     nombreApellidos: string;
     email: string;
-    password: string;
+    currentPassword: string;
     newPassword: string;
     avatar: File | null;
 }
 
-// Interfaz para los errores
 interface ErrorsProps {
     nombreApellidos: string;
     email: string;
-    password: string;
+    currentPassword: string;
     newPassword: string;
     avatar: string;
 }
 
+/**
+ * Formulario de gestión de perfil de usuario.
+ * * Este componente permite al usuario autenticado:
+ * - Visualizar sus datos actuales (Nombre, Email, Avatar).
+ * - Actualizar su información personal.
+ * - Cambiar su contraseña (requiere validación de la contraseña actual).
+ * - Subir una nueva imagen de perfil con previsualización.
+ * * Gestiona la validación de campos en tiempo real y la comunicación con
+ * Supabase a través de `SupabaseUserRepository`.
+ */
 export default function ProfileForm() {
-    // Estado del formulario
+
+    const state = useAuthStore();
+    // Instancia correcta del repositorio
+    const navigate = useNavigate();
+
     const [formData, setFormData] = useState<UserProfileProps>({
-        nombreApellidos: "Pepito Pérez",
-        email: "miemail123@vesto.com",
-        password: "",
+        nombreApellidos: "",
+        email: "",
+        currentPassword: "",
         newPassword: "",
         avatar: null
     });
 
-    // Estado de errores
     const [errors, setErrors] = useState<ErrorsProps>({
         nombreApellidos: "",
         email: "",
-        password: "",
+        currentPassword: "",
         newPassword: "",
         avatar: ""
     });
 
-    const state = useAuthStore();
-    const userRepository = createUserRepository();
-    const navigate = useNavigate();
+    const [preview, setPreview] = useState<string | null>(null);
+    const [loading, setLoading] = useState(false);
 
-    const handleLogout = async () => {
-
-        try {
-            const result = await userRepository.logout();
-            if (result.error) {
-                toast.error('Error al cerrar sesión');
-
-                return;
+    // CARGAR DATOS DEL USUARIO
+    useEffect(() => {
+        const session = state.sessionUser;
+        if (session?.user && session?.profile) {
+            setFormData(prev => ({
+                ...prev,
+                nombreApellidos: session.profile?.nombre_apellidos ?? "",
+                email: session.user.email || "",
+            }));
+            if (session.profile.url_avatar) {
+                setPreview(session.profile.url_avatar);
             }
-            
-            state.clearSession();
-            navigate('/');
-
-        } catch (error) {
-            toast.error('Ocurrió un error inesperado');
-            console.log(error);
         }
+    }, [state.sessionUser]);
+
+    /**
+     * Gestiona el cierre de sesión del usuario llamando al repositorio
+     * y limpiando el estado global.
+     */
+    const handleLogout = async () => {
+        setLoading(true);
+        const result = await userRepository.logout();
+        if (result.error) toast.error('Error al cerrar sesión');
+        state.clearSession();
+        setLoading(false);
+        navigate('/');
     }
 
-    // Estado para previsualización de imagen (Avatar)
-    const [preview, setPreview] = useState<string | null>(null);
-
-    // Maneja cambios en Inputs de texto
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setFormData((prev) => ({ ...prev, [name]: value }));
-        setErrors((prev) => ({ ...prev, [name]: "" }));
+        if (errors[name as keyof ErrorsProps]) {
+            setErrors((prev) => ({ ...prev, [name]: "" }));
+        }
     };
 
-    // Validación al perder el foco (Blur)
     const handleBlur = (e: FocusEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
 
-        // Validación específica para la nueva contraseña
-        if (name === "newPassword" && value.length > 0) {
-            // Aquí podrías validar complejidad si fuera necesario
+        // Validación específica para contraseñas
+        if ((name === "newPassword" || name === "currentPassword") && value.length > 0) {
+            // Puedes usar una validación simple o tu validateVestoField si soporta passwords
             const error = validateVestoField("password", value);
             setErrors((prev) => ({ ...prev, [name]: error }));
-        } else if (name !== "avatar" && name !== "newPassword") {
+        } else if (name !== "avatar" && name !== "newPassword" && name !== "currentPassword") {
             const error = validateVestoField(name, value);
             setErrors((prev) => ({ ...prev, [name]: error }));
         }
     };
 
-    // Maneja la subida de imagen
     const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files[0]) {
             const file = e.target.files[0];
+            if (file.size > 2 * 1024 * 1024) {
+                setErrors(prev => ({ ...prev, avatar: "La imagen debe pesar menos de 2MB" }));
+                return;
+            }
             setFormData((prev) => ({ ...prev, avatar: file }));
-            setPreview(URL.createObjectURL(file)); // Crea URL temporal
+            setPreview(URL.createObjectURL(file));
             setErrors((prev) => ({ ...prev, avatar: "" }));
         }
     };
 
-    // Envío del formulario
-    const handleSubmit = (e: React.SubmitEvent) => {
+    /**
+     * Envía los datos del formulario.
+     * Realiza validaciones finales y decide qué datos enviar al repositorio
+     * basándose en los cambios realizados.
+     */
+    const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        // Validaciones
+        // Limpieza (Solo nombre, email ya no se toca)
+        const cleanNombre = formData.nombreApellidos.trim();
+
+        // Validaciones (Sin validación de email)
         const newErrors = {
-            nombreApellidos: validateVestoField("nombreApellidos", formData.nombreApellidos),
-            email: validateVestoField("email", formData.email),
-            // Asumimos que la contraseña actual es obligatoria para guardar cambios sensibles
-            password: formData.password ? validateVestoField("password", formData.password) : "La contraseña es requerida para guardar",
-            newPassword: "", // Opcional
+            nombreApellidos: validateVestoField("nombreApellidos", cleanNombre),
+            currentPassword: (formData.newPassword && !formData.currentPassword) ? "Requerida" : "",
+            newPassword: formData.newPassword ? validateVestoField("password", formData.newPassword) : "",
+            email: "", 
             avatar: ""
         };
 
-        setErrors(newErrors as ErrorsProps);
+        setErrors(newErrors);
+        if (Object.values(newErrors).some(err => err !== "")) return;
 
-        const hasErrors = Object.values(newErrors).some((err) => err !== "");
+        setLoading(true);
+        const userId = state.sessionUser?.user.id;
 
-        if (!hasErrors) {
-            console.log("Datos actualizados:", formData);
-            alert("Cambios guardados correctamente ✅");
-            // Aquí llamaríamos al repositorio: userRepository.updateUser(...)
+        try {
+            let avatarUrl = undefined;
+            if (formData.avatar) {
+                const uploadRes = await userRepository.updateAvatar(userId!, formData.avatar);
+                avatarUrl = uploadRes.data;
+            }
+
+            // ENVIAMOS DATOS 
+            const updateData = {
+                nombre_apellidos: cleanNombre,
+                currentPassword: formData.currentPassword || undefined,
+                newPassword: formData.newPassword || undefined,
+                avatarUrl: avatarUrl
+            };
+
+            const profileRes = await userRepository.updateProfile(userId!, updateData);
+            if (profileRes.error) throw new Error(profileRes.error.message);
+
+            // Actualizar Store (Solo perfil, el email no ha cambiado)
+            if (state.updateSessionProfile) {
+                state.updateSessionProfile(profileRes.data);
+            }
+
+            toast.success("Perfil actualizado ✅");
+            setFormData(prev => ({ ...prev, currentPassword: "", newPassword: "" }));
+
+        } catch (error: any) {
+            toast.error(error.message || "Error al guardar");
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -133,14 +186,12 @@ export default function ProfileForm() {
             <h3 className="text-3xl text-center mb-10 font-medium text-gray-800">Perfil de Usuario</h3>
 
             <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-12 gap-8">
-
                 <div className="md:col-span-7 space-y-6">
                     <Input
                         label="Nombre y Apellidos"
                         name="nombreApellidos"
                         type="text"
                         value={formData.nombreApellidos}
-                        autoComplete="name"
                         onChange={handleChange}
                         onBlur={handleBlur}
                         error={errors.nombreApellidos}
@@ -151,64 +202,57 @@ export default function ProfileForm() {
                         name="email"
                         type="email"
                         value={formData.email}
-                        autoComplete="email"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        error={errors.email}
+                        disabled={true}
                     />
 
-                    <Input
-                        label="Contraseña *"
-                        name="password"
-                        type="password"
-                        value={formData.password}
-                        placeholder="Text input"
-                        autoComplete="current-password"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        error={errors.password}
-                    />
+                    {/* SECCIÓN DE SEGURIDAD VISUALMENTE SEPARADA */}
+                    <div className="pt-4 border-t border-gray-200">
 
-                    <Input
-                        label="Nueva contraseña *"
-                        name="newPassword"
-                        type="password"
-                        value={formData.newPassword}
-                        placeholder="Text input"
-                        autoComplete="new-password"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        error={errors.newPassword}
-                    />
+                        <div className="space-y-6">
+                            <Input
+                                label="Contraseña Actual"
+                                name="currentPassword"
+                                type="password"
+                                value={formData.currentPassword}
+                                placeholder="Requerida para cambiar la contraseña"
+                                autoComplete="current-password"
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                error={errors.currentPassword}
+                            />
+
+                            <Input
+                                label="Nueva contraseña"
+                                name="newPassword"
+                                type="password"
+                                value={formData.newPassword}
+                                placeholder="Escribe nueva contraseña"
+                                autoComplete="new-password"
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                error={errors.newPassword}
+                            />
+                        </div>
+                    </div>
 
                     <div className="flex gap-4 pt-4 mt-8">
-                        <Button type="submit" variant="primary">
-                            Guardar cambios
-                        </Button>
-                        <Button
-                            type="button" variant="secondary"
-                            onClick={() => console.log("Cerrar sesión")}
-                        >
-                            Cerrar sesión
+                        <Button type="submit" variant="primary" disabled={loading}>
+                            {loading ? "Guardando..." : "Guardar cambios"}
                         </Button>
                         <Button
                             type="button" variant="auxiliar"
                             onClick={handleLogout}
+                            disabled={loading}
                         >
-                            Cancelar
+                            Cerrar sesión
                         </Button>
                     </div>
                 </div>
 
                 <div className="md:col-span-5 flex flex-col items-center pt-4">
-                    {/* Contenedor Circular del Avatar */}
                     <div className="w-64 h-64 rounded-full overflow-hidden border-4 border-white shadow-lg bg-gray-100 mb-6 relative group">
                         {preview ? (
-                            <img
-                                src={preview}
-                                alt="Avatar usuario"
-                                className="w-full h-full object-cover"
-                            />
+                            <img src={preview} alt="Avatar" className="w-full h-full object-cover" />
                         ) : (
                             <div className="w-full h-full bg-[#2B526A] flex items-end justify-center">
                                 <svg className="w-48 h-48 text-[#EABF9F]" fill="currentColor" viewBox="0 0 24 24">
@@ -224,19 +268,11 @@ export default function ProfileForm() {
                             name="avatar"
                             accept="image/*"
                             onChange={handleFileChange}
-                            className="block w-full text-sm text-gray-500
-                                file:mr-4 file:py-2 file:px-4
-                                file:rounded-md file:border-2 file:border-gray-300
-                                file:text-sm file:font-semibold
-                                file:bg-white file:text-gray-700
-                                hover:file:bg-gray-50
-                                cursor-pointer"
+                            className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-2 file:border-gray-300 file:text-sm file:font-semibold file:bg-white file:text-gray-700 hover:file:bg-gray-50 cursor-pointer"
                         />
                         {errors.avatar && <p className="mt-2 text-sm text-red-600">{errors.avatar}</p>}
                     </div>
-                    
                 </div>
-
             </form>
         </div>
     );

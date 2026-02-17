@@ -3,6 +3,7 @@ export interface PrendaProps {
     url: string;
     color: string;
     temporada: string;
+    categoria: string;
 }
 
 export default function Prenda({ name, url, color, temporada }: PrendaProps) {
