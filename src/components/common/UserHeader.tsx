@@ -5,6 +5,7 @@ import { createUserRepository } from '../../database/repositories';
 import { useAuthStore } from '../../stores/authStore';
 import toast from 'react-hot-toast';
 import { LogOut } from 'lucide-react';
+import { LanguageSwitcher } from './LanguageSwitcher';
 
 
 export default function UserHeader() {
@@ -61,7 +62,8 @@ export default function UserHeader() {
 
                     <Button variant='out' onClick={handleLogout} className='rounded-full min-w-0 ml-3'>
                         <LogOut size={20} strokeWidth={2.5} />
-                    </Button>                       
+                    </Button> 
+                    <LanguageSwitcher />                      
                 </div>
             </div>
         </header>

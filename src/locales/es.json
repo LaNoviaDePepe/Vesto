@@ -1,7 +1,19 @@
 {
-  "welcome": "Bienvenido {{user}}",
+  "welcome": "Welcome {{user}}",
   "actions": {
-    "save": "Guardar",
-    "cancel": "Cancelar"
+    "save": "Save",
+    "cancel": "Cancel"
+  },
+  "navbar": {
+    "button": {
+      "login": "Iniciar sesión",
+      "signup": "Registro"
+    },
+    "links": {
+      "home": "Inicio",
+      "behaviour": "Funcionamiento",
+      "reviews": "Reviews",
+      "team": "Equipo"
+    }
   }
 }

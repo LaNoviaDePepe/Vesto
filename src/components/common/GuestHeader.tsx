@@ -1,15 +1,19 @@
 import { Link } from 'react-router-dom';
 import Navbar from './Navbar';
 import Button from './Button';
+import { LanguageSwitcher } from './LanguageSwitcher';
+import { useTranslation } from "react-i18next";
 
 export default function GuestHeader() {
     // Constante que almacena los links para los usuarios anónimos
+    const { t } = useTranslation();
     const guestLinks = [
-        { label: 'Inicio', path: '/' },
+        { label: 'inicio', path: '/' },
         { label: 'Funcionamiento', path: '/#funcionamiento' },
         { label: 'Reviews', path: '/#reviews' },
         { label: 'Equipo', path: '/#equipo' },
     ];
+
 
     return (
         <header className="bg-auxiliary-700 ">
@@ -22,9 +26,10 @@ export default function GuestHeader() {
                 <Navbar links={guestLinks} />
 
                 <div className='flex items-center gap-2'>
-                    <Link to="/login"><Button variant='primary'>Iniciar sesión</Button></Link>
-                    <Link to="/signup"><Button variant='auxiliar'>Registro</Button></Link>
+                    <Link to="/login"><Button variant='primary'>{t('navbar.button.login')}</Button></Link>
+                    <Link to="/signup"><Button variant='auxiliar'>{t('navbar.button.signup')}</Button></Link>
                 </div>
+                <LanguageSwitcher />
             </div>
         </header>
     );
