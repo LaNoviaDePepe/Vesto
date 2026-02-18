@@ -3,25 +3,47 @@ import { supabase } from "./Client";
 
 export interface ConjuntoData {
     nombre: string;
-    id_usuario: string; 
-    prendasIds: number[]; 
+    id_usuario: string;
+    prendasIds: number[];
     descripcion?: string;
     favorito?: boolean;
+    imagen: File;
 }
 
-export class SupabaseOutfitRepository implements OutfitRepository{
+export class SupabaseOutfitRepository implements OutfitRepository {
 
     async createConjunto(data: ConjuntoData) {
         try {
+            // Subir la imagen al Storage
+            // Creamos un nombre único para el archivo (ej: usuarioID/timestamp.png)
+            const fileExt = data.imagen.name.split('.').pop();
+            const fileName = `${data.id_usuario}/${Date.now()}.${fileExt}`;
+            const filePath = `${fileName}`;
+
+            const { error: uploadError } = await supabase.storage
+                .from('conjuntos')
+                .upload(filePath, data.imagen);
+
+            if (uploadError) {
+                console.error("Error subiendo imagen:", uploadError);
+                return { error: uploadError };
+            }
+
+            // Obtenemos la URL pública de la imagen
+            const { data: { publicUrl } } = supabase.storage
+                .from('conjuntos')
+                .getPublicUrl(filePath);
+
             const { data: newOutfit, error: outfitError } = await supabase
                 .from('conjuntos')
                 .insert({
                     nombre: data.nombre,
                     descripcion: data.descripcion,
                     id_usuario: data.id_usuario,
-                    favorito: data.favorito || false
+                    favorito: data.favorito || false,
+                    imagen: publicUrl
                 })
-                .select()
+                .select() //Devuelve el id del conjunto recién creado para poder realizar las inserciones en la tabla conjuntos_prendas
                 .single();
 
             if (outfitError) {
@@ -29,6 +51,7 @@ export class SupabaseOutfitRepository implements OutfitRepository{
                 return { error: outfitError };
             }
 
+            // Creamos un Array de objetos en el que cada objeto corresponde a una tupla con formato { id_conjunto: 10, id_prenda: 5  }
             const relations = data.prendasIds.map(prendaId => ({
                 id_conjunto: newOutfit.id,
                 id_prenda: prendaId
@@ -36,10 +59,21 @@ export class SupabaseOutfitRepository implements OutfitRepository{
 
             const { error: relationsError } = await supabase
                 .from('conjunto_prendas')
-                .insert(relations);
+                .insert(relations); // Inserción de múltiples tuplas en una única sentencia
 
             if (relationsError) {
                 console.error("Error vinculando prendas al conjunto:", relationsError);
+                // En el caso de haber un error en la inserción, evitamos que queden 'restos' de un conjunto 
+                // incompleto o fallido, borrando la tupla que acabamos de insertar.
+                await supabase
+                    .from('conjuntos')
+                    .delete()
+                    .eq('id', newOutfit.id);
+                    
+                await supabase
+                    .storage
+                    .from('conjuntos')
+                    .remove([filePath]);
                 return { error: relationsError };
             }
 
