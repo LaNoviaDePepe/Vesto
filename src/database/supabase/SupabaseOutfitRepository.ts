@@ -7,7 +7,7 @@ export interface ConjuntoData {
     prendasIds: number[];
     descripcion?: string;
     favorito?: boolean;
-    imagen: File;
+    imagen: File | null;
 }
 
 export class SupabaseOutfitRepository implements OutfitRepository {
@@ -16,6 +16,9 @@ export class SupabaseOutfitRepository implements OutfitRepository {
         try {
             // Subir la imagen al Storage
             // Creamos un nombre único para el archivo (ej: usuarioID/timestamp.png)
+            if (!data.imagen) {
+                return { error: new Error("La imagen es requerida") };
+            }
             const fileExt = data.imagen.name.split('.').pop();
             const fileName = `${data.id_usuario}/${Date.now()}.${fileExt}`;
             const filePath = `${fileName}`;

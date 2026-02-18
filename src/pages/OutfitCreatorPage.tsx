@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type ChangeEvent, type FormEvent } from "react";
 import Filter from "../components/filter/Filter";
 import Prenda from "../components/clothing/Prenda";
 import Button from "../components/common/Button";
@@ -25,6 +25,13 @@ interface OutfitCreatorPageProps {
   userId: string;
 }
 
+// Interfaz para los errores siguiendo tu ejemplo
+interface ErrorsProps {
+  nombre: string;
+  outfit: string;
+  imagen: string;
+}
+
 const outfitRepo = new SupabaseOutfitRepository();
 
 export default function OutfitCreatorPage({ userId = "4e9535ea-72b9-4dd2-8d96-e185da7c0d33" }: OutfitCreatorPageProps) {
@@ -39,6 +46,15 @@ export default function OutfitCreatorPage({ userId = "4e9535ea-72b9-4dd2-8d96-e1
     calzado: null,
   });
 
+  const [imagenConjunto, setImagen] = useState<File | null>(null);
+  const [preview, setPreview] = useState<string | null>(null);
+
+  const [errors, setErrors] = useState<ErrorsProps>({
+    nombre: "",
+    outfit: "",
+    imagen: ""
+  });
+
   const handleSelectPrenda = (prenda: PrendaBD) => {
     setOutfit((estadoprevio) => {
       const isAlreadySelected = estadoprevio[prenda.categoria]?.id === prenda.id;
@@ -47,45 +63,68 @@ export default function OutfitCreatorPage({ userId = "4e9535ea-72b9-4dd2-8d96-e1
         [prenda.categoria]: isAlreadySelected ? null : prenda,
       };
     });
+    setErrors(prev => ({ ...prev, outfit: "" }));
   };
 
   /**
    * Lógica de guardado conectada a Supabase
    */
-  const handleSaveOutfit = async () => {
+  const handleSaveOutfit = async (e: React.SubmitEvent) => {
+    e.preventDefault(); // Manejo de form
+
     const prendasSeleccionadas = Object.values(outfit).filter((p): p is PrendaBD => p !== null);
 
-    // 1. Validaciones previas
-    if (!nombreConjunto.trim()) return alert("Por favor, introduce un nombre para el conjunto.");
-    if (prendasSeleccionadas.length === 0) return alert("Debes seleccionar al menos una prenda.");
+    // 1. Validaciones previas siguiendo tu estructura
+    const newErrors = {
+      nombre: !nombreConjunto.trim() ? "Por favor, introduce un nombre para el conjunto." : "",
+      outfit: prendasSeleccionadas.length === 0 ? "Debes seleccionar al menos una prenda." : "",
+      imagen: ""
+    };
 
-    setLoading(true);
+    setErrors(newErrors);
+    const hasErrors = Object.values(newErrors).some(err => err !== "");
 
-    // 2. Llamada al repositorio
-    const { error } = await outfitRepo.createConjunto({
-      nombre: nombreConjunto,
-      descripcion: descripcion,
-      id_usuario: userId,
-      prendasIds: prendasSeleccionadas.map(p => p.id),
-      favorito: false
-    });
+    if (!hasErrors) {
+      setLoading(true);
 
-    setLoading(false);
-
-    if (error) {
-      alert("Hubo un error al guardar el conjunto.");
-    } else {
-      alert(`¡Conjunto '${nombreConjunto}' guardado con éxito!`);
-
-      setNombreConjunto("");
-      setDescripcion("");
-      setOutfit({
-        cabeza: null,
-        parte_arriba: null,
-        parte_abajo: null,
-        complemento: null,
-        calzado: null,
+      // 2. Llamada al repositorio
+      const { error } = await outfitRepo.createConjunto({
+        nombre: nombreConjunto,
+        descripcion: descripcion,
+        id_usuario: userId,
+        prendasIds: prendasSeleccionadas.map(p => p.id),
+        favorito: false,
+        imagen: imagenConjunto
       });
+
+      setLoading(false);
+
+      if (error) {
+        alert("Hubo un error al guardar el conjunto.");
+      } else {
+        alert(`¡Conjunto '${nombreConjunto}' guardado con éxito!`);
+
+        setNombreConjunto("");
+        setDescripcion("");
+        setPreview(null);
+        setImagen(null);
+        setOutfit({
+          cabeza: null,
+          parte_arriba: null,
+          parte_abajo: null,
+          complemento: null,
+          calzado: null,
+        });
+      }
+    }
+  };
+
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      setImagen(file);
+      setPreview(URL.createObjectURL(file));
+      setErrors(prev => ({ ...prev, imagen: "" }));
     }
   };
 
@@ -99,7 +138,6 @@ export default function OutfitCreatorPage({ userId = "4e9535ea-72b9-4dd2-8d96-e1
   };
 
   return (
-
     <div className="flex flex-col lg:flex-row h-[calc(100vh-80px)] overflow-hidden bg-primary-300 ">
 
       {/* COLUMNA IZQUIERDA: ARMARIO */}
@@ -107,7 +145,8 @@ export default function OutfitCreatorPage({ userId = "4e9535ea-72b9-4dd2-8d96-e1
       <div className="relative flex-1 flex flex-col overflow-hidden border-r border-gray-100">
 
         <Filter width={100} />
-        <div className="flex-1 overflow-y-auto p-6  bg-gray-50/50" id="closet-container">
+        <div className="flex-1 overflow-y-auto p-6 bg-gray-50/50" id="closet-container">
+          {errors.outfit && <p className="text-center text-red-500 mb-4 font-bold">{errors.outfit}</p>}
           <div className="flex flex-wrap gap-6 justify-center">
             {mockPrendasBD
               .filter(p => p.id_usuario === userId)
@@ -141,7 +180,7 @@ export default function OutfitCreatorPage({ userId = "4e9535ea-72b9-4dd2-8d96-e1
       </div>
 
       {/* COLUMNA DERECHA: CREADOR (GRID DE SLOTS) */}
-      <div className="w-full lg:w-125 xl:w-150 bg-auxiliary-50 flex flex-col p-8 h-svh overflow-y-auto">
+      <form onSubmit={handleSaveOutfit} className="w-full lg:w-125 xl:w-150 bg-auxiliary-50 flex flex-col p-8 h-svh overflow-y-auto">
 
         <div className="flex flex-col gap-4 mb-10">
           {/* Fila del Nombre y Botón */}
@@ -150,10 +189,14 @@ export default function OutfitCreatorPage({ userId = "4e9535ea-72b9-4dd2-8d96-e1
               placeholder="Nombre del conjunto"
               value={nombreConjunto}
               disabled={loading}
-              onChange={(e) => setNombreConjunto(e.target.value)}
+              onChange={(e) => {
+                setNombreConjunto(e.target.value);
+                setErrors(prev => ({ ...prev, nombre: "" }));
+              }}
+              error={errors.nombre}
             />
-            <Button variant="primary" onClick={handleSaveOutfit} disabled={loading}
-            className="min-w-30 self-center">
+            <Button variant="primary" type="submit" disabled={loading}
+              className="min-w-30 self-center">
               {loading ? "Guardando..." : "Guardar"}
             </Button>
           </div>
@@ -183,7 +226,38 @@ export default function OutfitCreatorPage({ userId = "4e9535ea-72b9-4dd2-8d96-e1
             <OutfitSlot label="Calzado" item={outfit.calzado} />
           </div>
         </div>
-      </div>
+
+        <div className="flex flex-col items-center justify-center space-y-6 mt-10 pb-10 mb-10">
+          {/* Input File */}
+          <div className="w-full max-w-75">
+            <input
+              type="file"
+              name="imagen"
+              accept="image/*"
+              onChange={handleFileChange}
+              className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200 cursor-pointer border rounded-md"
+            />
+            {errors.imagen && <p className="mt-2 text-sm text-danger-600 font-medium">{errors.imagen}</p>}
+          </div>
+          <div className="w-full aspect-square max-w-80 rounded-2xl overflow-auto border-2 border-dashed border-gray-300 bg-gray-50 flex items-center justify-center relative">
+            {preview ? (
+              <img src={preview} alt="Vista previa" className="w-50 h-50 object-cover" />
+            ) : (
+              <div className="text-center p-6">
+                {/* Icono de "No image available" con gradiente naranja */}
+                <div className="w-20 h-20 mx-auto mb-4 bg-linear-to-br from-auxiliary-300 to-auxiliary-700 rounded-lg flex items-center justify-center text-white opacity-50">
+                  <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                </div>
+                <p className="text-gray-400 font-medium">No Image Available</p>
+              </div>
+            )}
+          </div>
+
+          
+        </div>
+      </form>
     </div>
   );
 }
