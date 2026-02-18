@@ -1,0 +1,7 @@
+{
+  "welcome": "Welcome {{user}}",
+  "actions": {
+    "save": "Save",
+    "cancel": "Cancel"
+  }
+}
