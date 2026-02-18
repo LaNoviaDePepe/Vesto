@@ -1,9 +1,14 @@
 import { useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom'; 
 import Button from '../components/common/Button';
+import { useTranslation } from "react-i18next";
 
 export default function LandingPage() {
+    const { t } = useTranslation();
 
+    // Ejemplo de funcionamiento de translate
+    // <h1>{t('welcome', { user: sessionUser?.profile?.username || 'Invitado' })}</h1>
+    // <button>{t('actions.save')}</button>
     // Obtenemos el hash de la URL (ej: #funcionamiento)
     const { hash } = useLocation();
 
