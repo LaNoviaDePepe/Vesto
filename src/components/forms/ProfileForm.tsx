@@ -138,7 +138,7 @@ export default function ProfileForm() {
             nombreApellidos: validateVestoField("nombreApellidos", cleanNombre),
             currentPassword: (formData.newPassword && !formData.currentPassword) ? "Requerida" : "",
             newPassword: formData.newPassword ? validateVestoField("password", formData.newPassword) : "",
-            email: "", 
+            email: "",
             avatar: ""
         };
 
@@ -201,6 +201,7 @@ export default function ProfileForm() {
                         label="Email"
                         name="email"
                         type="email"
+                        autoComplete="off"
                         value={formData.email}
                         disabled={true}
                     />

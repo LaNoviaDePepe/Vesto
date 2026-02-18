@@ -5,6 +5,7 @@ import type { RegisterData } from "../../interfaces/RegisterData";
 import Input from "../common/Input";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
+import { isEmailTaken } from "../../database/supabase/RPCs/isEmailTaken";
 
 interface SignUpFormProps {
     nombreApellidos: string;
@@ -64,6 +65,17 @@ export default function SignUpForm() {
         setErrors((prev) => ({ ...prev, [name]: error }));
     };
 
+    const handleEmailBlur = async (e: FocusEvent<HTMLInputElement>) => {
+        const error = validateVestoField("email", e.target.value);
+        setErrors((prev) => ({ ...prev, email: error }));
+        if (error) return;
+
+        const taken = await isEmailTaken(e.target.value);
+        if (taken) {
+            setErrors((prev) => ({ ...prev, email: "Este correo electrónico ya está registrado" }));
+        }
+    };
+
     const handleSubmit = async (e: React.FormEvent) => { // Async
         e.preventDefault();
 
@@ -83,9 +95,9 @@ export default function SignUpForm() {
             const newUser: RegisterData = {
                 email: formData.email,
                 password: formData.password,
-                full_name: formData.nombreApellidos,
-                role: "user",
-                avatar_url: ""
+                nombre_apellidos: formData.nombreApellidos,
+                rol: "user",
+                url_avatar: ""
             };
 
             // Llamamos a register desde el hook
@@ -93,7 +105,7 @@ export default function SignUpForm() {
 
             if (success) {
                 alert("Usuario registrado y logueado ✅");
-                navigate('/'); 
+                navigate('/');
             }
         }
     };
@@ -129,7 +141,7 @@ export default function SignUpForm() {
                     value={formData.email}
                     autoComplete="off"
                     onChange={handleChange}
-                    onBlur={handleBlur}
+                    onBlur={handleEmailBlur}
                     error={errors.email}
                 >
                 </Input>
