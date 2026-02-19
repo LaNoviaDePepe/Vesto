@@ -6,6 +6,7 @@ import Select from "../common/Select";
 import { SupabaseItemRepository } from "../../database/supabase/SupabaseItemRepository";
 import { useAuthStore } from "../../stores/authStore";
 import * as CONSTANTES from '../../utils/constants';
+import { useTranslation } from "react-i18next";
 
 interface AddItemFormProps {
     nombre: string;
@@ -24,6 +25,8 @@ interface ErrorsProps {
 }
 
 export default function AddItemForm() {
+
+    const { t } = useTranslation();
 
     // Instanciar el repo y obtener el usuario
     const itemRepository = new SupabaseItemRepository();
@@ -80,10 +83,10 @@ export default function AddItemForm() {
         // Necesitamos volver a declarar las validaciones aquí para calcular la variable
         const newErrors = {
             nombre: validateVestoField("nombre", formData.nombre) as string,
-            tipoPrenda: formData.tipoPrenda ? "" : "Selecciona una prenda",
-            color: formData.color ? "" : "Selecciona un color",
-            temporada: formData.temporada ? "" : "Selecciona una temporada",
-            imagen: formData.imagen ? "" : "Debes subir una imagen"
+            tipoPrenda: formData.tipoPrenda ? "" : t('filter.choose_category'),
+            color: formData.color ? "" : t('filter.choose_color'),
+            temporada: formData.temporada ? "" : t('filter.choose_season'),
+            imagen: formData.imagen ? "" : t('clothing.must_upload_img')
         };
 
         setErrors(newErrors);
@@ -94,7 +97,7 @@ export default function AddItemForm() {
         if (!hasErrors) {
             // Verificamos sesión
             if (!sessionUser) {
-                alert("Debes iniciar sesión para subir prendas");
+                alert(t('clothing.must_login'));
                 return;
             }
 
@@ -115,9 +118,9 @@ export default function AddItemForm() {
             if (result.error) {
                 // Usamos 'any' temporalmente o verificamos si message existe para calmar a TypeScript
                 const errorMsg = (result.error as any).message || "Error desconocido";
-                alert("Error al subir la prenda: " + errorMsg);
+                alert(t('clothing.error_upload_clothing') + " " + errorMsg);
             } else {
-                alert("Prenda creada correctamente ✅");
+                alert(t('clothing.ok_upload_clothing') + " ✅");
                 // Resetear formulario
                 setFormData({ nombre: "", tipoPrenda: "", color: "", temporada: "", imagen: null });
                 setPreview(null);
@@ -186,10 +189,10 @@ export default function AddItemForm() {
                     {/* Botones de acción */}
                     <div className="flex gap-4 pt-4">
                         <Button type="submit" disabled={loading} className="btn btn-primary">
-                            {loading ? "Guardando..." : "Guardar"}
+                            {loading ? t('actions.saving') : t('actions.save')}
                         </Button>
                         <Button type="button" className="btn btn-secondary">
-                            Cancelar
+                            {t("actions.cancel")}
                         </Button>
                     </div>
                 </div>

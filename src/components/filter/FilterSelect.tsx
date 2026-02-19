@@ -1,4 +1,5 @@
 import { useState, type SelectHTMLAttributes } from "react";
+import { useTranslation } from "react-i18next";
 
 
 type FilterSelectOption = {
@@ -15,6 +16,8 @@ interface FilterSelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
 
 export default function FilterSelect({ name, options, placeholder, disabled, onChange }: FilterSelectProps) {
 
+    const { t } = useTranslation();
+    
     const [value, setValue] = useState("");
 
 
@@ -64,7 +67,7 @@ export default function FilterSelect({ name, options, placeholder, disabled, onC
                 ))}
 
                 <option value="quitar" className="bg-primary-50 text-black">
-                    Quitar ❌
+                    {t('filter.remove')} ❌
                 </option>
             </select>
         </div>

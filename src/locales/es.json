@@ -1,8 +1,12 @@
 {
   "welcome": "Welcome {{user}}",
   "actions": {
-    "save": "Save",
-    "cancel": "Cancel"
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "saving": "Guardando...",
+    "access": "Acceder",
+    "loading": "Cargando...",
+    "save_changes": "Guardar cambios"
   },
   "navbar": {
     "button": {
@@ -13,7 +17,50 @@
       "home": "Inicio",
       "behaviour": "Funcionamiento",
       "reviews": "Reviews",
-      "team": "Equipo"
+      "team": "Equipo",
+      "closet": "Mi armario",
+      "outfits": "Mis conjuntos",
+      "upload_clothing": "Subir prenda",
+      "create_outfit": "Crear conjunto"
     }
+  },
+  "error": {
+    "random_error": "Ocurrió un error inesperado",
+    "close_session": "Error al cerrar sesión",
+    "saving": "Error al guardar"
+  },
+  "message":{
+    "2MB": "La imagen debe pesar menos de 2MB",
+    "profile_updated": "Perfil actualizado"
+  },
+  "footer": {
+    "feed": "",
+    "products": "Productos",
+    "discover": "Descubrir",
+    "help": "Ayuda",
+    "terms": "Términos",
+    "copyright_policy": "Políticade copyright",
+    "download": "Descargar"
+  },
+  "filter": {
+    "choose_category": "Elige una categoría",
+    "choose_season": "Elige una temporada",
+    "choose_color": "Elige un color",
+    "remove": "Quitar"
+  },
+  "clothing": {
+    "must_upload_img": "Debes subir una imagen",
+    "must_login": "Debes iniciar sesión para subir prendas",
+    "error_upload_clothing": "Error al subir la prenda:",
+    "ok_upload_clothing": "Prenda creada correctamente"
+  },
+  "form": {
+    "password": "Contraseña",
+    "current_password": "Contraseña actual",
+    "new_password": "Nueva contraseña",
+    "required_to_change_password": "Requerida para cambiar la contraseña",
+    "write_new_password": "Escribe nueva contraseña",
+    "remember_me": "Recuérdame",
+    "name_surname": "Nombre y Apellidos"
   }
 }

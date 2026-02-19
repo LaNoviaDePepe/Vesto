@@ -1,6 +1,7 @@
 import FilterSelect from "./FilterSelect";
 import * as CONSTANTES from '../../utils/constants'; // Ajusta la ruta según tu estructura
 import { useFilterStore } from "../../stores/filterStore"; 
+import { useTranslation } from "react-i18next";
 
 
 interface FilterProps {
@@ -9,6 +10,7 @@ interface FilterProps {
 
 export default function Filter({ width }: FilterProps) {
 
+    const { t } = useTranslation();
     const { setFilter } = useFilterStore();
 
 
@@ -28,21 +30,21 @@ export default function Filter({ width }: FilterProps) {
 
             <FilterSelect 
                 name="categoria" 
-                placeholder="Elige una categoría" 
+                placeholder={t('filter.choose_category')}
                 options={CONSTANTES.CATEGORIA_PRENDA} 
                 onChange={(e) => handleSelectChange('categoria', e)}
             />
             
             <FilterSelect 
                 name="temporada" 
-                placeholder="Elige una temporada" 
+                placeholder={t('filter.choose_season')} 
                 options={CONSTANTES.TEMPORADA_PRENDA} 
                 onChange={(e) => handleSelectChange('temporada', e)}
             />
             
             <FilterSelect 
                 name="color" 
-                placeholder="Elige un color" 
+                placeholder={t('filter.choose_color')} 
                 options={CONSTANTES.COLOR_PRENDA} 
                 onChange={(e) => handleSelectChange('color', e)}
             />

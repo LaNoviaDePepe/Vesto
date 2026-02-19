@@ -6,15 +6,17 @@ import { useAuthStore } from '../../stores/authStore';
 import toast from 'react-hot-toast';
 import { LogOut } from 'lucide-react';
 import { LanguageSwitcher } from './LanguageSwitcher';
+import { useTranslation } from 'react-i18next';
 
 
 export default function UserHeader() {
     // Constante que almacena los links para los usuarios registrados
+    const { t } = useTranslation();
     const userLinks = [
-        { label: 'Mi armario', path: '/closet' },
-        { label: 'Mis conjuntos', path: '/outfits' },
-        { label: 'Subir prenda', path: '/clothing' },
-        { label: 'Crear conjunto', path: '/outfitCreator' },
+        { label: t('navbar.links.closet'), path: '/closet' },
+        { label: t('navbar.links.outfits'), path: '/outfits' },
+        { label: t('navbar.links.upload_clothing'), path: '/clothing' },
+        { label: t('navbar.links.create_outfit'), path: '/outfitCreator' },
     ];
 
     const state = useAuthStore();
@@ -26,7 +28,7 @@ export default function UserHeader() {
         try {
             const result = await userRepository.logout();
             if (result.error) {
-                toast.error('Error al cerrar sesión');
+                toast.error(t('error.close_section'));
 
                 return;
             }
@@ -35,7 +37,7 @@ export default function UserHeader() {
             navigate('/');
 
         } catch (error) {
-            toast.error('Ocurrió un error inesperado');
+            toast.error(t('error.random_error'));
             console.log(error);
         }
     }

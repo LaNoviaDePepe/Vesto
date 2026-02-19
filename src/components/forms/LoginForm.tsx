@@ -3,6 +3,7 @@ import { validateVestoField } from "../../utils/regex";
 import Button from "../common/Button";
 import Input from "../common/Input";
 import { useAuth } from "../../hooks/useAuth";
+import { useTranslation } from "react-i18next";
 
 interface LoginFormProps {
     email: string; 
@@ -17,6 +18,9 @@ interface ErrorsProps {
 }
 
 export default function LoginForm() {
+
+    const { t } = useTranslation();
+    
     // Extraemos las funciones y estados del hook
     const { login, loading, error: authError } = useAuth();
 
@@ -95,7 +99,7 @@ export default function LoginForm() {
                 />
 
                 <Input
-                    label="Contraseña"
+                    label={t('form.password')}
                     name="password"
                     type="password"
                     value={formData.password}
@@ -105,7 +109,7 @@ export default function LoginForm() {
                 />
 
                 <Input
-                    label="Recuérdame"
+                    label={t('form.remember_me')}
                     name="rememberMe"
                     type="checkbox"
                     checked={formData.rememberMe}
@@ -115,7 +119,7 @@ export default function LoginForm() {
 
                 {/* Deshabilitar botón mientras carga */}
                 <Button type="submit" disabled={loading} className="btn btn-primary w-full">
-                    {loading ? "Cargando..." : "Acceder"}
+                    {loading ? t('actions.loading') : t('actions.access')}
                 </Button>
             </form>
         </div>
