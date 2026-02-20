@@ -14,23 +14,22 @@ import ClothingPage from "./pages/ClothingPage";
 import OutfitsPage from "./pages/OutfitsPage";
 import OutfitCreatorPage from "./pages/OutfitCreatorPage";
 import ProfilePage from "./pages/ProfilePage";
+import ResetPasswordPage from "./pages/ResetPasswordPage"; // <--- Importa la nueva página
 import PublicRoute from "./router/PublicRoute";
 import ProtectedRoute from "./router/ProtectedRoute";
 import GlobalLayout from "./layouts/GlobalLayout";
+import { Toaster } from "react-hot-toast";
+
 
 const router = createBrowserRouter([
   {
     element: <GlobalLayout />,
     children: [
       {
-        // Ruta compartida: LandingPage
         element: <LandingLayout />,
-        children: [
-          { path: "/", element: <LandingPage /> }
-        ],
+        children: [{ path: "/", element: <LandingPage /> }],
       },
       {
-        // Rutas accesible para usuarios no logueados
         element: <PublicRoute />,
         children: [
           {
@@ -38,12 +37,12 @@ const router = createBrowserRouter([
             children: [
               { path: "/login", element: <LoginPage /> },
               { path: "/signUp", element: <SignUpPage /> },
-            ]
-          }
-        ]
+              { path: "/reset-password", element: <ResetPasswordPage /> },
+            ],
+          },
+        ],
       },
       {
-        // Rutas accesibles para usuarios logueados
         element: <ProtectedRoute />,
         children: [
           {
@@ -52,22 +51,34 @@ const router = createBrowserRouter([
               { path: "/closet", element: <ClosetPage /> },
               { path: "/clothing", element: <ClothingPage /> },
               { path: "/outfits", element: <OutfitsPage /> },
-              { path: "/outfitCreator", element: <OutfitCreatorPage userId="4e9535ea-72b9-4dd2-8d96-e185da7c0d33" /> },
+              { path: "/outfitCreator", element: <OutfitCreatorPage /> },
               { path: "/profile", element: <ProfilePage /> },
-            ]
+            ],
           },
-        ]
+        ],
       },
-
-      // RUTA POR DEFECTO para redirigir a la raíz en caso de introducir una ruta incorrecta
       {
         path: "*",
         element: <Navigate to="/" replace />,
       },
-    ]
-  }
+    ],
+  },
 ]);
 
 export default function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <>
+      {/* El Toaster debe estar fuera del RouterProvider para que sea global */}
+      <Toaster 
+        position="top-right" 
+        reverseOrder={false} 
+        toastOptions={{
+          // Opcional: Estilos que combinan con Vesto
+          className: 'font-body border-2 border-auxiliary-700 rounded-2xl',
+          duration: 4000,
+        }}
+      />
+      <RouterProvider router={router} />
+    </>
+  );
 }

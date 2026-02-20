@@ -183,4 +183,15 @@ export class SupabaseUserRepository implements UserRepository {
             return { error };
         }
     }
+    async resetPasswordForEmail(email: string): Promise<{ error?: any }> {
+        try {
+            const { error } = await supabase.auth.resetPasswordForEmail(email, {
+                // Esta es la página donde el usuario escribirá su nueva contraseña
+                redirectTo: "http://localhost:5173/reset-password",
+            });
+            return { error };
+        } catch (error) {
+            return { error };
+        }
+    }
 }
