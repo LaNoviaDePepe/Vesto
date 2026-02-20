@@ -2,12 +2,65 @@
   "welcome": "Welcome {{user}}",
   "actions": {
     "save": "Save",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "saving": "Saving...",
+    "access": "Access",
+    "loading": "Loading...",
+    "save_changes": "Save changes"
   },
-  "navbar":{
+  "navbar": {
     "button": {
       "login": "Log in",
-      "sigup": "Sign up"
+      "signup": "Sign up"
+    },
+    "links": {
+      "home": "Home",
+      "behaviour": "How it works",
+      "reviews": "Reviews",
+      "team": "Team",
+      "closet": "My closet",
+      "outfits": "My outfits",
+      "upload_clothing": "Upload clothing",
+      "create_outfit": "Create outfit"
     }
+  },
+  "error": {
+    "random_error": "An unexpected error occurred",
+    "close_session": "Error logging out",
+    "saving": "Error while saving"
+  },
+  "message": {
+    "2MB": "The image must be smaller than 2MB",
+    "profile_updated": "Profile updated"
+  },
+  "footer": {
+    "feed": "",
+    "products": "Products",
+    "discover": "Discover",
+    "help": "Help",
+    "terms": "Terms",
+    "copyright_policy": "Copyright policy",
+    "download": "Download"
+  },
+  "filter": {
+    "choose_category": "Choose a category",
+    "choose_season": "Choose a season",
+    "choose_color": "Choose a color",
+    "remove": "Remove"
+  },
+  "clothing": {
+    "must_upload_img": "You must upload an image",
+    "must_login": "You must log in to upload clothing",
+    "error_upload_clothing": "Error uploading clothing:",
+    "ok_upload_clothing": "Clothing created successfully"
+  },
+  "form": {
+    "password": "Password",
+    "current_password": "Current password",
+    "new_password": "New password",
+    "required_to_change_password": "Required to change password",
+    "write_new_password": "Enter new password",
+    "remember_me": "Remember me",
+    "name_surname": "Full name"
   }
 }
