@@ -8,6 +8,8 @@ import { LogOut } from 'lucide-react';
 
 
 export default function UserHeader() {
+        const sessionUser = useAuthStore((state) => state.sessionUser);
+
     // Constante que almacena los links para los usuarios registrados
     const userLinks = [
         { label: 'Mi armario', path: '/closet' },
@@ -39,6 +41,9 @@ export default function UserHeader() {
         }
     }
 
+        // Determinamos qué imagen mostrar: la de Supabase o la de por defecto
+    const avatarImg = sessionUser?.profile?.url_avatar ? sessionUser.profile.url_avatar : "/img/Default-Profile-Picture.jfif";
+
     return (
         <header className="bg-primary-700">
 
@@ -52,10 +57,11 @@ export default function UserHeader() {
 
                 <div className="flex items-center">
                     <Link to="/profile" className="block h-15 w-auto">
+                        {/* Usamos la variable avatarImg en el src */}
                         <img
-                            src="/img/profile-picture.png"
+                            src={avatarImg}
                             alt="Imagen de Perfil"
-                            className="h-full w-full object-cover shadow-sm"
+                            className="h-full w-full object-cover shadow-sm rounded-full"
                         />
                     </Link>
 

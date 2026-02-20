@@ -19,11 +19,11 @@ export default function Input({ label, error, disabled, type, ...props }: InputP
         : "w-full rounded-md border px-4 py-3 outline-none transition-all font-body";
 
     const borderClasses = !isCheckbox && error
-        ? "border-danger-600 focus:ring-1 focus:ring-danger-600"
+        ? "border-danger-600 focus:ring-1 focus:ring-danger-600 bg-white"
         : disabled
-            ? "border-gray-200 bg-gray-50 cursor-not-allowed"
+            ? "border-gray-200 bg-gray-50 cursor-not-allowed bg-white"
             : !isCheckbox
-                ? "border-gray-300 focus:border-auxiliary-700 focus:ring-1 focus:ring-auxiliary-700"
+                ? "border-gray-300 focus:border-auxiliary-700 focus:ring-1 focus:ring-auxiliary-700 bg-white"
                 : ""; // Sin bordes especiales para checkbox nativo
 
     const textClasses = disabled ? "text-gray-400" : "text-black";
