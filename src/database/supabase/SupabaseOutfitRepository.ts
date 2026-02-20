@@ -1,5 +1,4 @@
 import type { OutfitRepository } from "../repositories/OutfitRepository";
-import type { OutfitRepository } from "../repositories/OutfitRepository";
 import { supabase } from "./Client";
 
 export interface ConjuntoData {

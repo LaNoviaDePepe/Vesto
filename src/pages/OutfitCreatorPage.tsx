@@ -1,11 +1,13 @@
 import { useEffect, useState, type ChangeEvent, type FormEvent } from "react";
-import { CircleChevronUp } from "lucide-react";
 import Filter from "../components/filter/Filter";
 import Prenda from "../components/clothing/Prenda";
 import Button from "../components/common/Button";
 import { SupabaseOutfitRepository } from "../database/supabase/SupabaseOutfitRepository";
 import { CircleChevronUp } from "lucide-react";
 import Input from "../components/common/Input";
+import { SupabaseItemRepository } from "../database/supabase/SupabaseItemRepository";
+import { useAuthStore } from "../stores/authStore";
+import { useFilterStore } from "../stores/filterStore";
 
 type CategoriaPrenda = "cabeza" | "parte_arriba" | "parte_abajo" | "complemento" | "calzado";
 type ColorPrenda = "negro" | "blanco" | "gris" | "rojo" | "azul" | "amarillo" | "verde" | "naranja" | "morado" | "rosa" | "marron" | "celeste" | "turquesa" | "beige" | "dorado" | "plateado";
@@ -36,7 +38,7 @@ const itemRepository = new SupabaseItemRepository();
 export default function OutfitCreatorPage() {
 
   const { sessionUser } = useAuthStore();
-  const { filters, resetFilters } = useFilterStore();
+  const { setFilter, resetFilters } = useFilterStore();
 
   const [prendas, setPrendas] = useState<PrendaBD[]>([]); // Lista de la izquierda
   const [loading, setLoading] = useState(false);
@@ -99,7 +101,7 @@ export default function OutfitCreatorPage() {
         nombre: nombreConjunto,
         descripcion: descripcion,
         id_usuario: userId,
-        prendasIds: prendasSeleccionadas.map(p => p.id),
+        prendasIds: prendasSeleccionadas.map(p => typeof p.id === 'number' ? p.id : parseInt(p.id as string, 10)).filter(id => !isNaN(id)),
         favorito: false,
         imagen: imagenConjunto
       });
