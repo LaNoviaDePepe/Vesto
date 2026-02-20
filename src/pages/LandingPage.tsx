@@ -1,7 +1,12 @@
 import { useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom'; 
+import { Link, useLocation } from 'react-router-dom';
 import Button from '../components/common/Button';
 import { useTranslation } from "react-i18next";
+import RodasImg from "../img/Rodas.png";
+import GabinoImg from "../img/Gabino.png";
+import GloriajinImg from "../img/Gloriajin.png";
+import LuciaImg from "../img/Lucia.png";
+import MiguelImg from "../img/Miguel.png";
 
 export default function LandingPage() {
     const { t } = useTranslation();
@@ -47,8 +52,8 @@ export default function LandingPage() {
                             </Link>
                         </div>
 
-                        <p className="font-(--font-display) text-4xl uppercase text-black max-w-xl">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        <p className="font-(--font-display) text-4xl text-black max-w-xl">
+                            ¿Cansado de perder demasiado tiempo eligiendo qué ponerte cada día? Eligelo rápido con Vesto, la app que te ayuda a organizar tu armario y crear outfits personalizados en segundos.
                         </p>
 
                         <div className="flex gap-4 mt-6 w-auto">
@@ -78,7 +83,7 @@ export default function LandingPage() {
                             ¿Cómo funciona Vesto?
                         </h2>
                         <p className="text-black text-lg font-(--font-body)">
-                            Duis in convallis libero, ac accumsan lectus. Duis nec diam massa. Sed ornare libero enim, et faucibus nunc dictum id.
+                            Tenemos un diseño intuitivo y fácil de usar, con funciones como subir fotos de tu ropa, crear outfits personalizados, guardar en favoritos... Todo para que elegir tu look diario sea rápido, divertido y sin complicaciones.
                         </p>
                     </div>
                     <div className="relative w-full rounded-xl overflow-hidden">
@@ -93,29 +98,81 @@ export default function LandingPage() {
                 {/* CARD 2: RECOMENDACIONES */}
                 <div id="reviews" className="scroll-mt-25 w-full max-w-7xl bg-white rounded-4xl shadow-xl p-12 flex flex-col items-center gap-12">
                     <h2 className="text-4xl font-bold text-black text-center font-(--font-display)">
-                        +50K usuarios nos recomiendan
+                        +50K usuarios satisfechos
                     </h2>
                     <div className="grid grid-cols-4 gap-8 w-full">
-                        {[1, 2, 3, 4].map((item) => (
-                            <div key={item} className="flex flex-col items-center text-center gap-2">
-                                {/* Avatar usuario */}
-                                <img
-                                    src="/img/opinions-default.png"
-                                    alt="Usuario"
-                                    className="w-24 h-24 rounded-full object-cover"
-                                />
-                                <h3 className="font-bold text-lg text-black font-(--font-body)">Usuario</h3>
-                                {/* Estrellas */}
-                                <img
-                                    src="/img/stars.png"
-                                    alt="5 estrellas"
-                                    className="h-5 w-auto"
-                                />
-                                <p className="text-sm text-black px-2 font-(--font-body)">
-                                    Duis nec diam massa. Sed ornare libero enim.
-                                </p>
-                            </div>
-                        ))}
+                        <div className="flex flex-col items-center text-center gap-2">
+                            {/* Avatar usuario */}
+                            <img
+                                src="/img/opinions-default.png"
+                                alt="Usuario"
+                                className="w-24 h-24 rounded-full object-cover"
+                            />
+                            <h3 className="font-bold text-lg text-black font-(--font-body)">Ángel</h3>
+                            {/* Estrellas */}
+                            <img
+                                src="/img/stars.png"
+                                alt="5 estrellas"
+                                className="h-5 w-auto"
+                            />
+                            <p className="text-sm text-black px-2 font-(--font-body)">
+                                Obra de arte se nota la mano de Manuel en esta app, me ha cambiado la vida, ahora elegir qué ponerme es un placer y no una tortura. ¡Gracias Vesto!
+                            </p>
+                        </div>
+                        <div className="flex flex-col items-center text-center gap-2">
+                            {/* Avatar usuario */}
+                            <img
+                                src="/img/opinions-default.png"
+                                alt="Usuario"
+                                className="w-24 h-24 rounded-full object-cover"
+                            />
+                            <h3 className="font-bold text-lg text-black font-(--font-body)">Jesús</h3>
+                            {/* Estrellas */}
+                            <img
+                                src="/img/stars.png"
+                                alt="5 estrellas"
+                                className="h-5 w-auto"
+                            />
+                            <p className="text-sm text-black px-2 font-(--font-body)">
+                                Desde que la uso soy más feliz, gracias a Vesto he descubierto combinaciones de ropa que no se me habrían ocurrido, y ahora me siento más seguro con mi estilo. ¡Recomendada al 100%!
+                            </p>
+                        </div>
+                        <div className="flex flex-col items-center text-center gap-2">
+                            {/* Avatar usuario */}
+                            <img
+                                src="/img/opinions-default.png"
+                                alt="Usuario"
+                                className="w-24 h-24 rounded-full object-cover"
+                            />
+                            <h3 className="font-bold text-lg text-black font-(--font-body)">Pepe</h3>
+                            {/* Estrellas */}
+                            <img
+                                src="/img/stars.png"
+                                alt="5 estrellas"
+                                className="h-5 w-auto"
+                            />
+                            <p className="text-sm text-black px-2 font-(--font-body)">
+                                Soy un hombre de pelo pobre y no sabia que habia tantas posibilidades de combinacion, ahora con Vesto me siento un rey, me ha dado confianza y estilo. Se nota que hay uno de los mios detras de esta app, gracias Gabi!
+                            </p>
+                        </div>
+                        <div className="flex flex-col items-center text-center gap-2">
+                            {/* Avatar usuario */}
+                            <img
+                                src="/img/opinions-default.png"
+                                alt="Usuario"
+                                className="w-24 h-24 rounded-full object-cover"
+                            />
+                            <h3 className="font-bold text-lg text-black font-(--font-body)">Elías</h3>
+                            {/* Estrellas */}
+                            <img
+                                src="/img/stars.png"
+                                alt="5 estrellas"
+                                className="h-5 w-auto"
+                            />
+                            <p className="text-sm text-black px-2 font-(--font-body)">
+                                No había visto una app tan completa y funcional. ¡Vesto ha revolucionado mi forma de elegir la ropa! Me encanta la función de crear outfits personalizados, es como tener un estilista personal en el bolsillo. ¡Muy recomendable!
+                            </p>
+                        </div>
                     </div>
                 </div>
 
@@ -126,27 +183,63 @@ export default function LandingPage() {
                             Nuestro equipo
                         </h2>
                         <p className=" text-black text-lg font-(--font-body)">
-                            Duis in convallis libero, ac accumsan lectus. Duis nec diam massa.
+                            Los verdaderos creadores de Vesto.
                         </p>
                     </div>
                     <div className="flex flex-wrap justify-center gap-12 w-full">
-                        {[1, 2, 3, 4, 5].map((item) => (
-                            <div key={item} className="flex flex-col items-center text-center gap-2 w-32">
-                                {/* Avatar del equipo */}
-                                <img
-                                    src="/img/equipo-default.png"
-                                    alt="Miembro del equipo"
-                                    className="w-28 h-28 rounded-full object-cover mb-2"
-                                />
-                                <h3 className="font-bold text-lg text-black font-(--font-body)">Nombre</h3>
-                                <p className="text-sm text-blck font-(--font-body)">Duis nec diam massa.</p>
-                            </div>
-                        ))}
+                        <div className="flex flex-col items-center text-center gap-2 w-32">
+                            {/* Avatar del equipo */}
+                            <img
+                                src={RodasImg}
+                                alt="Rodas"
+                                className="w-28 h-28 rounded-full object-cover mb-2"
+                            />
+                            <h3 className="font-bold text-lg text-black font-(--font-body)">Rodas</h3>
+                            <p className="text-sm text-blck font-(--font-body)">Cabra absoluta, no necesita presentación.</p>
+                        </div>
+                        <div className="flex flex-col items-center text-center gap-2 w-32">
+                            {/* Avatar del equipo */}
+                            <img
+                                src={GabinoImg}
+                                alt="Gabino"
+                                className="w-28 h-28 rounded-full object-cover mb-2"
+                            />
+                            <h3 className="font-bold text-lg text-black font-(--font-body)">Pepe</h3>
+                            <p className="text-sm text-blck font-(--font-body)">Aporta mucha veteranía, tiene más años que un bosque.</p>
+                        </div>
+                        <div className="flex flex-col items-center text-center gap-2 w-32">
+                            {/* Avatar del equipo */}
+                            <img
+                                src={GloriajinImg}
+                                alt="Gloriajin"
+                                className="w-28 h-28 rounded-full object-cover mb-2"
+                            />
+                            <h3 className="font-bold text-lg text-black font-(--font-body)">Gloriajin</h3>
+                            <p className="text-sm text-blck font-(--font-body)">Diva absoluta, le da el toque chick.</p>
+                        </div>
+                        <div className="flex flex-col items-center text-center gap-2 w-32">
+                            {/* Avatar del equipo */}
+                            <img
+                                src={MiguelImg}
+                                alt="Miguel"
+                                className="w-28 h-28 rounded-full object-cover mb-2"
+                            />
+                            <h3 className="font-bold text-lg text-black font-(--font-body)">Miguel</h3>
+                            <p className="text-sm text-blck font-(--font-body)">Obsesionado con el trabajo, dentro y fuera del campo.</p>
+                        </div>
+                        <div className="flex flex-col items-center text-center gap-2 w-32">
+                            {/* Avatar del equipo */}
+                            <img
+                                src={LuciaImg}
+                                alt="Lucía"
+                                className="w-28 h-28 rounded-full object-cover mb-2"
+                            />
+                            <h3 className="font-bold text-lg text-black font-(--font-body)">Lucía</h3>
+                            <p className="text-sm text-blck font-(--font-body)">Sabe demasiado de todo, pero no lo dice, ¿falsa humilde?.</p>
+                        </div>
                     </div>
                 </div>
-
             </section>
-
         </main>
     );
 }
