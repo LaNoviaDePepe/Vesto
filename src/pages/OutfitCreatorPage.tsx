@@ -1,13 +1,14 @@
-import { useEffect, useState, type ChangeEvent, type FormEvent } from "react";
+import { useEffect, useState, type ChangeEvent } from "react";
 import Filter from "../components/filter/Filter";
 import Prenda from "../components/clothing/Prenda";
 import Button from "../components/common/Button";
 import { SupabaseOutfitRepository } from "../database/supabase/SupabaseOutfitRepository";
-import { CircleChevronUp } from "lucide-react";
-import Input from "../components/common/Input";
 import { SupabaseItemRepository } from "../database/supabase/SupabaseItemRepository";
+import { CircleChevronUp } from "lucide-react";
 import { useAuthStore } from "../stores/authStore";
 import { useFilterStore } from "../stores/filterStore";
+import { OutfitSlot } from "../components/clothing/OutfitSlot";
+import Input from "../components/common/Input";
 
 type CategoriaPrenda = "cabeza" | "parte_arriba" | "parte_abajo" | "complemento" | "calzado";
 type ColorPrenda = "negro" | "blanco" | "gris" | "rojo" | "azul" | "amarillo" | "verde" | "naranja" | "morado" | "rosa" | "marron" | "celeste" | "turquesa" | "beige" | "dorado" | "plateado";
@@ -15,17 +16,16 @@ type TemporadaPrenda = "otonio" | "invierno" | "primavera" | "verano" | "todo";
 
 
 interface PrendaBD {
-  id: string | number;
-  id_usuario: string;
-  nombre: string;    
+  id: number;
+  id_usuario: string | undefined;
+  nombre: string;
   categoria: CategoriaPrenda;
   color: ColorPrenda;
-  url_imagen: string; 
+  url_imagen: string;
   temporada: TemporadaPrenda;
   favorito: boolean;
 }
 
-// Interfaz para los errores siguiendo tu ejemplo
 interface ErrorsProps {
   nombre: string;
   outfit: string;
@@ -35,17 +35,22 @@ interface ErrorsProps {
 const outfitRepo = new SupabaseOutfitRepository();
 const itemRepository = new SupabaseItemRepository();
 
+
 export default function OutfitCreatorPage() {
 
   const { sessionUser } = useAuthStore();
-  const { setFilter, resetFilters } = useFilterStore();
+  const { filters, resetFilters } = useFilterStore();
 
   const [prendas, setPrendas] = useState<PrendaBD[]>([]); // Lista de la izquierda
-  const [loading, setLoading] = useState(false);
+
+  // Campos del form (derecha)
   const [nombreConjunto, setNombreConjunto] = useState("");
   const [descripcion, setDescripcion] = useState("");
+  const [imagenConjunto, setImagen] = useState<File | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [preview, setPreview] = useState<string | null>(null);
 
-  // ESATADO DEL OUTFIT (Derecha)
+  // Estado del outfit
   const [outfit, setOutfit] = useState<Record<CategoriaPrenda, PrendaBD | null>>({
     cabeza: null,
     parte_arriba: null,
@@ -54,15 +59,58 @@ export default function OutfitCreatorPage() {
     calzado: null,
   });
 
-  const [imagenConjunto, setImagen] = useState<File | null>(null);
-  const [preview, setPreview] = useState<string | null>(null);
-
   const [errors, setErrors] = useState<ErrorsProps>({
     nombre: "",
     outfit: "",
     imagen: ""
   });
 
+
+  // --- CARGA DE PRENDAS DEL ARMARIO (IZQUIERDA) ---
+  useEffect(() => {
+    if (!sessionUser) return;
+
+    const loadPrendas = async () => {
+      const { data, error } = await itemRepository.getPrendas(sessionUser.user.id);
+
+      if (error) {
+        console.error("Error cargando armario:", error);
+        return;
+      }
+
+      const prendasAdaptadas: PrendaBD[] = (data || []).map((p: any) => ({
+        id: p.id,
+        id_usuario: sessionUser.user.id,
+        nombre: p.name,
+        url_imagen: p.url,
+        categoria: p.categoria,
+        color: p.color,
+        temporada: p.temporada,
+        favorito: p.favorito || false
+      }));
+
+      setPrendas(prendasAdaptadas);
+    };
+
+    loadPrendas();
+
+    // Limpieza de filtros al cambiar de página
+    return () => {
+      resetFilters();
+    };
+  }, [sessionUser, resetFilters]);
+
+
+  // LÓGICA DE FILTRADO 
+  const prendasFiltradas = prendas.filter((prenda) => {
+    if (filters.categoria && prenda.categoria !== filters.categoria) return false;
+    if (filters.temporada && prenda.temporada !== filters.temporada) return false;
+    if (filters.color && prenda.color !== filters.color) return false;
+    return true;
+  });
+
+
+  // LÓGICA DE SELECCIÓN Y GUARDADO 
   const handleSelectPrenda = (prenda: PrendaBD) => {
     setOutfit((estadoprevio) => {
       // Si la prenda ya está seleccionada en su categoría, la quitamos
@@ -75,15 +123,14 @@ export default function OutfitCreatorPage() {
     setErrors(prev => ({ ...prev, outfit: "" }));
   };
 
-  /**
-   * Lógica de guardado conectada a Supabase
-   */
+
+  // LÓGICA DE GUARDADO CONECTADA A SUPABASE
   const handleSaveOutfit = async (e: React.SubmitEvent) => {
     e.preventDefault(); // Manejo de form
 
     const prendasSeleccionadas = Object.values(outfit).filter((p): p is PrendaBD => p !== null);
 
-    // 1. Validaciones previas siguiendo tu estructura
+    // Validaciones previas 
     const newErrors = {
       nombre: !nombreConjunto.trim() ? "Por favor, introduce un nombre para el conjunto." : "",
       outfit: prendasSeleccionadas.length === 0 ? "Debes seleccionar al menos una prenda." : "",
@@ -96,34 +143,36 @@ export default function OutfitCreatorPage() {
     if (!hasErrors) {
       setLoading(true);
 
-      // 2. Llamada al repositorio
-      const { error } = await outfitRepo.createConjunto({
-        nombre: nombreConjunto,
-        descripcion: descripcion,
-        id_usuario: userId,
-        prendasIds: prendasSeleccionadas.map(p => typeof p.id === 'number' ? p.id : parseInt(p.id as string, 10)).filter(id => !isNaN(id)),
-        favorito: false,
-        imagen: imagenConjunto
-      });
-
-      setLoading(false);
-
-      if (error) {
-        alert("Hubo un error al guardar el conjunto.");
-      } else {
-        alert(`¡Conjunto '${nombreConjunto}' guardado con éxito!`);
-
-        setNombreConjunto("");
-        setDescripcion("");
-        setPreview(null);
-        setImagen(null);
-        setOutfit({
-          cabeza: null,
-          parte_arriba: null,
-          parte_abajo: null,
-          complemento: null,
-          calzado: null,
+      // Sólo llamamos al repositorio si existe un usuario logueado, lo cual garantiza que user.id no sea posiblemente null.
+      if (sessionUser) {
+        const { error } = await outfitRepo.createConjunto({
+          nombre: nombreConjunto,
+          descripcion: descripcion,
+          id_usuario: sessionUser.user.id,
+          prendasIds: prendasSeleccionadas.map(p => p.id), 
+          favorito: false,
+          url_imagen: imagenConjunto ?? undefined
         });
+
+        setLoading(false);
+
+        if (error) {
+          alert("Hubo un error al guardar el conjunto.");
+        } else {
+          alert(`¡Conjunto '${nombreConjunto}' guardado con éxito!`);
+
+          setNombreConjunto("");
+          setDescripcion("");
+          setPreview(null);
+          setImagen(null);
+          setOutfit({
+            cabeza: null,
+            parte_arriba: null,
+            parte_abajo: null,
+            complemento: null,
+            calzado: null,
+          });
+        }
       }
     }
   };
@@ -137,8 +186,13 @@ export default function OutfitCreatorPage() {
     }
   };
 
+  // Controla la función de subida en el div de prendas
   const scrollToTopArmario = () => {
-    document.getElementById("closet-container")?.scrollTo({ top: 0, behavior: 'smooth' });
+    const element = document.getElementById("closet-container");
+    element?.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
   };
 
 
@@ -146,6 +200,7 @@ export default function OutfitCreatorPage() {
     <div className="flex flex-col lg:flex-row h-[calc(100vh-80px)] overflow-hidden bg-primary-300 ">
 
       {/* COLUMNA IZQUIERDA: ARMARIO */}
+      {/* Este div queda en posición 'relative' para colocar el botón de volver arriba respecto al conjunto de prendas. */}
       <div className="relative flex-1 flex flex-col overflow-hidden border-r border-gray-100">
 
         {/* Barra de Filtros */}
@@ -160,7 +215,11 @@ export default function OutfitCreatorPage() {
                 <div
                   key={prenda.id}
                   onClick={() => handleSelectPrenda(prenda)}
-                  className={`cursor-pointer transition-all duration-200 hover:opacity-80`}
+                  className={`cursor-pointer transition-all duration-200 rounded-xl ${
+                  outfit[prenda.categoria]?.id === prenda.id 
+                  ? 'ring-4 ring-primary-700 shadow-lg scale-105' 
+                  : 'hover:opacity-80'
+                }`}
                 >
                   <Prenda
                     name={prenda.nombre}
@@ -235,7 +294,7 @@ export default function OutfitCreatorPage() {
           </div>
         </div>
 
-        <div className="flex flex-col items-center justify-center space-y-6 mt-10 pb-10 mb-10">
+        <div className="flex flex-col items-center justify-center space-y-6 mt-10 pb-20 mb-10">
           {/* Input File */}
           <div className="w-full max-w-75">
             <input
@@ -258,48 +317,28 @@ export default function OutfitCreatorPage() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                   </svg>
                 </div>
-                <p className="text-gray-400 font-medium">No Image Available</p>
+                <p className="text-gray-400 font-medium">Sube foto de tu outfit</p>
               </div>
             )}
           </div>
 
-          
         </div>
       </form>
     </div>
   );
 }
 
-/**
- * Componente de Slot simplificado para el Grid
- */
-function OutfitSlot({ label, item }: { label: string; item: PrendaBD | null }) {
-  return (
-    <div className="flex flex-col items-center gap-2">
-      <span className="text-[10px] font-bold text-primary-700 uppercase">{label}</span>
-      <div className={`w-28 h-36 bg-white border-2 rounded-2xl flex items-center justify-center p-2 shadow-sm transition-all ${item ? 'border-primary-700 shadow-md' : 'border-dashed border-gray-300'
-        }`}>
-        <div className="w-full h-full bg-gray-50 rounded-lg overflow-hidden flex items-center justify-center border border-gray-100">
-          {item ? (
-            <img src={item.url_imagen} alt={item.nombre} className="w-full h-full object-cover" />
-          ) : (
-            <span className="text-gray-300 text-3xl font-light">+</span>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-}
 
-const mockPrendasBD: PrendaBD[] = [
-  // --- CATEGORÍA: CABEZA (7) ---
-  { id: 1, id_usuario: "4e9535ea-72b9-4dd2-8d96-e185da7c0d33", nombre: "Gorro Lana", categoria: "cabeza", color: "azul", temporada: "invierno", url_imagen: "/img/prenda.jpg", favorito: false },
-  { id: 2, id_usuario: "4e9535ea-72b9-4dd2-8d96-e185da7c0d33", nombre: "Gorra Trucker", categoria: "cabeza", color: "negro", temporada: "verano", url_imagen: "/img/prenda.jpg", favorito: true },
-  { id: 3, id_usuario: "4e9535ea-72b9-4dd2-8d96-e185da7c0d33", nombre: "Sombrero Paja", categoria: "cabeza", color: "beige", temporada: "verano", url_imagen: "/img/prenda.jpg", favorito: false },
-  { id: 4, id_usuario: "4e9535ea-72b9-4dd2-8d96-e185da7c0d33", nombre: "Beanie Gris", categoria: "cabeza", color: "gris", temporada: "invierno", url_imagen: "/img/prenda.jpg", favorito: false },
-  { id: 5, id_usuario: "4e9535ea-72b9-4dd2-8d96-e185da7c0d33", nombre: "Boina Roja", categoria: "cabeza", color: "rojo", temporada: "otonio", url_imagen: "/img/prenda.jpg", favorito: false },
-  { id: 6, id_usuario: "4e9535ea-72b9-4dd2-8d96-e185da7c0d33", nombre: "Visera Running", categoria: "cabeza", color: "blanco", temporada: "verano", url_imagen: "/img/prenda.jpg", favorito: false },
-  { id: 7, id_usuario: "4e9535ea-72b9-4dd2-8d96-e185da7c0d33", nombre: "Gorro Pescador", categoria: "cabeza", color: "verde", temporada: "primavera", url_imagen: "/img/prenda.jpg", favorito: true },
+
+// const mockPrendasBD: PrendaBD[] = [
+//   // --- CATEGORÍA: CABEZA (7) ---
+//   { id: 1, id_usuario: "4e9535ea-72b9-4dd2-8d96-e185da7c0d33", nombre: "Gorro Lana", categoria: "cabeza", color: "azul", temporada: "invierno", url_imagen: "/img/prenda.jpg", favorito: false },
+//   { id: 2, id_usuario: "4e9535ea-72b9-4dd2-8d96-e185da7c0d33", nombre: "Gorra Trucker", categoria: "cabeza", color: "negro", temporada: "verano", url_imagen: "/img/prenda.jpg", favorito: true },
+//   { id: 3, id_usuario: "4e9535ea-72b9-4dd2-8d96-e185da7c0d33", nombre: "Sombrero Paja", categoria: "cabeza", color: "beige", temporada: "verano", url_imagen: "/img/prenda.jpg", favorito: false },
+//   { id: 4, id_usuario: "4e9535ea-72b9-4dd2-8d96-e185da7c0d33", nombre: "Beanie Gris", categoria: "cabeza", color: "gris", temporada: "invierno", url_imagen: "/img/prenda.jpg", favorito: false },
+//   { id: 5, id_usuario: "4e9535ea-72b9-4dd2-8d96-e185da7c0d33", nombre: "Boina Roja", categoria: "cabeza", color: "rojo", temporada: "otonio", url_imagen: "/img/prenda.jpg", favorito: false },
+//   { id: 6, id_usuario: "4e9535ea-72b9-4dd2-8d96-e185da7c0d33", nombre: "Visera Running", categoria: "cabeza", color: "blanco", temporada: "verano", url_imagen: "/img/prenda.jpg", favorito: false },
+//   { id: 7, id_usuario: "4e9535ea-72b9-4dd2-8d96-e185da7c0d33", nombre: "Gorro Pescador", categoria: "cabeza", color: "verde", temporada: "primavera", url_imagen: "/img/prenda.jpg", favorito: true },
 
 //   // --- CATEGORÍA: PARTE ARRIBA (7) ---
 //   { id: 8, id_usuario: "4e9535ea-72b9-4dd2-8d96-e185da7c0d33", nombre: "Sudadera Hoodie", categoria: "parte_arriba", color: "gris", temporada: "invierno", url_imagen: "/img/prenda.jpg", favorito: false },

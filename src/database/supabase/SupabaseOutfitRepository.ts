@@ -7,7 +7,7 @@ export interface ConjuntoData {
     prendasIds: number[];
     descripcion?: string;
     favorito?: boolean;
-    imagen: File | null;
+    url_imagen?: File;
 }
 
 export class SupabaseOutfitRepository implements OutfitRepository {
@@ -53,29 +53,37 @@ export class SupabaseOutfitRepository implements OutfitRepository {
     }
 
     async createConjunto(data: ConjuntoData) {
+        let publicUrl = "";
+        let storagePath: string | null = null; // Variable de control para el borrado en storage
+
+        // URL de la imagen por defecto 
+        const DEFAULT_IMAGE_URL = "/img/default-outfit.png";
+
         try {
-            // Subir la imagen al Storage
-            // Creamos un nombre único para el archivo (ej: usuarioID/timestamp.png)
-            if (!data.imagen) {
-                return { error: new Error("La imagen es requerida") };
+            // Lógica de imagen opcional
+            if (data.url_imagen) {
+                const fileExt = data.url_imagen.name.split('.').pop();
+                const fileName = `${Date.now()}.${fileExt}`;
+                storagePath = `${data.id_usuario}/${fileName}`;
+
+                const { error: uploadError } = await supabase.storage
+                    .from('conjuntos')
+                    .upload(storagePath, data.url_imagen);
+
+                if (uploadError) {
+                    console.error("Error subiendo imagen:", uploadError);
+                    return { error: uploadError };
+                }
+
+                // Obtenemos la URL pública de la imagen recién subida
+                const { data: urlData } = supabase.storage
+                    .from('conjuntos')
+                    .getPublicUrl(storagePath);
+
+                publicUrl = urlData.publicUrl;
+            } else {
+                publicUrl = DEFAULT_IMAGE_URL; // Si no hay imagen, usamos la de por defecto
             }
-            const fileExt = data.imagen.name.split('.').pop();
-            const fileName = `${data.id_usuario}/${Date.now()}.${fileExt}`;
-            const filePath = `${fileName}`;
-
-            const { error: uploadError } = await supabase.storage
-                .from('conjuntos')
-                .upload(filePath, data.imagen);
-
-            if (uploadError) {
-                console.error("Error subiendo imagen:", uploadError);
-                return { error: uploadError };
-            }
-
-            // Obtenemos la URL pública de la imagen
-            const { data: { publicUrl } } = supabase.storage
-                .from('conjuntos')
-                .getPublicUrl(filePath);
 
             const { data: newOutfit, error: outfitError } = await supabase
                 .from('conjuntos')
@@ -84,12 +92,16 @@ export class SupabaseOutfitRepository implements OutfitRepository {
                     descripcion: data.descripcion,
                     id_usuario: data.id_usuario,
                     favorito: data.favorito || false,
-                    imagen: publicUrl
+                    url_imagen: publicUrl
                 })
                 .select() //Devuelve el id del conjunto recién creado para poder realizar las inserciones en la tabla conjuntos_prendas
                 .single();
 
             if (outfitError) {
+                // Si falla la inserción de la cabecera, limpiamos la imagen si se subió una
+                if (storagePath) {
+                    await supabase.storage.from('conjuntos').remove([storagePath]);
+                }
                 console.error("Error creando cabecera del conjunto:", outfitError);
                 return { error: outfitError };
             }
@@ -112,11 +124,12 @@ export class SupabaseOutfitRepository implements OutfitRepository {
                     .from('conjuntos')
                     .delete()
                     .eq('id', newOutfit.id);
-                    
-                await supabase
-                    .storage
-                    .from('conjuntos')
-                    .remove([filePath]);
+
+                // Borramos la imagen del storage solo si se subió una nueva
+                // Usamos storagePath para evitar errores al intentar procesar la URL por defecto
+                if (storagePath) {
+                    await supabase.storage.from('conjuntos').remove([storagePath]);
+                }
                 return { error: relationsError };
             }
 
