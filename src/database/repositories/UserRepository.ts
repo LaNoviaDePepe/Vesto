@@ -56,4 +56,9 @@ export interface UserRepository {
      * @returns Una promesa con la URL pública de la imagen subida o un error de almacenamiento.
      */
     updateAvatar(userId: string, file: File): Promise<{ data?: string; error?: any }>;
+
+    /**
+     * Envía un correo de recuperación al usuario.
+     */
+    resetPasswordForEmail(email: string): Promise<{ error?: any }>;
 }
