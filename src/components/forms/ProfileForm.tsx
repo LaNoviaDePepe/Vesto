@@ -192,7 +192,7 @@ export default function ProfileForm() {
                 state.updateSessionProfile(profileRes.data);
             }
 
-            toast.success("Perfil actualizado ✅");
+            toast.success("Perfil actualizado");
             setFormData(prev => ({ ...prev, currentPassword: "", newPassword: "" }));
 
         } catch (error: any) {

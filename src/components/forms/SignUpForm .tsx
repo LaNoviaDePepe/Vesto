@@ -152,7 +152,7 @@ export default function SignUpForm() {
                     setAuthError(repoError.message || 'Error al registrar');
                 } else if (data) {
                     setSession(data); // Guardamos en Zustand
-                    toast.success("Usuario registrado y logueado ✅");
+                    toast.success("Usuario registrado y logueado");
                     navigate('/');
                 }
             } catch (err) {
