@@ -1,27 +1,39 @@
-// import { Heart } from "lucide-react";
+import { Heart } from "lucide-react";
 
 export interface PrendaProps {
-    id?: number; 
-    id_usuario?: string; 
+    id?: number;
+    id_usuario?: string;
     name: string;
     url: string;
     color: string;
     temporada: string;
     categoria: string;
     favorito: boolean;
+    //Función para marcar/desmarcar favorita una prenda
+    onToggleFavorito?: (id: number, estadoActual: boolean) => void;
 }
 
-export default function Prenda({ name: name, url: url, color, temporada, categoria, favorito}: PrendaProps) {
+export default function Prenda({ id, name, url, color, temporada, categoria, favorito, onToggleFavorito }: PrendaProps) {
+
+    // función para manejar el click en el corazón
+    const handleHeartClick = (e: React.MouseEvent) => {
+        e.stopPropagation(); // evita que se haga click en la tarjeta entera, solo se hace click en el corazón
+        if (onToggleFavorito && id !== undefined) {
+            onToggleFavorito(id, favorito);
+        }
+    };
+
     return (
-        <div className="w-59.5 h-70 p-1.75 m-2.5 rounded-[10px] bg-white flex flex-col items-center">
-            {/* Div icono
-            <div className="absolute top-4 right-4 z-10 bg-white/70 p-1.5 rounded-full backdrop-blur-sm shadow-sm">
+        <div className="relative w-59.5 h-70 p-1.75 m-2.5 rounded-[10px] bg-white flex flex-col items-center">
+            <button 
+                onClick={handleHeartClick}
+                className="absolute top-4 right-4 z-10 bg-white/70 p-1.5 rounded-full shadow-sm hover:scale-110 transition-transform cursor-pointer"
+            >
                 <Heart 
                     size={22} 
-                    // Si es favorito -> rojo y relleno. Si no -> gris y vacío.
                     className={favorito ? "text-red-500 fill-red-500" : "text-gray-500"} 
                 />
-            </div> */}
+            </button>
             <img
                 src={url}
                 alt={name}

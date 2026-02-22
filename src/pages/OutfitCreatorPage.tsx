@@ -1,4 +1,4 @@
-import { useEffect, useState, type ChangeEvent, type FormEvent } from "react";
+import { useEffect, useState, type ChangeEvent } from "react";
 import Filter, { type FilterState } from "../components/filter/Filter";
 import Prenda, { type PrendaProps } from "../components/clothing/Prenda";
 import Button from "../components/common/Button";
@@ -190,6 +190,27 @@ export default function OutfitCreatorPage() {
     }
   };
 
+  // Función para actualizar favoritos
+  const handleToggleFavorito = async (id: number, estadoActual: boolean) => {
+    const nuevoEstado = !estadoActual;
+
+    // Actualización visual (corazón torna a rojo)
+    setPrendas(prevPrendas => 
+      prevPrendas.map(p => p.id === id ? { ...p, favorito: nuevoEstado } : p)
+    );
+
+    // Actualización en Supabase
+    const { error } = await itemRepository.toggleFavorito(id, nuevoEstado);
+    
+    // Si hay fallo, revertimos el color del corazón
+    if (error) {
+      console.error("Error guardando favorito:", error);
+      setPrendas(prevPrendas => 
+        prevPrendas.map(p => p.id === id ? { ...p, favorito: estadoActual } : p)
+      );
+    }
+  };
+
   // Controla la función de subida en el div de prendas
   const scrollToTopArmario = () => {
     const element = document.getElementById("closet-container");
@@ -224,7 +245,7 @@ export default function OutfitCreatorPage() {
                     : 'hover:opacity-80'
                     }`}
                 >
-                  <Prenda {...prenda} />
+                  <Prenda {...prenda} onToggleFavorito={handleToggleFavorito}/>
                 </div>
               ))
             ) : (

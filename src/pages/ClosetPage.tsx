@@ -42,6 +42,8 @@ export default function ClosetPage() {
     });
   };
 
+  
+
   // CARGAR PRENDAS AL LLEGAR A LA PÁGINA
   useEffect(() => {
     if (!sessionUser) return;
@@ -80,6 +82,27 @@ export default function ClosetPage() {
     return true;
   });
 
+  // Función para actualizar favoritos
+  const handleToggleFavorito = async (id: number, estadoActual: boolean) => {
+    const nuevoEstado = !estadoActual;
+
+    // Actualización visual (corazón torna a rojo)
+    setPrendas(prevPrendas => 
+      prevPrendas.map(p => p.id === id ? { ...p, favorito: nuevoEstado } : p)
+    );
+
+    // Actualización en Supabase
+    const { error } = await itemRepository.toggleFavorito(id, nuevoEstado);
+    
+    // Si hay fallo, revertimos el color del corazón
+    if (error) {
+      console.error("Error guardando favorito:", error);
+      setPrendas(prevPrendas => 
+        prevPrendas.map(p => p.id === id ? { ...p, favorito: estadoActual } : p)
+      );
+    }
+  };
+
   return (
     <>
 
@@ -93,7 +116,7 @@ export default function ClosetPage() {
 
       {prendasFiltradas.length > 0 ? (
 
-        <PrendasLayout prendas={prendasFiltradas} />
+        <PrendasLayout prendas={prendasFiltradas} onToggleFavorito={handleToggleFavorito} />
 
       ) : (
 
