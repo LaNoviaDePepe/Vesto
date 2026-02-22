@@ -2,26 +2,46 @@ import { useState, type ChangeEvent, type FocusEvent } from "react";
 import { validateVestoField } from "../../utils/regex";
 import Button from "../common/Button";
 import Input from "../common/Input";
-import { useAuth } from "../../hooks/useAuth";
 import { SupabaseUserRepository } from "../../database/supabase/SupabaseUserRepository";
 import { toast } from "react-hot-toast";
 import { isEmailTaken } from "../../database/supabase/RPCs/isEmailTaken";
+import { useAuthStore } from "../../stores/authStore";
+import { useNavigate } from "react-router-dom";
 
+/**
+ * Interfaz que define los campos del formulario de inicio de sesión.
+ */
 interface LoginFormProps {
     email: string;
     password: string;
     rememberMe: boolean;
 }
 
+/**
+ * Interfaz que define los posibles errores de validación del formulario de login.
+ */
 interface ErrorsProps {
     email: string;
     password: string;
     rememberMe: string;
 }
 
+/**
+ * Componente `LoginForm`.
+ * * Gestiona el inicio de sesión de los usuarios. Valida las credenciales ingresadas,
+ * maneja la recuperación de contraseñas olvidadas y actualiza el estado global de
+ * autenticación tras un inicio de sesión exitoso.
+ * * @returns {JSX.Element} El componente del formulario de inicio de sesión.
+ */
 export default function LoginForm() {
-    const { login, loading, error: authError } = useAuth();
+    // Instanciamos Repositorio, Store y Navegación
     const userRepository = new SupabaseUserRepository();
+    const setSession = useAuthStore((state) => state.setSession);
+    const navigate = useNavigate();
+
+    // Estados locales para la UI que antes estaban en useAuth
+    const [loading, setLoading] = useState(false);
+    const [authError, setAuthError] = useState<string | null>(null);
 
     const [formData, setFormData] = useState<LoginFormProps>({
         email: "",
@@ -35,6 +55,11 @@ export default function LoginForm() {
         rememberMe: ""
     });
 
+    /**
+     * Actualiza el estado del formulario conforme el usuario escribe o interactúa.
+     * Soporta tanto inputs de texto como checkboxes.
+     * * @param {ChangeEvent<HTMLInputElement>} e - Evento de cambio del input.
+     */
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value, type, checked } = e.target;
         const finalValue = type === "checkbox" ? checked : value;
@@ -44,6 +69,10 @@ export default function LoginForm() {
         }
     };
 
+    /**
+     * Ejecuta la validación de un campo específico cuando el usuario pierde el foco.
+     * * @param {FocusEvent<HTMLInputElement>} e - Evento de pérdida de foco.
+     */
     const handleBlur = (e: FocusEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         if (e.target.type !== "checkbox") {
@@ -52,6 +81,10 @@ export default function LoginForm() {
         }
     };
 
+    /**
+     * Inicia el proceso de recuperación de contraseña.
+     * Verifica que el email sea válido y exista en la base de datos antes de enviar el enlace.
+     */
     const handleForgotPassword = async () => {
         const emailError = validateVestoField("email", formData.email);
 
@@ -61,7 +94,7 @@ export default function LoginForm() {
             return;
         }
 
-        // CORRECCIÓN: Usamos formData.email en lugar de e.target.value
+        // Usamos formData.email en lugar de e.target.value
         const taken = await isEmailTaken(formData.email);
 
         if (!taken) {
@@ -85,8 +118,14 @@ export default function LoginForm() {
         }
     };
 
+    /**
+     * Maneja el envío del formulario de inicio de sesión.
+     * Realiza las validaciones finales y autentica al usuario contra Supabase.
+     * * @param {React.FormEvent} e - Evento de envío del formulario.
+     */
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        setAuthError(null); // Reseteamos errores previos
 
         const newErrors = {
             email: validateVestoField("email", formData.email),
@@ -98,7 +137,23 @@ export default function LoginForm() {
         const hasErrors = Object.values(newErrors).some(Boolean);
 
         if (!hasErrors) {
-            await login(formData.email, formData.password);
+            setLoading(true);
+            try {
+                // Llamamos directamente al Repositorio
+                const { data, error: repoError } = await userRepository.login(formData.email, formData.password);
+
+                if (repoError) {
+                    setAuthError(repoError.message || 'Error al iniciar sesión');
+                } else if (data) {
+                    setSession(data); // Guardamos en Zustand
+                    toast.success('¡Bienvenido!');
+                    navigate('/closet');
+                }
+            } catch (err) {
+                setAuthError('Error inesperado');
+            } finally {
+                setLoading(false);
+            }
         }
     };
 

@@ -6,7 +6,16 @@ import Select from "../common/Select";
 import { SupabaseItemRepository } from "../../database/supabase/SupabaseItemRepository";
 import { useAuthStore } from "../../stores/authStore";
 import * as CONSTANTES from '../../utils/constants';
+import toast from "react-hot-toast";
 
+/**
+ * Interfaz que define la estructura de los datos del formulario de prendas.
+ * * @property {string} nombre - Nombre descriptivo de la prenda.
+ * @property {string} tipoPrenda - Categoría o tipo de la prenda (ej. Camiseta, Pantalón).
+ * @property {string} color - Color principal de la prenda.
+ * @property {string} temporada - Temporada ideal para usar la prenda (ej. Verano, Invierno).
+ * @property {File | null} imagen - Archivo de imagen de la prenda subido por el usuario.
+ */
 interface AddItemFormProps {
     nombre: string;
     tipoPrenda: string;
@@ -15,6 +24,9 @@ interface AddItemFormProps {
     imagen: File | null;
 }
 
+/**
+ * Interfaz que define los posibles errores de validación del formulario.
+ */
 interface ErrorsProps {
     nombre: string;
     tipoPrenda: string;
@@ -23,6 +35,13 @@ interface ErrorsProps {
     imagen: string;
 }
 
+/**
+ * Componente `AddItemForm`.
+ * * Formulario para subir o modificar una prenda en el armario del usuario.
+ * Gestiona la selección de atributos de la prenda, la previsualización de la imagen
+ * y la subida de los datos a la base de datos vinculada a la sesión del usuario actual.
+ * * @returns {JSX.Element} El componente del formulario de prendas renderizado.
+ */
 export default function AddItemForm() {
 
     // Instanciar el repo y obtener el usuario
@@ -50,13 +69,21 @@ export default function AddItemForm() {
     // Lógica de previsualización de imagen
     const [preview, setPreview] = useState<string | null>(null);
 
-    // Maneja inputs y selects
+    /**
+     * Maneja los cambios en los inputs de texto y selectores.
+     * Actualiza el estado del formulario y limpia el error del campo modificado.
+     * * @param {ChangeEvent<HTMLInputElement | HTMLSelectElement>} e - Evento de cambio del input.
+     */
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
         setFormData((prev) => ({ ...prev, [name]: value }));
         setErrors((prev) => ({ ...prev, [name]: "" }));
     };
 
+    /**
+     * Valida el campo cuando el usuario pierde el foco (blur).
+     * * @param {FocusEvent<HTMLInputElement | HTMLSelectElement>} e - Evento de pérdida de foco.
+     */
     const handleBlur = (e: FocusEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
         if (e.target.type !== "file") {
@@ -65,6 +92,11 @@ export default function AddItemForm() {
         }
     };
 
+    /**
+     * Maneja la selección de un archivo de imagen.
+     * Guarda el archivo en el estado y genera una URL temporal para su previsualización.
+     * * @param {ChangeEvent<HTMLInputElement>} e - Evento de cambio del input de tipo file.
+     */
     const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files[0]) {
             const file = e.target.files[0];
@@ -74,7 +106,13 @@ export default function AddItemForm() {
         }
     };
 
-    const handleSubmit = async (e: React.SubmitEvent) => {
+    /**
+     * Maneja el envío del formulario.
+     * Valida todos los campos antes de proceder, verifica la sesión del usuario,
+     * y sube la prenda utilizando el repositorio.
+     * * @param {React.FormEvent} e - Evento de envío del formulario.
+     */
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
         // Necesitamos volver a declarar las validaciones aquí para calcular la variable
@@ -88,39 +126,43 @@ export default function AddItemForm() {
 
         setErrors(newErrors);
 
-        // Aquí definimos la variable que te faltaba
+        // Aquí definimos la variable que faltaba
         const hasErrors = Object.values(newErrors).some(err => err !== "");
 
         if (!hasErrors) {
             // Verificamos sesión
             if (!sessionUser) {
-                alert("Debes iniciar sesión para subir prendas");
+                toast.error("Debes iniciar sesión para subir prendas");
                 return;
             }
 
             setLoading(true);
 
-            // Llamamos al repositorio
-            const result = await itemRepository.createPrenda({
-                nombre: formData.nombre,
-                tipoPrenda: formData.tipoPrenda,
-                color: formData.color,
-                temporada: formData.temporada,
-                imagen: formData.imagen!,
-                userId: sessionUser.user.id
-            });
+            try {
+                // Llamamos al repositorio
+                const result = await itemRepository.createPrenda({
+                    nombre: formData.nombre,
+                    tipoPrenda: formData.tipoPrenda,
+                    color: formData.color,
+                    temporada: formData.temporada,
+                    imagen: formData.imagen!,
+                    userId: sessionUser.user.id
+                });
 
-            setLoading(false);
+                setLoading(false);
 
-            if (result.error) {
-                // Usamos 'any' temporalmente o verificamos si message existe para calmar a TypeScript
-                const errorMsg = (result.error as any).message || "Error desconocido";
-                alert("Error al subir la prenda: " + errorMsg);
-            } else {
-                alert("Prenda creada correctamente ✅");
-                // Resetear formulario
-                setFormData({ nombre: "", tipoPrenda: "", color: "", temporada: "", imagen: null });
-                setPreview(null);
+                if (result.error) {
+                    const errorMsg = (result.error as any).message || "Error desconocido";
+                    toast.error("Error al subir la prenda: " + errorMsg);
+                } else {
+                    toast.success("Prenda creada correctamente");
+                    setFormData({ nombre: "", tipoPrenda: "", color: "", temporada: "", imagen: null });
+                    setPreview(null);
+                }
+            } catch (err) {
+                toast.error("Error inesperado al subir la prenda");
+            } finally {
+                setLoading(false);
             }
         }
     };
