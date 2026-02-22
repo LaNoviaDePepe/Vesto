@@ -4,9 +4,14 @@ import Button from "../common/Button";
 import type { RegisterData } from "../../interfaces/RegisterData";
 import Input from "../common/Input";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../../hooks/useAuth";
 import { isEmailTaken } from "../../database/supabase/RPCs/isEmailTaken";
+import { SupabaseUserRepository } from "../../database/supabase/SupabaseUserRepository";
+import { useAuthStore } from "../../stores/authStore";
+import toast from "react-hot-toast";
 
+/**
+ * Interfaz que define los campos requeridos para el registro de usuario.
+ */
 interface SignUpFormProps {
     nombreApellidos: string;
     email: string;
@@ -15,6 +20,9 @@ interface SignUpFormProps {
     acceptTerms: boolean;
 }
 
+/**
+ * Interfaz que define los posibles errores de validación del formulario de registro.
+ */
 interface ErrorsProps {
     nombreApellidos: string;
     email: string;
@@ -23,9 +31,22 @@ interface ErrorsProps {
     acceptTerms: string;
 }
 
+/**
+ * Componente `SignUpForm`.
+ * * Gestiona el formulario de registro para nuevos usuarios. Valida todos los campos,
+ * verifica asíncronamente si el email ya existe en la base de datos, crea el usuario
+ * en Supabase y actualiza la sesión global si el proceso es exitoso.
+ * * @returns {JSX.Element} El componente del formulario de registro.
+ */
 export default function SignUpForm() {
-    const { register, loading, error: authError } = useAuth();
+    // Instanciamos Repositorio y Store
+    const userRepository = new SupabaseUserRepository();
+    const setSession = useAuthStore((state) => state.setSession);
     const navigate = useNavigate();
+
+    // Estados locales para la UI
+    const [loading, setLoading] = useState(false);
+    const [authError, setAuthError] = useState<string | null>(null);
 
     const [formData, setFormData] = useState<SignUpFormProps>({
         nombreApellidos: "",
@@ -43,7 +64,11 @@ export default function SignUpForm() {
         acceptTerms: ""
     });
 
-    // Actualiza el valor del campo mientras el usuario escribe.
+    /**
+     * Actualiza el valor del campo en el estado local mientras el usuario escribe.
+     * Limpia el error asociado a ese campo al modificarlo.
+     * * @param {ChangeEvent<HTMLInputElement>} e - Evento de cambio del input.
+     */
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value, type, checked } = e.target;
         setFormData((prev) => ({
@@ -53,7 +78,11 @@ export default function SignUpForm() {
         setErrors((prev) => ({ ...prev, [name]: "" }));
     };
 
-    // Valida el campo cuando el usuario sale de él (pierde el foco).
+    /**
+     * Ejecuta la validación del campo cuando el usuario sale de él (pierde el foco).
+     * Incluye validación especial para la repetición de contraseñas.
+     * * @param {FocusEvent<HTMLInputElement>} e - Evento de pérdida de foco.
+     */
     const handleBlur = (e: FocusEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         let error = "";
@@ -65,6 +94,12 @@ export default function SignUpForm() {
         setErrors((prev) => ({ ...prev, [name]: error }));
     };
 
+    /**
+     * Validación específica y asíncrona para el campo de email.
+     * Primero comprueba el formato y, si es correcto, hace una petición
+     * para verificar si el correo ya está registrado en la base de datos.
+     * * @param {FocusEvent<HTMLInputElement>} e - Evento de pérdida de foco en el campo de email.
+     */
     const handleEmailBlur = async (e: FocusEvent<HTMLInputElement>) => {
         const error = validateVestoField("email", e.target.value);
         setErrors((prev) => ({ ...prev, email: error }));
@@ -76,22 +111,31 @@ export default function SignUpForm() {
         }
     };
 
+    /**
+     * Maneja el envío del formulario de registro.
+     * Ejecuta una validación final y, si todo es correcto, procede a crear
+     * el nuevo usuario llamando al repositorio.
+     * * @param {React.FormEvent} e - Evento de envío del formulario.
+     */
     const handleSubmit = async (e: React.FormEvent) => { // Async
         e.preventDefault();
+        setAuthError(null);
 
-        const newErrors = {
-            nombreApellidos: validateVestoField("nombreApellidos", formData.nombreApellidos),
-            email: validateVestoField("email", formData.email),
-            password: validateVestoField("password", formData.password),
-            verifPassword: validateVestoField("verifPassword", formData.verifPassword, formData.password),
+        // Al forzar el as string, Typescript entiende que no enviamos undefines o booleanos
+        const newErrors: ErrorsProps = {
+            nombreApellidos: validateVestoField("nombreApellidos", formData.nombreApellidos) as string,
+            email: validateVestoField("email", formData.email) as string,
+            password: validateVestoField("password", formData.password) as string,
+            verifPassword: validateVestoField("verifPassword", formData.verifPassword, formData.password) as string,
             acceptTerms: formData.acceptTerms ? "" : "Debes aceptar los términos y condiciones"
         };
-        setErrors(newErrors as any);
+        setErrors(newErrors);
 
         const hasErrors = Object.values(newErrors).some(Boolean);
 
         if (!hasErrors) {
-            // Preparamos los datos
+            setLoading(true);
+
             const newUser: RegisterData = {
                 email: formData.email,
                 password: formData.password,
@@ -100,12 +144,21 @@ export default function SignUpForm() {
                 url_avatar: ""
             };
 
-            // Llamamos a register desde el hook
-            const success = await register(newUser);
+            try {
+                // Llamamos directamente al repositorio
+                const { data, error: repoError } = await userRepository.createUser(newUser);
 
-            if (success) {
-                alert("Usuario registrado y logueado ✅");
-                navigate('/');
+                if (repoError) {
+                    setAuthError(repoError.message || 'Error al registrar');
+                } else if (data) {
+                    setSession(data); // Guardamos en Zustand
+                    toast.success("Usuario registrado y logueado ✅");
+                    navigate('/');
+                }
+            } catch (err) {
+                setAuthError('Error inesperado');
+            } finally {
+                setLoading(false);
             }
         }
     };
@@ -124,7 +177,7 @@ export default function SignUpForm() {
             <form onSubmit={handleSubmit} className="max-w-sm mx-auto space-y-8">
 
                 <Input
-                    label={"Nombre y apellidos"}
+                    label="Nombre y apellidos"
                     name="nombreApellidos"
                     type="text"
                     value={formData.nombreApellidos}
@@ -132,10 +185,9 @@ export default function SignUpForm() {
                     onChange={handleChange}
                     onBlur={handleBlur}
                     error={errors.nombreApellidos}
-                >
-                </Input>
+                />
                 <Input
-                    label={"Email"}
+                    label="Email"
                     name="email"
                     type="email"
                     value={formData.email}
@@ -143,10 +195,9 @@ export default function SignUpForm() {
                     onChange={handleChange}
                     onBlur={handleEmailBlur}
                     error={errors.email}
-                >
-                </Input>
+                />
                 <Input
-                    label={"password"}
+                    label="Contraseña"
                     name="password"
                     type="password"
                     value={formData.password}
@@ -154,10 +205,9 @@ export default function SignUpForm() {
                     onChange={handleChange}
                     onBlur={handleBlur}
                     error={errors.password}
-                >
-                </Input>
+                />
                 <Input
-                    label={"Repite contraseña"}
+                    label="Repite contraseña"
                     name="verifPassword"
                     type="password"
                     value={formData.verifPassword}
