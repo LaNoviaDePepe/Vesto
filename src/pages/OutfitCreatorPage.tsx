@@ -1,30 +1,14 @@
-import { useEffect, useState, type ChangeEvent } from "react";
-import Filter from "../components/filter/Filter";
-import Prenda from "../components/clothing/Prenda";
+import { useEffect, useState, type ChangeEvent, type FormEvent } from "react";
+import Filter, { type FilterState } from "../components/filter/Filter";
+import Prenda, { type PrendaProps } from "../components/clothing/Prenda";
 import Button from "../components/common/Button";
+import Input from "../components/common/Input";
+import { OutfitSlot } from "../components/clothing/OutfitSlot";
 import { SupabaseOutfitRepository } from "../database/supabase/SupabaseOutfitRepository";
 import { SupabaseItemRepository } from "../database/supabase/SupabaseItemRepository";
 import { CircleChevronUp } from "lucide-react";
 import { useAuthStore } from "../stores/authStore";
-import { useFilterStore } from "../stores/filterStore";
-import { OutfitSlot } from "../components/clothing/OutfitSlot";
-import Input from "../components/common/Input";
 
-type CategoriaPrenda = "cabeza" | "parte_arriba" | "parte_abajo" | "complemento" | "calzado";
-type ColorPrenda = "negro" | "blanco" | "gris" | "rojo" | "azul" | "amarillo" | "verde" | "naranja" | "morado" | "rosa" | "marron" | "celeste" | "turquesa" | "beige" | "dorado" | "plateado";
-type TemporadaPrenda = "otonio" | "invierno" | "primavera" | "verano" | "todo";
-
-
-interface PrendaBD {
-  id: number;
-  id_usuario: string | undefined;
-  nombre: string;
-  categoria: CategoriaPrenda;
-  color: ColorPrenda;
-  url_imagen: string;
-  temporada: TemporadaPrenda;
-  favorito: boolean;
-}
 
 interface ErrorsProps {
   nombre: string;
@@ -39,9 +23,17 @@ const itemRepository = new SupabaseItemRepository();
 export default function OutfitCreatorPage() {
 
   const { sessionUser } = useAuthStore();
-  const { filters, resetFilters } = useFilterStore();
 
-  const [prendas, setPrendas] = useState<PrendaBD[]>([]); // Lista de la izquierda
+  //Estado de prendas
+  const [prendas, setPrendas] = useState<PrendaProps[]>([]);
+
+  //Estado inicial de los filtros
+  const [filters, setFilters] = useState<FilterState>({
+    categoria: "",
+    temporada: "",
+    color: "",
+    favorito: false,
+  });
 
   // Campos del form (derecha)
   const [nombreConjunto, setNombreConjunto] = useState("");
@@ -51,7 +43,7 @@ export default function OutfitCreatorPage() {
   const [preview, setPreview] = useState<string | null>(null);
 
   // Estado del outfit
-  const [outfit, setOutfit] = useState<Record<CategoriaPrenda, PrendaBD | null>>({
+  const [outfit, setOutfit] = useState<Record<string, PrendaProps | null>>({
     cabeza: null,
     parte_arriba: null,
     parte_abajo: null,
@@ -78,15 +70,15 @@ export default function OutfitCreatorPage() {
         return;
       }
 
-      const prendasAdaptadas: PrendaBD[] = (data || []).map((p: any) => ({
+      const prendasAdaptadas: PrendaProps[] = (data || []).map((p: any) => ({
         id: p.id,
         id_usuario: sessionUser.user.id,
-        nombre: p.name,
-        url_imagen: p.url,
+        name: p.nombre,
+        url: p.url,
         categoria: p.categoria,
         color: p.color,
         temporada: p.temporada,
-        favorito: p.favorito || false
+        favorito: p.favorito
       }));
 
       setPrendas(prendasAdaptadas);
@@ -94,24 +86,30 @@ export default function OutfitCreatorPage() {
 
     loadPrendas();
 
-    // Limpieza de filtros al cambiar de página
-    return () => {
-      resetFilters();
-    };
-  }, [sessionUser, resetFilters]);
+  }, [sessionUser]);
 
 
   // LÓGICA DE FILTRADO 
+
+  const handleFilterChange = (key: string, value: string | boolean) => {
+    setFilters(prev => ({ ...prev, [key]: value }));
+  };
+
+  const handleResetFilters = () => {
+    setFilters({ categoria: "", temporada: "", color: "", favorito: false });
+  };
+
   const prendasFiltradas = prendas.filter((prenda) => {
     if (filters.categoria && prenda.categoria !== filters.categoria) return false;
     if (filters.temporada && prenda.temporada !== filters.temporada) return false;
     if (filters.color && prenda.color !== filters.color) return false;
+    if (filters.favorito && !prenda.favorito) return false;
     return true;
   });
 
 
   // LÓGICA DE SELECCIÓN Y GUARDADO 
-  const handleSelectPrenda = (prenda: PrendaBD) => {
+  const handleSelectPrenda = (prenda: PrendaProps) => {
     setOutfit((estadoprevio) => {
       // Si la prenda ya está seleccionada en su categoría, la quitamos
       const isAlreadySelected = estadoprevio[prenda.categoria]?.id === prenda.id;
@@ -120,7 +118,7 @@ export default function OutfitCreatorPage() {
         [prenda.categoria]: isAlreadySelected ? null : prenda,
       };
     });
-    setErrors(prev => ({ ...prev, outfit: "" }));
+    setErrors(estadoPrevio => ({ ...estadoPrevio, outfit: "" }));
   };
 
 
@@ -128,7 +126,7 @@ export default function OutfitCreatorPage() {
   const handleSaveOutfit = async (e: React.SubmitEvent) => {
     e.preventDefault(); // Manejo de form
 
-    const prendasSeleccionadas = Object.values(outfit).filter((p): p is PrendaBD => p !== null);
+    const prendasSeleccionadas = Object.values(outfit).filter((p): p is PrendaProps => p !== null);
 
     // Validaciones previas 
     const newErrors = {
@@ -149,9 +147,14 @@ export default function OutfitCreatorPage() {
           nombre: nombreConjunto,
           descripcion: descripcion,
           id_usuario: sessionUser.user.id,
-          prendasIds: prendasSeleccionadas.map(p => p.id), 
           favorito: false,
-          url_imagen: imagenConjunto ?? undefined
+          url_imagen: imagenConjunto ?? undefined,
+
+          // Como en PrendasProps el id es opcional (ya que si estamos creando una nueva prenda, 
+          // aún no tiene id), filtramos las que sí tienen ID y lo convertimos a number (que es lo que pide la BD)
+          prendasIds: prendasSeleccionadas
+            .filter(p => p.id !== undefined)
+            .map(p => Number(p.id)),
         });
 
         setLoading(false);
@@ -161,6 +164,7 @@ export default function OutfitCreatorPage() {
         } else {
           alert(`¡Conjunto '${nombreConjunto}' guardado con éxito!`);
 
+          // Reseteo de form
           setNombreConjunto("");
           setDescripcion("");
           setPreview(null);
@@ -182,7 +186,7 @@ export default function OutfitCreatorPage() {
       const file = e.target.files[0];
       setImagen(file);
       setPreview(URL.createObjectURL(file));
-      setErrors(prev => ({ ...prev, imagen: "" }));
+      setErrors(estadoPrevio => ({ ...estadoPrevio, imagen: "" }));
     }
   };
 
@@ -204,32 +208,32 @@ export default function OutfitCreatorPage() {
       <div className="relative flex-1 flex flex-col overflow-hidden border-r border-gray-100">
 
         {/* Barra de Filtros */}
-        <Filter width={100} />
+        <Filter width={100} filters={filters} onFilterChange={handleFilterChange} />
         <div className="flex-1 overflow-y-auto p-6 bg-gray-50/50" id="closet-container">
           {errors.outfit && <p className="text-center text-red-500 mb-4 font-bold">{errors.outfit}</p>}
           <div className="flex flex-wrap gap-6 justify-center">
 
             {/* Mapeo de Prendas FILTRADAS */}
-            {(
+            {prendasFiltradas.length > 0 ? (
               prendasFiltradas.map((prenda) => (
                 <div
                   key={prenda.id}
                   onClick={() => handleSelectPrenda(prenda)}
-                  className={`cursor-pointer transition-all duration-200 rounded-xl ${
-                  outfit[prenda.categoria]?.id === prenda.id 
-                  ? 'ring-4 ring-primary-700 shadow-lg scale-105' 
-                  : 'hover:opacity-80'
-                }`}
+                  className={`cursor-pointer transition-all duration-200 rounded-xl ${outfit[prenda.categoria]?.id === prenda.id
+                    ? 'ring-4 ring-primary-700 shadow-lg scale-105'
+                    : 'hover:opacity-80'
+                    }`}
                 >
-                  <Prenda
-                    name={prenda.nombre}
-                    url={prenda.url_imagen}
-                    color={prenda.color}
-                    temporada={prenda.temporada}
-                    categoria={prenda.categoria}
-                  />
+                  <Prenda {...prenda} />
                 </div>
               ))
+            ) : (
+              <div className="flex flex-col items-center justify-center h-64 text-gray-400 w-full">
+                <p className="text-lg">No se encontraron prendas con estos filtros</p>
+                <button onClick={handleResetFilters} className="text-primary-600 underline mt-4 hover:text-primary-800 transition-colors cursor-pointer">
+                  Limpiar filtros
+                </button>
+              </div>
             )}
 
           </div>
@@ -293,7 +297,7 @@ export default function OutfitCreatorPage() {
             <OutfitSlot label="Calzado" item={outfit.calzado} />
           </div>
         </div>
-
+              
         <div className="flex flex-col items-center justify-center space-y-6 mt-10 pb-20 mb-10">
           {/* Input File */}
           <div className="w-full max-w-75">
@@ -327,52 +331,3 @@ export default function OutfitCreatorPage() {
     </div>
   );
 }
-
-
-
-// const mockPrendasBD: PrendaBD[] = [
-//   // --- CATEGORÍA: CABEZA (7) ---
-//   { id: 1, id_usuario: "4e9535ea-72b9-4dd2-8d96-e185da7c0d33", nombre: "Gorro Lana", categoria: "cabeza", color: "azul", temporada: "invierno", url_imagen: "/img/prenda.jpg", favorito: false },
-//   { id: 2, id_usuario: "4e9535ea-72b9-4dd2-8d96-e185da7c0d33", nombre: "Gorra Trucker", categoria: "cabeza", color: "negro", temporada: "verano", url_imagen: "/img/prenda.jpg", favorito: true },
-//   { id: 3, id_usuario: "4e9535ea-72b9-4dd2-8d96-e185da7c0d33", nombre: "Sombrero Paja", categoria: "cabeza", color: "beige", temporada: "verano", url_imagen: "/img/prenda.jpg", favorito: false },
-//   { id: 4, id_usuario: "4e9535ea-72b9-4dd2-8d96-e185da7c0d33", nombre: "Beanie Gris", categoria: "cabeza", color: "gris", temporada: "invierno", url_imagen: "/img/prenda.jpg", favorito: false },
-//   { id: 5, id_usuario: "4e9535ea-72b9-4dd2-8d96-e185da7c0d33", nombre: "Boina Roja", categoria: "cabeza", color: "rojo", temporada: "otonio", url_imagen: "/img/prenda.jpg", favorito: false },
-//   { id: 6, id_usuario: "4e9535ea-72b9-4dd2-8d96-e185da7c0d33", nombre: "Visera Running", categoria: "cabeza", color: "blanco", temporada: "verano", url_imagen: "/img/prenda.jpg", favorito: false },
-//   { id: 7, id_usuario: "4e9535ea-72b9-4dd2-8d96-e185da7c0d33", nombre: "Gorro Pescador", categoria: "cabeza", color: "verde", temporada: "primavera", url_imagen: "/img/prenda.jpg", favorito: true },
-
-//   // --- CATEGORÍA: PARTE ARRIBA (7) ---
-//   { id: 8, id_usuario: "4e9535ea-72b9-4dd2-8d96-e185da7c0d33", nombre: "Sudadera Hoodie", categoria: "parte_arriba", color: "gris", temporada: "invierno", url_imagen: "/img/prenda.jpg", favorito: false },
-//   { id: 9, id_usuario: "4e9535ea-72b9-4dd2-8d96-e185da7c0d33", nombre: "Camiseta Básica", categoria: "parte_arriba", color: "blanco", temporada: "verano", url_imagen: "/img/prenda.jpg", favorito: true },
-//   { id: 10, id_usuario: "4e9535ea-72b9-4dd2-8d96-e185da7c0d33", nombre: "Chaqueta Cuero", categoria: "parte_arriba", color: "negro", temporada: "otonio", url_imagen: "/img/prenda.jpg", favorito: false },
-//   { id: 11, id_usuario: "4e9535ea-72b9-4dd2-8d96-e185da7c0d33", nombre: "Camisa Lino", categoria: "parte_arriba", color: "celeste", temporada: "verano", url_imagen: "/img/prenda.jpg", favorito: false },
-//   { id: 12, id_usuario: "4e9535ea-72b9-4dd2-8d96-e185da7c0d33", nombre: "Jersey Lana", categoria: "parte_arriba", color: "marron", temporada: "invierno", url_imagen: "/img/prenda.jpg", favorito: false },
-//   { id: 13, id_usuario: "4e9535ea-72b9-4dd2-8d96-e185da7c0d33", nombre: "Polo Piqué", categoria: "parte_arriba", color: "azul", temporada: "primavera", url_imagen: "/img/prenda.jpg", favorito: false },
-//   { id: 14, id_usuario: "4e9535ea-72b9-4dd2-8d96-e185da7c0d33", nombre: "Top Tirantes", categoria: "parte_arriba", color: "rosa", temporada: "verano", url_imagen: "/img/prenda.jpg", favorito: false },
-
-//   // --- CATEGORÍA: PARTE ABAJO (7) ---
-//   { id: 15, id_usuario: "4e9535ea-72b9-4dd2-8d96-e185da7c0d33", nombre: "Vaqueros Slim", categoria: "parte_abajo", color: "azul", temporada: "todo", url_imagen: "/img/prenda.jpg", favorito: true },
-//   { id: 16, id_usuario: "4e9535ea-72b9-4dd2-8d96-e185da7c0d33", nombre: "Pantalón Cargo", categoria: "parte_abajo", color: "verde", temporada: "otonio", url_imagen: "/img/prenda.jpg", favorito: false },
-//   { id: 17, id_usuario: "4e9535ea-72b9-4dd2-8d96-e185da7c0d33", nombre: "Shorts Deporte", categoria: "parte_abajo", color: "naranja", temporada: "verano", url_imagen: "/img/prenda.jpg", favorito: false },
-//   { id: 18, id_usuario: "4e9535ea-72b9-4dd2-8d96-e185da7c0d33", nombre: "Falda Plisada", categoria: "parte_abajo", color: "negro", temporada: "primavera", url_imagen: "/img/prenda.jpg", favorito: false },
-//   { id: 19, id_usuario: "4e9535ea-72b9-4dd2-8d96-e185da7c0d33", nombre: "Chándal Gris", categoria: "parte_abajo", color: "gris", temporada: "invierno", url_imagen: "/img/prenda.jpg", favorito: false },
-//   { id: 20, id_usuario: "4e9535ea-72b9-4dd2-8d96-e185da7c0d33", nombre: "Bermudas Chino", categoria: "parte_abajo", color: "beige", temporada: "verano", url_imagen: "/img/prenda.jpg", favorito: false },
-//   { id: 21, id_usuario: "4e9535ea-72b9-4dd2-8d96-e185da7c0d33", nombre: "Pantalón Pinzas", categoria: "parte_abajo", color: "morado", temporada: "otonio", url_imagen: "/img/prenda.jpg", favorito: false },
-
-//   // --- CATEGORÍA: COMPLEMENTO (7) ---
-//   { id: 22, id_usuario: "4e9535ea-72b9-4dd2-8d96-e185da7c0d33", nombre: "Gafas Retro", categoria: "complemento", color: "negro", temporada: "verano", url_imagen: "/img/prenda.jpg", favorito: false },
-//   { id: 23, id_usuario: "4e9535ea-72b9-4dd2-8d96-e185da7c0d33", nombre: "Reloj Plata", categoria: "complemento", color: "plateado", temporada: "todo", url_imagen: "/img/prenda.jpg", favorito: true },
-//   { id: 24, id_usuario: "4e9535ea-72b9-4dd2-8d96-e185da7c0d33", nombre: "Cinturón Piel", categoria: "complemento", color: "marron", temporada: "todo", url_imagen: "/img/prenda.jpg", favorito: false },
-//   { id: 25, id_usuario: "4e9535ea-72b9-4dd2-8d96-e185da7c0d33", nombre: "Bufanda Cuadros", categoria: "complemento", color: "rojo", temporada: "invierno", url_imagen: "/img/prenda.jpg", favorito: false },
-//   { id: 26, id_usuario: "4e9535ea-72b9-4dd2-8d96-e185da7c0d33", nombre: "Mochila Lona", categoria: "complemento", color: "amarillo", temporada: "primavera", url_imagen: "/img/prenda.jpg", favorito: false },
-//   { id: 27, id_usuario: "4e9535ea-72b9-4dd2-8d96-e185da7c0d33", nombre: "Pendientes Aro", categoria: "complemento", color: "dorado", temporada: "todo", url_imagen: "/img/prenda.jpg", favorito: false },
-//   { id: 28, id_usuario: "4e9535ea-72b9-4dd2-8d96-e185da7c0d33", nombre: "Bolso Mano", categoria: "complemento", color: "turquesa", temporada: "verano", url_imagen: "/img/prenda.jpg", favorito: false },
-
-//   // --- CATEGORÍA: CALZADO (7) ---
-//   { id: 29, id_usuario: "4e9535ea-72b9-4dd2-8d96-e185da7c0d33", nombre: "Sneakers White", categoria: "calzado", color: "blanco", temporada: "primavera", url_imagen: "/img/prenda.jpg", favorito: true },
-//   { id: 30, id_usuario: "4e9535ea-72b9-4dd2-8d96-e185da7c0d33", nombre: "Botas Militares", categoria: "calzado", color: "negro", temporada: "invierno", url_imagen: "/img/prenda.jpg", favorito: false },
-//   { id: 31, id_usuario: "4e9535ea-72b9-4dd2-8d96-e185da7c0d33", nombre: "Sandalias Playa", categoria: "calzado", color: "marron", temporada: "verano", url_imagen: "/img/prenda.jpg", favorito: false },
-//   { id: 32, id_usuario: "4e9535ea-72b9-4dd2-8d96-e185da7c0d33", nombre: "Zapatos Oxford", categoria: "calzado", color: "azul", temporada: "otonio", url_imagen: "/img/prenda.jpg", favorito: false },
-//   { id: 33, id_usuario: "4e9535ea-72b9-4dd2-8d96-e185da7c0d33", nombre: "Mocasines Suede", categoria: "calzado", color: "beige", temporada: "primavera", url_imagen: "/img/prenda.jpg", favorito: false },
-//   { id: 34, id_usuario: "4e9535ea-72b9-4dd2-8d96-e185da7c0d33", nombre: "Botines Piel", categoria: "calzado", color: "negro", temporada: "invierno", url_imagen: "/img/prenda.jpg", favorito: false },
-//   { id: 35, id_usuario: "4e9535ea-72b9-4dd2-8d96-e185da7c0d33", nombre: "Chanclas Goma", categoria: "calzado", color: "amarillo", temporada: "verano", url_imagen: "/img/prenda.jpg", favorito: false },
-// ];

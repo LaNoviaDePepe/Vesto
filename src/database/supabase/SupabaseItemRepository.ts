@@ -26,6 +26,7 @@ export class SupabaseItemRepository implements ItemRepository {
             color: p.color,
             temporada: p.temporada,
             categoria: p.categoria,
+            favorito: p.favorito
         })) || [];
 
         return { data: prendasMapped, error };

@@ -23,15 +23,24 @@ export default function Conjunto({ name, url, descripcion, prendas }: ConjuntoPr
                 <p className="text-gray-700">{descripcion}</p>
                 <div className="flex flex-wrap justify-center gap-x-12.5 gap-y-12.5">
                     {prendas.map((prenda, index) => (
+                        // Spread operator, en vez de pasar uno a uno
+                        <Prenda key={index} {...prenda} />
+                    ))}
+                </div>
+                {/* CÓDIGO ANTERIOR: */}
+                {/* <div className="flex flex-wrap justify-center gap-x-12.5 gap-y-12.5">
+                    {prendas.map((prenda, index) => (
                         <Prenda
                             key={index}
                             name={prenda.name}
                             url={prenda.url}
                             color={prenda.color}
                             temporada={prenda.temporada}
+                            categoria={prenda.categoria}
+                            favorito={prenda.favorito}                        
                         />
                     ))}
-                </div>
+                </div> */}
             </div>
         </div>
     );
