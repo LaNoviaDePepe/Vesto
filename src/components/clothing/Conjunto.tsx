@@ -29,6 +29,7 @@ export default function Conjunto({ name, url, descripcion, prendas }: ConjuntoPr
                             url={prenda.url}
                             color={prenda.color}
                             temporada={prenda.temporada}
+                            categoria={prenda.categoria}
                         />
                     ))}
                 </div>
