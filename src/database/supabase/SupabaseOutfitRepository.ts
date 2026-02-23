@@ -37,6 +37,7 @@ export class SupabaseOutfitRepository implements OutfitRepository {
             url: cp.prendas.url_imagen,
             color: cp.prendas.color,
             temporada: cp.prendas.temporada,
+            categoria: cp.prendas.categoria,
         })) || []
     })) || [];
 
