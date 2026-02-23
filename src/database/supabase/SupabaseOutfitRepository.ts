@@ -13,43 +13,34 @@ export interface ConjuntoData {
 export class SupabaseOutfitRepository implements OutfitRepository {
 
     async getConjuntos(id_usuario: string) {
-        const { data, error } = await supabase
-            .from('conjuntos')
-            .select(`
-            id,
-            nombre,
-            favorito,
-            descripcion,
-            fecha_alta,
+    const { data, error } = await supabase
+        .from('conjuntos')
+        .select(`
+            *,
             conjunto_prendas (
-                prendas (
-                    id,
-                    nombre,
-                    url_imagen,
-                    color,
-                    temporada
-                )
+                prendas (*)
             )
-        `)
-            .eq('id_usuario', id_usuario);
+        `) // IMPORTANTE: Volver a traer las relaciones
+        .eq('id_usuario', id_usuario);
 
-        const conjuntosMapped = data?.map(c => ({
-            id: c.id,
-            nombre: c.nombre,
-            favorito: c.favorito,
-            descripcion: c.descripcion,
-            fechaAlta: c.fecha_alta,
+    const conjuntosMapped = data?.map(c => ({
+        id: c.id,
+        nombre: c.nombre,
+        favorito: c.favorito,
+        descripcion: c.descripcion,
+        fechaAlta: c.fecha_alta,
+        url_imagen: c.url_imagen, // Aquí se guarda la URL (ya sea la de Supabase o la default)
 
-            prendas: c.conjunto_prendas.map((cp: any) => ({
-                id: cp.prendas.id,
-                name: cp.prendas.nombre,
-                url: cp.prendas.url_imagen,
-                color: cp.prendas.color,
-                temporada: cp.prendas.temporada,
-            }))
-        })) || [];
+        prendas: c.conjunto_prendas?.map((cp: any) => ({
+            id: cp.prendas.id,
+            name: cp.prendas.nombre,
+            url: cp.prendas.url_imagen,
+            color: cp.prendas.color,
+            temporada: cp.prendas.temporada,
+        })) || []
+    })) || [];
 
-        return { data: conjuntosMapped, error };
+    return { data: conjuntosMapped, error };
     }
 
     
@@ -61,7 +52,7 @@ export class SupabaseOutfitRepository implements OutfitRepository {
         const DEFAULT_IMAGE_URL = "/img/default-outfit.png";
 
         try {
-            // Lógica de imagen opcional
+            // Lógica de imagen como campo opcional
             if (data.url_imagen) {
                 const fileExt = data.url_imagen.name.split('.').pop();
                 const fileName = `${Date.now()}.${fileExt}`;
@@ -92,8 +83,8 @@ export class SupabaseOutfitRepository implements OutfitRepository {
                     nombre: data.nombre,
                     descripcion: data.descripcion,
                     id_usuario: data.id_usuario,
-                    favorito: data.favorito || false,
-                    url_imagen: publicUrl
+                    url_imagen: publicUrl,
+                    favorito: false                  
                 })
                 .select() //Devuelve el id del conjunto recién creado para poder realizar las inserciones en la tabla conjuntos_prendas
                 .single();

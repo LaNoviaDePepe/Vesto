@@ -37,7 +37,6 @@ export default function OutfitsPage() {
         // Spread operator, en vez de pasar uno a uno
         <Conjunto
           key={conjunto.id}
-          url="/img/conjunto.png"
           {...conjunto}
         />
       ))}

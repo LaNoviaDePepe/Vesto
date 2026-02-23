@@ -4,8 +4,8 @@ import type { PrendaProps } from "./Prenda";
 
 interface ConjuntoProps {
     id?: number;
-    name: string;
-    url: string;
+    nombre: string;
+    url_imagen: string;
     descripcion: string;
     prendas: PrendaProps[];
     favorito: boolean;
@@ -13,7 +13,7 @@ interface ConjuntoProps {
     onToggleFavorito?: (id: number, estadoActual: boolean) => void;
 }
 
-export default function Conjunto({ id, name, url, descripcion, prendas, favorito, onToggleFavorito }: ConjuntoProps) {
+export default function Conjunto({ id, nombre, url_imagen, descripcion, prendas, favorito, onToggleFavorito }: ConjuntoProps) {
 
     // función para manejar el click en el corazón
     const handleHeartClick = (e: React.MouseEvent) => {
@@ -38,13 +38,13 @@ export default function Conjunto({ id, name, url, descripcion, prendas, favorito
 
             <div className="w-full md:w-1/3 bg-white p-4 rounded-[10px] self-start">
                 <img
-                    src={url}
-                    alt={name}
+                    src={url_imagen}
+                    alt={nombre}
                     className="w-full h-auto object-cover rounded-[10px] block"
                 />
             </div>
             <div className="w-full md:w-2/3 flex flex-col gap-4">
-                <h2 className="text-xl font-bold">{name}</h2>
+                <h2 className="text-xl font-bold">{nombre}</h2>
                 <p className="text-gray-700">{descripcion}</p>
                 <div className="flex flex-wrap justify-center gap-x-12.5 gap-y-12.5">
                     {prendas.map((prenda, index) => (
