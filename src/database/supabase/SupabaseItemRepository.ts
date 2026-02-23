@@ -26,6 +26,7 @@ export class SupabaseItemRepository implements ItemRepository {
             color: p.color,
             temporada: p.temporada,
             categoria: p.categoria,
+            favorito: p.favorito
         })) || [];
 
         return { data: prendasMapped, error };
@@ -84,4 +85,25 @@ export class SupabaseItemRepository implements ItemRepository {
             return { error };
         }
     }
+
+
+
+    async toggleFavorito(id_prenda: number, nuevoEstado: boolean) {
+        console.log(`Intentando guardar prenda ${id_prenda} como favorito: ${nuevoEstado}`);
+        
+        const { data, error } = await supabase
+            .from('prendas')
+            .update({ favorito: nuevoEstado })
+            .eq('id', id_prenda) 
+            .select();
+
+        if (error) {
+            console.error("❌ Error en Supabase al guardar favorito:", error.message);
+        } else {
+            console.log("✅ Guardado en Supabase con éxito", data);
+        }
+
+        return { data, error };
+    }
+
 }

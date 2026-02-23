@@ -34,12 +34,11 @@ export default function OutfitsPage() {
   return (
     <div className="flex flex-col gap-10 px-10">
       {conjuntos.map(conjunto => (
+        // Spread operator, en vez de pasar uno a uno
         <Conjunto
           key={conjunto.id}
-          name={conjunto.nombre}
-          descripcion={conjunto.descripcion}
-          prendas={conjunto.prendas}
           url="/img/conjunto.png"
+          {...conjunto}
         />
       ))}
     </div>
