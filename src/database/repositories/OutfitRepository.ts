@@ -35,4 +35,6 @@ export interface OutfitRepository {
      * @returns Una promesa con los datos del conjunto recién creado o un error si falla cualquier paso del proceso.
      */
     createConjunto(data: ConjuntoData): Promise<{ data?: any, error?: any }>;
+
+    isFavorito(id_conjunto: number, nuevoEstado: boolean): Promise<{ data?: any, error?: any }>;
 }

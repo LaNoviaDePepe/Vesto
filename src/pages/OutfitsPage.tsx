@@ -31,6 +31,26 @@ export default function OutfitsPage() {
 
   if (loading) return <div>Loading outfits...</div>;
 
+  const handleToggleFavorito = async (id: number, estadoActual: boolean) => {
+  const nuevoEstado = !estadoActual;
+
+    // Actualización visual (corazón torna a rojo)
+    setConjuntos(prevConjuntos => 
+      prevConjuntos.map(c => c.id === id ? { ...c, favorito: nuevoEstado } : c)
+    );
+
+    // Actualización en Supabase
+    const { error } = await outfitRepository.isFavorito(id, nuevoEstado);
+    
+    // Si hay fallo, revertimos el color del corazón
+    if (error) {
+      console.error("Error guardando favorito:", error);
+      setConjuntos(prevConjuntos => 
+        prevConjuntos.map(c => c.id === id ? { ...c, favorito: estadoActual } : c)
+      );
+    }
+  };
+
   return (
     <div className="flex flex-col gap-10 px-10">
       {conjuntos.map(conjunto => (
@@ -38,7 +58,8 @@ export default function OutfitsPage() {
         <Conjunto
           key={conjunto.id}
           {...conjunto}
-        />
+          toggleFavorito={handleToggleFavorito} />
+        
       ))}
     </div>
   );

@@ -10,16 +10,16 @@ interface ConjuntoProps {
     prendas: PrendaProps[];
     favorito: boolean;
     //Función para marcar/desmarcar favorita una prenda
-    onToggleFavorito?: (id: number, estadoActual: boolean) => void;
+    toggleFavorito?: (id: number, estadoActual: boolean) => void;
 }
 
-export default function Conjunto({ id, nombre, url_imagen, descripcion, prendas, favorito, onToggleFavorito }: ConjuntoProps) {
+export default function Conjunto({ id, nombre, url_imagen, descripcion, prendas, favorito, toggleFavorito }: ConjuntoProps) {
 
     // función para manejar el click en el corazón
     const handleHeartClick = (e: React.MouseEvent) => {
         e.stopPropagation(); // evita que se haga click en la tarjeta entera, solo se hace click en el corazón
-        if (onToggleFavorito && id !== undefined) {
-            onToggleFavorito(id, favorito);
+        if (toggleFavorito && id !== undefined) {
+            toggleFavorito(id, favorito);
         }
     };
 

@@ -132,4 +132,22 @@ export class SupabaseOutfitRepository implements OutfitRepository {
             return { error };
         }
     }
+
+    async isFavorito(id_conjunto: number, nuevoEstado: boolean) {
+        console.log(`Intentando guardar conjunto ${id_conjunto} como favorito: ${nuevoEstado}`);
+        
+        const { data, error } = await supabase
+            .from('conjuntos')
+            .update({ favorito: nuevoEstado })
+            .eq('id', id_conjunto) 
+            .select();
+
+        if (error) {
+            console.error("❌ Error en Supabase al guardar favorito:", error.message);
+        } else {
+            console.log("✅ Guardado en Supabase con éxito", data);
+        }
+
+        return { data, error };
+    }
 }
