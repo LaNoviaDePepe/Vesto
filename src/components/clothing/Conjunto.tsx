@@ -2,6 +2,9 @@ import { Heart } from "lucide-react";
 import type { PrendaProps } from "./Prenda";
 import { OutfitSlot } from "./OutfitSlot";
 
+/**
+ * Propiedades esperadas para el componente Conjunto.
+ */
 interface ConjuntoProps {
     id?: number;
     nombre: string;
@@ -9,20 +12,35 @@ interface ConjuntoProps {
     descripcion: string;
     prendas: PrendaProps[];
     favorito: boolean;
-    //Función para marcar/desmarcar favorita una prenda
+    /**
+     * Función callback para alternar el estado de favorito.
+     * @param id - El identificador del conjunto.
+     * @param estadoActual - El estado actual de favorito antes del cambio.
+     */
     toggleFavorito?: (id: number, estadoActual: boolean) => void;
 }
 
+/**
+ * Componente que renderiza una tarjeta de un conjunto (outfit), mostrando su imagen principal,
+ * descripción, un botón de favorito y una cuadrícula con las prendas individuales categorizadas.
+ */
 export default function Conjunto({ id, nombre, url_imagen, descripcion, prendas, favorito, toggleFavorito }: ConjuntoProps) {
 
 
-    // Función para encontrar la prenda por categoría.
-    // Al recibir PrendaProps[], TypeScript sabe qué propiedades tiene cada objeto.
+    /**
+     * Busca y devuelve la primera prenda del conjunto que coincida con la categoría dada.
+     * @param cat - El string que define la categoría a buscar (ej: "cabeza", "calzado").
+     * @returns El objeto de la prenda si se encuentra, de lo contrario `null`.
+     */
     const getPrendaByCategoria = (cat: string): PrendaProps | null => {
         return prendas.find(p => p.categoria === cat) || null;
     };
 
-    // función para manejar el click en el corazón
+    /**
+     * Manejador del evento click en el botón de "Favorito" (Corazón).
+     * Intercepta el evento para evitar la propagación y ejecuta la función callback `toggleFavorito`.
+     * @param e - El evento sintético de ratón de React.
+     */
     const handleHeartClick = (e: React.MouseEvent) => {
         e.stopPropagation(); // evita que se haga click en la tarjeta entera, solo se hace click en el corazón
         if (toggleFavorito && id !== undefined) {
@@ -77,23 +95,3 @@ export default function Conjunto({ id, nombre, url_imagen, descripcion, prendas,
     );
 }
 
-{/* CÓDIGO PREVIO */ }
-{/* <div className="flex flex-wrap justify-center gap-x-12.5 gap-y-12.5">
-                    {prendas.map((prenda, index) => (
-                        // Spread operator, en vez de pasar uno a uno, además escondemos los corazones
-                        <Prenda key={index} {...prenda} hideHeart={true} />
-                    ))}
-                </div>  */}
-
-{/* NOTA: ANTES DE UTILIZAR EL SPREAD OPERATOR, PASÁBAMOS TODOS LOS PROPS UNO A UNO
-                    {prendas.map((prenda, index) => (
-                        <Prenda
-                            key={index}
-                            name={prenda.name}
-                            url={prenda.url}
-                            color={prenda.color}
-                            temporada={prenda.temporada}
-                            categoria={prenda.categoria}
-                            favorito={prenda.favorito}                        
-                        />
-                    ))} */}

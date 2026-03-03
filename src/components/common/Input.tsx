@@ -1,16 +1,29 @@
 import React, { useState } from "react";
 
+/**
+ * Interfaz que define las propiedades del componente Input.
+ * Extiende las propiedades estándar de un input HTML e incorpora props personalizadas.
+ */
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
     // Cambiamos string por React.ReactNode para permitir Spans y Links
     label?: string;
     error?: string;
 }
 
+/**
+ * Componente de Input universal y reutilizable.
+ * Soporta inputs de texto estándar, inputs de contraseña (con botón para mostrar/ocultar) 
+ * y checkboxes, adaptando su layout y estilos de Tailwind dinámicamente según el `type`.
+ */
 export default function Input({ label, error, disabled, type, ...props }: InputProps) {
+    // Estado para alternar la visibilidad de la contraseña
     const [showPassword, setShowPassword] = useState(false);
 
+    // Determina el tipo real del elemento <input>. 
+    // Si es "password" y el usuario hizo click en "mostrar", lo cambia a "text".
     const inputType = type === "password" && showPassword ? "text" : type;
 
+    // Constante booleana para simplificar las verificaciones condicionales a lo largo del componente.
     const isCheckbox = type === "checkbox";
 
     // Clases base: si es checkbox, no queremos el borde ni el padding de un input de texto

@@ -1,5 +1,9 @@
 import { Heart } from "lucide-react";
 
+/**
+ * Interfaz que define las propiedades que recibe el componente Prenda.
+ * Contiene toda la información necesaria para mostrar una pieza de ropa individual.
+ */
 export interface PrendaProps {
     id?: number;
     id_usuario?: string;
@@ -9,15 +13,28 @@ export interface PrendaProps {
     temporada: string;
     categoria: string;
     favorito: boolean;
-    //Función para marcar/desmarcar favorita una prenda
+    /**
+     * Función callback para alternar el estado de favorito.
+     * @param id - El identificador único de la prenda.
+     * @param estadoActual - El estado actual de favorito antes de ser clicado.
+     */
     onToggleFavorito?: (id: number, estadoActual: boolean) => void;
-    //Propiedad que nos permite eliminar el corazón de la vista OutfitsPage
+    /** Bandera (flag) que permite ocultar el botón del corazón.
+     * Muy útil al reutilizar el componente en vistas donde no se requiere esta acción (ej. OutfitsPage).
+     */
     hideHeart?: boolean;
 }
 
+/**
+ * Componente que renderiza una tarjeta individual ("Card") para una prenda de ropa.
+ * Muestra la imagen, el nombre y un botón condicional para marcar/desmarcar como favorita.
+ */
 export default function Prenda({ id, name, url, color, temporada, categoria, favorito, onToggleFavorito, hideHeart }: PrendaProps) {
 
-    // función para manejar el click en el corazón
+    /**
+     * Maneja el evento de clic específicamente sobre el icono del corazón.
+     * @param e - Evento sintético del ratón de React.
+     */
     const handleHeartClick = (e: React.MouseEvent) => {
         e.stopPropagation(); // evita que se haga click en la tarjeta entera, solo se hace click en el corazón
         if (onToggleFavorito && id !== undefined) {

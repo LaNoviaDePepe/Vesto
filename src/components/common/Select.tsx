@@ -1,10 +1,16 @@
 import type { ChangeEvent, FocusEvent } from "react";
 
+/**
+ * Define la estructura de cada opción individual dentro del desplegable.
+ */
 type FilterOption = {
     value: string;
     label: string;
 };
 
+/**
+ * Propiedades esperadas para el componente Select personalizado.
+ */
 interface SelectProps {
     name: string;
     value: string;
@@ -16,6 +22,11 @@ interface SelectProps {
     onBlur?: (e: FocusEvent<HTMLSelectElement>) => void;
 }
 
+/**
+ * Componente de interfaz (UI) reutilizable para menús desplegables (<select>).
+ * Incluye estilos personalizados de Tailwind, soporte para estados de error y una
+ * flecha (caret) SVG personalizada para unificar el diseño en todos los navegadores.
+ */
 export default function Select({
     name,
     value,      

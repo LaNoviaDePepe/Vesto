@@ -2,8 +2,17 @@ import { Link } from 'react-router-dom';
 import Navbar from './Navbar';
 import Button from './Button';
 
+/**
+ * Componente funcional que renderiza el encabezado (Header) para los usuarios invitados (no autenticados).
+ * Muestra el logotipo de la aplicación, una barra de navegación con anclas a secciones de la página principal,
+ * y los botones de llamada a la acción (CTA) para iniciar sesión o registrarse.
+ */
 export default function GuestHeader() {
-    // Constante que almacena los links para los usuarios anónimos
+    // =========================================================================
+    // Constante que almacena los links para los usuarios anónimos.
+    // Utiliza rutas con anclas (hash links como '/#funcionamiento') para permitir 
+    // la navegación suave (smooth scroll) hacia distintas secciones de la landing page.
+    // =========================================================================
     const guestLinks = [
         { label: 'Inicio', path: '/' },
         { label: 'Funcionamiento', path: '/#funcionamiento' },

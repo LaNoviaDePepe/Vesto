@@ -1,5 +1,10 @@
 
-
+/**
+ * Componente visual que representa un espacio (slot) reservado para una prenda específica dentro de un conjunto.
+ * * @param {Object} props - Propiedades del componente.
+ * @param {string} props.label - Título de la categoría o posición (ej. "Cabeza", "Calzado").
+ * @param {any | null} props.item - Objeto con los datos de la prenda. Puede ser null si el hueco está vacío.
+ */
 export function OutfitSlot({ label, item }: { label: string; item: any | null }) {
     return (
         <div className="flex flex-col items-center gap-2">

@@ -1,11 +1,26 @@
 import { Link } from 'react-router-dom';
 
-// 1. Define la interfaz para las propiedades
+/**
+ * Define la interfaz para las propiedades del componente Footer.
+ * Permite tipar correctamente los props entrantes y asegura que TypeScript
+ * valide el uso de isUser.
+ */
 interface FooterProps {
+    /** 
+     *  Booleano que determina el tema del footer.
+     * true: Tema oscuro (para la vista de usuario logueado).
+     * false/undefined: Tema claro (por defecto, para landing page o invitados).
+     */
     isUser?: boolean;
 }
 
-// 2. Asigna la interfaz al componente
+/**
+ * Asigna la interfaz al componente y define el Footer.
+ * Componente funcional que renderiza el pie de página de la aplicación.
+ * Es responsivo (columna en móvil, fila en escritorio) y adapta su paleta
+ * de colores basándose en si es la vista de un usuario registrado o no.
+ * @param {FooterProps} props - Propiedades del componente destructuradas.
+ */
 export default function Footer({ isUser = false }: FooterProps) {
 
     // Configuración de colores sincronizada

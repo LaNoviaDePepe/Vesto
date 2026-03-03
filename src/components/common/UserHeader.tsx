@@ -6,22 +6,35 @@ import { useAuthStore } from '../../stores/authStore';
 import toast from 'react-hot-toast';
 import { LogOut } from 'lucide-react';
 
-
+/**
+ * Componente funcional que renderiza el encabezado (Header) exclusivo para usuarios autenticados.
+ * Proporciona acceso a las funciones principales de la aplicación (Armario, Conjuntos),
+ * muestra el avatar del usuario y maneja la lógica de cierre de sesión.
+ */
 export default function UserHeader() {
+        // Obtenemos los datos del usuario actual desde el estado global (Zustand)
+        // Se usa un selector específico para evitar re-renderizados si cambian otras partes del store.
         const sessionUser = useAuthStore((state) => state.sessionUser);
 
-    // Constante que almacena los links para los usuarios registrados
+    // Constante que almacena los links para los usuarios registrados.
+    // Definen las rutas principales de la zona privada de la aplicación.
     const userLinks = [
         { label: 'Mi armario', path: '/closet' },
         { label: 'Mis conjuntos', path: '/outfits' },
         { label: 'Subir prenda', path: '/clothing' },
         { label: 'Crear conjunto', path: '/outfitCreator' },
     ];
-
+    // Obtenemos el store completo para poder acceder posteriormente a la acción `clearSession`.
     const state = useAuthStore();
+    // Instanciamos el repositorio de usuarios que contiene la lógica de base de datos (Supabase, etc.)
     const userRepository = createUserRepository();
+    // Hook de React Router para redireccionar al usuario programáticamente
     const navigate = useNavigate();
 
+    /**
+     * Maneja el flujo de cierre de sesión del usuario.
+     * Se comunica con la base de datos y, si es exitoso, limpia el estado local y redirige.
+     */
     const handleLogout = async () => {
 
         try {
