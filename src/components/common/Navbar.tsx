@@ -10,6 +10,7 @@ interface NavLinkItem {
 interface NavbarProps {
     links: NavLinkItem[],
     isUser?: boolean //Determina si la navbar corresponde al usuario o no, para controlar el color del texto
+
 }
 
 export default function Navbar({ links, isUser = false }: NavbarProps) {
