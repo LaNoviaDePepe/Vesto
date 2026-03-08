@@ -1,10 +1,10 @@
 import { create } from 'zustand'
-import { persist } from 'zustand/middleware'
+import { createJSONStorage, persist } from 'zustand/middleware'
 import type { SessionUser } from '../interfaces/SessionUser'
 
 /**
  * Define el estado global de la sesión del usuario en la aplicación.
- * * Contiene tanto la información del usuario (perfil y cuenta) como las acciones
+ * Contiene tanto la información del usuario (perfil y cuenta) como las acciones
  * para modificar este estado (login, logout, actualizaciones parciales).
  */
 interface AuthState {
@@ -22,11 +22,18 @@ interface AuthState {
     isAuthenticated: boolean
 
     /**
+     * Indica si el usuario actual tiene rol de administrador.
+     * Se verifica contra la tabla public.user_roles.
+     */
+    isAdmin: boolean
+
+    /**
      * Establece una nueva sesión completa. Se usa típicamente tras un Login o Registro exitoso.
      * Automáticamente pone `isAuthenticated` a `true`.
      * @param sessionUser - El objeto con los datos del usuario y perfil recuperados.
+     * @param isAdmin - Booleano que indica si el usuario tiene rol de administrador.
      */
-    setSession: (sessionUser: SessionUser) => void
+    setSession: (sessionUser: SessionUser, isAdmin: boolean) => void
 
     /**
      * Limpia la sesión actual. Se usa para el Logout.
@@ -35,16 +42,16 @@ interface AuthState {
     clearSession: () => void
 
     /**
-         * Actualiza **solo** los datos del perfil (Tabla 'perfiles') en el estado local.
-         * * Úsalo para reflejar cambios visuales (nombre, avatar) inmediatamente en la UI
-         * sin necesidad de recargar la página tras guardar en la base de datos.
-         * @param profile - Objeto parcial con los datos del perfil a actualizar.
-         */
+     * Actualiza **solo** los datos del perfil (Tabla 'perfiles') en el estado local.
+     * Úsalo para reflejar cambios visuales (nombre, avatar) inmediatamente en la UI
+     * sin necesidad de recargar la página tras guardar en la base de datos.
+     * @param profile - Objeto parcial con los datos del perfil a actualizar.
+     */
     updateSessionProfile: (profile: any) => void
 
     /**
      * Actualiza **solo** los datos del usuario de autenticación (Supabase Auth).
-     * * Úsalo cuando cambies datos sensibles como el email o metadatos de auth,
+     * Úsalo cuando cambies datos sensibles como el email o metadatos de auth,
      * para que el estado local coincida con la sesión real del backend.
      * @param userUpdates - Objeto parcial con los datos del usuario (User) a actualizar.
      */
@@ -53,7 +60,7 @@ interface AuthState {
 
 /**
  * Hook global para gestionar la autenticación.
- * * Utiliza el middleware `persist` para guardar la sesión en el `localStorage` del navegador,
+ * Utiliza el middleware `persist` para guardar la sesión en el `localStorage` del navegador,
  * permitiendo que el usuario permanezca logueado aunque recargue la página.
  */
 export const useAuthStore = create<AuthState>()(
@@ -61,10 +68,19 @@ export const useAuthStore = create<AuthState>()(
         (set) => ({
             sessionUser: null,
             isAuthenticated: false,
+            isAdmin: false,
 
-            setSession: (sessionUser) => set({ sessionUser, isAuthenticated: true }),
+            setSession: (sessionUser, isAdmin) => set({
+                sessionUser,
+                isAuthenticated: true,
+                isAdmin: isAdmin 
+            }),
 
-            clearSession: () => set({ sessionUser: null, isAuthenticated: false }),
+            clearSession: () => set({ 
+                sessionUser: null, 
+                isAuthenticated: false, 
+                isAdmin: false 
+            }),
 
             updateSessionProfile: (newProfile) => set((state) => ({
                 sessionUser: state.sessionUser
@@ -80,9 +96,11 @@ export const useAuthStore = create<AuthState>()(
         }),
         {
             name: 'auth-v1',
+            storage: createJSONStorage(() => sessionStorage),
             partialize: (state) => ({
                 sessionUser: state.sessionUser,
                 isAuthenticated: state.isAuthenticated,
+                isAdmin: state.isAdmin,
             }),
         }
     )

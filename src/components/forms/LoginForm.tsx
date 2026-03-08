@@ -140,14 +140,14 @@ export default function LoginForm() {
             setLoading(true);
             try {
                 // Llamamos directamente al Repositorio
-                const { data, error: repoError } = await userRepository.login(formData.email, formData.password);
+                const { data, isAdmin, error: repoError } = await userRepository.login(formData.email, formData.password);
 
                 if (repoError) {
                     setAuthError(repoError.message || 'Error al iniciar sesión');
                 } else if (data) {
-                    setSession(data); // Guardamos en Zustand
+                    setSession(data, isAdmin || false); // Guardamos en Zustand
                     toast.success('¡Bienvenido!');
-                    navigate('/closet');
+                    navigate(isAdmin ? '/admin/dashboard' : '/closet');
                 }
             } catch (err) {
                 setAuthError('Error inesperado');

@@ -19,6 +19,7 @@ import PublicRoute from "./router/PublicRoute";
 import ProtectedRoute from "./router/ProtectedRoute";
 import GlobalLayout from "./layouts/GlobalLayout";
 import { Toaster } from "react-hot-toast";
+// import AdminProtectedRoute from "./router/AdminProtectedRoute";
 
 
 const router = createBrowserRouter([
@@ -53,10 +54,23 @@ const router = createBrowserRouter([
               { path: "/outfits", element: <OutfitsPage /> },
               { path: "/outfitCreator", element: <OutfitCreatorPage /> },
               { path: "/profile", element: <ProfilePage /> },
+              
             ],
           },
         ],
       },
+      // {
+      //   element: <AdminProtectedRoute />,
+      //   children: [
+      //     {
+      //       element: <NavbarPageLayout />, // Reutilizamos el layout porque el header incluirá los elementos si hacen falta
+      //       children: [
+      //         { path: "/admin/dashboard", element: <StatsPage /> },
+      //         { path: "/admin/users", element: <UserPage /> },
+      //       ],
+      //     },
+      //   ],
+      // },
       {
         path: "*",
         element: <Navigate to="/" replace />,

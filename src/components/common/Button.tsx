@@ -1,7 +1,7 @@
 import type { ButtonHTMLAttributes } from "react";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "primary" | "secondary" | "auxiliar" | "out";
+  variant?: "primary" | "secondary" | "auxiliar" | "icon";
 }
 
 export default function Button(
@@ -11,7 +11,7 @@ export default function Button(
     primary: "btn-primary",
     secondary: "btn-secondary",
     auxiliar: "btn-auxiliar",
-    out: "btn-out"
+    icon: "btn-icon"
   };
 
     return (

@@ -17,9 +17,10 @@
     @apply hover:bg-black hover:text-white hover:border-transparent;
   }
   
-  .btn-out {
+  .btn-icon {
     @apply bg-transparent text-white border-2 border-white;
     @apply hover:bg-white hover:text-black hover:border-transparent;
+    @apply rounded-full aspect-square flex items-center justify-center; /* Redondeado total */
   }
 
   Input {

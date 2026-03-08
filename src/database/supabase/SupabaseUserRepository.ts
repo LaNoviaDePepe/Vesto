@@ -53,10 +53,14 @@ export class SupabaseUserRepository implements UserRepository {
         }
     }
 
-    // Implementación de Login
-    async login(email: string, password: string): Promise<{ data?: SessionUser; error?: any }> {
+    /**
+     * Inicia sesión de un usuario existente y verifica su rol.
+     * @param email - Correo del usuario
+     * @param password - Contraseña del usuario
+     */
+    async login(email: string, password: string): Promise<{ data?: SessionUser; isAdmin?: boolean; error?: any }> {
         try {
-            // Login en Auth
+            // 1. Login en Auth
             const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
                 email,
                 password,
@@ -65,9 +69,9 @@ export class SupabaseUserRepository implements UserRepository {
             if (authError) return { error: authError };
             if (!authData.user) return { error: { message: "Usuario no encontrado" } };
 
-            // Obtener perfil asociado
+            // 2. Obtener perfil asociado
             const { data: profile, error: profileError } = await supabase
-                .from('perfiles')
+                .from('perfiles') 
                 .select('*')
                 .eq('id', authData.user.id)
                 .single();
@@ -77,13 +81,23 @@ export class SupabaseUserRepository implements UserRepository {
                 return { error: profileError };
             }
 
+            // 3. Consultar rol de administrador
+            const { data: roleData } = await supabase
+                .from('user_roles')
+                .select('role')
+                .eq('user_id', authData.user.id)
+                .single();
+
+            const isAdmin = roleData?.role === 'admin';
+
             // Construir respuesta
             const sessionUser: SessionUser = {
                 user: authData.user,
                 profile: profile
             };
 
-            return { data: sessionUser };
+            // 4. Retornamos tanto los datos de sesión como el flag de administrador
+            return { data: sessionUser, isAdmin: isAdmin };
 
         } catch (error) {
             return { error };
