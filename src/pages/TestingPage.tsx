@@ -15,13 +15,13 @@ import Footer from "../components/common/Footer.tsx";
 
 export default function TestingPage() {
 
-    const prendas: PrendaProps[] = [
-        { name: "Camiseta blanca", url: "/img/prenda.jpg", color: "blanco", temporada: "verano" },
-        { name: "Pantalón negro", url: "/img/prenda.jpg", color: "negro", temporada: "invierno" },
-        { name: "Camiseta blanca", url: "error", color: "blanco", temporada: "verano" }, // intentionally "error" for testing
-        { name: "Chaqueta roja", url: "/img/prenda.jpg", color: "rojo", temporada: "otoño" },
-        { name: "Sombrero azul", url: "/img/prenda.jpg", color: "azul", temporada: "primavera" },
-    ];
+    // const prendas: PrendaProps[] = [
+    //     { name: "Camiseta blanca", url: "/img/prenda.jpg", color: "blanco", temporada: "verano" },
+    //     { name: "Pantalón negro", url: "/img/prenda.jpg", color: "negro", temporada: "invierno" },
+    //     { name: "Camiseta blanca", url: "error", color: "blanco", temporada: "verano" }, // intentionally "error" for testing
+    //     { name: "Chaqueta roja", url: "/img/prenda.jpg", color: "rojo", temporada: "otoño" },
+    //     { name: "Sombrero azul", url: "/img/prenda.jpg", color: "azul", temporada: "primavera" },
+    // ];
     
     // Definición del estado que se compartirá
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -33,7 +33,7 @@ export default function TestingPage() {
         <>
             <GuestHeader></GuestHeader>
             <UserHeader></UserHeader>
-            <Header isLoggedIn={isLoggedIn} onToggleLogin={toggleLogin} />
+            {/* <Header isLoggedIn={isLoggedIn} onToggleLogin={toggleLogin} /> */}
             {/* --- SECCIÓN DE PRUEBAS PARA INPUTS --- */}
             <div className="max-w-4xl mx-auto p-10 flex flex-col gap-10">
                 <h2 className="text-2xl font-bold border-b pb-2">Componentes de Formulario (Inputs)</h2>
@@ -72,15 +72,15 @@ export default function TestingPage() {
                 </div>
             </div>
             <div className="w-full h-full bg-auxiliary-50" >
-                <div className="w-96 m-20">
+                {/* <div className="w-96 m-20">
                     <Select name="prueba" placeholder="Elige una opción" options={["una", "dos", "tres"]} value={""} onChange={function (): void {
                         throw new Error("Function not implemented.");
                     }} />
                     <Select name="pruebaError" placeholder="Elige una opción" options={["una", "dos"]} error="hay un error" value={""} onChange={function (): void {
                         throw new Error("Function not implemented.");
                     }} />
-                </div>
-                <Filter />
+                </div> */}
+                {/* <Filter />
                 <PrendasLayout
                     prendas={[
                         { name: "Camiseta blanca", url: "/img/prenda.jpg", color: "blanco", temporada: "verano" },
@@ -91,13 +91,13 @@ export default function TestingPage() {
                         { name: "Pantalón negro", url: "/img/prenda.jpg", color: "negro", temporada: "invierno" },
                         { name: "Chaqueta roja", url: "/img/prenda.jpg", color: "rojo", temporada: "otoño" },
                     ]}
-                />
-                <Conjunto
+                /> */}
+                {/* <Conjunto
                     name="Conjunto Casual"
                     url="/img/conjunto.png"
                     descripcion="Este conjunto combina prendas casuales perfectas para cualquier temporada. Incluye camiseta, pantalón, chaqueta y accesorios."
                     prendas={prendas}
-                />
+                /> */}
             </div>
             <AddItemForm />
             <LoginForm />

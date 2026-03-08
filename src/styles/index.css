@@ -2,7 +2,6 @@
 @import "./components.css";
 @import "./base.css";
 
-
 @theme {
     --color-black: #000000;
     --color-white: #FFFFFF;
@@ -62,3 +61,6 @@
     --font-body: Manrope, Consolas, ui-monospace;
 }
 
+
+/* Activa el modo oscuro cuando el HTML tiene la clase 'dark' */
+@variant dark (&:where(.dark, .dark *));
