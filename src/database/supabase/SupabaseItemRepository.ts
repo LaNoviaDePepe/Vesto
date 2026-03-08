@@ -36,7 +36,7 @@ export class SupabaseItemRepository implements ItemRepository {
     async createPrenda(data: PrendaData) {
         try {
             // Subir la imagen al Storage
-            // Creamos un nombre único para el archivo (ej: usuarioID/timestamp.png)
+            // Creamos un nombre único para el archivo. Formato: "{ID_DEL_USUARIO}/{TIMESTAMP_ACTUAL}.{EXTENSION_DEL_ARCHIVO}"
             const fileExt = data.imagen.name.split('.').pop();
             const fileName = `${data.userId}/${Date.now()}.${fileExt}`;
             const filePath = `${fileName}`;
@@ -57,18 +57,16 @@ export class SupabaseItemRepository implements ItemRepository {
 
 
             // Guardar los datos en la tabla 'prendas' 
-            // Ajusta los nombres de las columnas según tu imagen de BBDD
             const { data: newPrenda, error: dbError } = await supabase
                 .from('prendas')
                 .insert({
-                    id_usuario: data.userId, // Relación con la tabla usuarios
+                    id_usuario: data.userId, 
                     nombre: data.nombre,
-                    categoria: data.tipoPrenda, // En tu BBDD se llama 'categoria'
+                    categoria: data.tipoPrenda, 
                     color: data.color,
                     temporada: data.temporada,
                     url_imagen: publicUrl, // Guardamos la URL que nos dio el Storage
                     favorito: false, // Por defecto no es favorita
-                    // fecha_alta se pone sola si tienes default now()
                 })
                 .select()
                 .single();
@@ -86,7 +84,49 @@ export class SupabaseItemRepository implements ItemRepository {
         }
     }
 
+    async deletePrenda(id_prenda: number, imageUrl?: string) {
+        try {
+            // Borramos el registro de la base de datos
+            const { error: delError } = await supabase
+                .from('prendas')
+                .delete()
+                .eq('id', id_prenda);
 
+            if (delError) {
+                console.error("Error al borrar prenda de la BBDD:", delError);
+                return { error: delError };
+            }
+
+            // Borramos la imagen del Storage para que no quede huérfana y no ocupar espacio
+            if (imageUrl) {
+                const basePath = '/object/public/prendas/';
+                const urlParts = imageUrl.split(basePath);
+                
+                if (urlParts.length > 1) {
+                    const filePath = decodeURIComponent(urlParts[1]); 
+                    // urlParts[1] almacena nombreDeFoto.extension. Decodificamos para conservar espacios y caracteres especiales.
+
+                    if (filePath) {
+                        const { error: storageError } = await supabase.storage
+                            .from('prendas')
+                            .remove([filePath]);
+                        
+                        if (storageError) {
+                            console.error("Prenda borrada, pero error al borrar imagen del Storage:", storageError);
+                            // No retornamos este error porque a nivel de usuario la prenda ya se borró de su armario
+                        }
+                    }
+                }
+            }
+
+            console.log(`Prenda ${id_prenda} eliminada correctamente`);
+            return {};
+
+        } catch (error) {
+            console.error("Error inesperado al borrar prenda:", error);
+            return { error };
+        }
+    }
 
     async toggleFavorito(id_prenda: number, nuevoEstado: boolean) {
         console.log(`Intentando guardar prenda ${id_prenda} como favorito: ${nuevoEstado}`);
