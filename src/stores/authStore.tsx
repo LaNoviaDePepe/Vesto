@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { persist } from 'zustand/middleware'
+import { createJSONStorage, persist } from 'zustand/middleware'
 import type { SessionUser } from '../interfaces/SessionUser'
 
 /**
@@ -96,6 +96,7 @@ export const useAuthStore = create<AuthState>()(
         }),
         {
             name: 'auth-v1',
+            storage: createJSONStorage(() => sessionStorage),
             partialize: (state) => ({
                 sessionUser: state.sessionUser,
                 isAuthenticated: state.isAuthenticated,
