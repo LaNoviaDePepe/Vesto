@@ -183,6 +183,7 @@ export class SupabaseUserRepository implements UserRepository {
             return { error };
         }
     }
+
     async resetPasswordForEmail(email: string): Promise<{ error?: any }> {
         try {
             const { error } = await supabase.auth.resetPasswordForEmail(email, {
@@ -191,6 +192,25 @@ export class SupabaseUserRepository implements UserRepository {
             });
             return { error };
         } catch (error) {
+            return { error };
+        }
+    }
+
+    async getAllUsers(): Promise<{ data?: any[]; error?: any }> {
+        try {
+            // Consultamos la tabla pública de perfiles
+            const { data, error } = await supabase
+                .from('perfiles')
+                .select('id, nombre_apellidos, url_avatar, rol'); // Se cambia si necesitamos otras cosas.
+
+            if (error) {
+                console.error("Error al obtener la lista de usuarios:", error);
+                return { error };
+            }
+
+            return { data };
+        } catch (error) {
+            console.error("Error inesperado:", error);
             return { error };
         }
     }

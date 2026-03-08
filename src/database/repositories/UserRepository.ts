@@ -61,4 +61,10 @@ export interface UserRepository {
      * Envía un correo de recuperación al usuario.
      */
     resetPasswordForEmail(email: string): Promise<{ error?: any }>;
+
+    /**
+     * Obtiene una lista de todos los perfiles de usuario registrados.
+     * @returns Una promesa con la lista de usuarios o un error.
+     */
+    getAllUsers(): Promise<{ data?: any[]; error?: any }>;
 }
