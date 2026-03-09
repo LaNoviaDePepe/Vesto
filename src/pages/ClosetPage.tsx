@@ -114,7 +114,13 @@ export default function ClosetPage() {
     const { error } = await itemRepository.deletePrenda(id, url);
     if (error) {
       console.error("Error borrando prenda:", error);
-      toast.error("Hubo un problema al eliminar la prenda");
+
+      if (error && typeof error === 'object' && 'code' in error && error.code === '23503') {
+        // Código 23503: Violación de restricción de llave foránea (la prenda está en un conjunto)
+          toast.error("Esta prenda está en un conjunto y no puede eliminarse.");
+      } else {
+          toast.error("No se pudo eliminar la prenda del armario.");
+      }
       // Si falla, devolvemos la prenda a la pantalla
       setPrendas(prendasAnteriores);
     } else {
@@ -135,10 +141,10 @@ export default function ClosetPage() {
 
       {prendasFiltradas.length > 0 ? (
 
-        <PrendasLayout 
-            prendas={prendasFiltradas} 
-            onToggleFavorito={handleToggleFavorito} 
-            onDelete={handleDeletePrenda} />
+        <PrendasLayout
+          prendas={prendasFiltradas}
+          onToggleFavorito={handleToggleFavorito}
+          onDelete={handleDeletePrenda} />
       ) : (
 
         // Si los filtros han dejado la lista vacía, mostramos esto:

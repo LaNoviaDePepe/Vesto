@@ -86,7 +86,7 @@ export class SupabaseItemRepository implements ItemRepository {
 
     async deletePrenda(id_prenda: number, imageUrl?: string) {
         try {
-            // Borramos el registro de la base de datos
+            // Intentamos borrar el registro de la base de datos
             const { error: delError } = await supabase
                 .from('prendas')
                 .delete()
@@ -97,7 +97,7 @@ export class SupabaseItemRepository implements ItemRepository {
                 return { error: delError };
             }
 
-            // Borramos la imagen del Storage para que no quede huérfana y no ocupar espacio
+            // Si el borrado en BBDD fue exitoso, procedemos a borrar la imagen del Storage para que no quede huérfana y no ocupar espacio.
             if (imageUrl) {
                 const basePath = '/object/public/prendas/';
                 const urlParts = imageUrl.split(basePath);
