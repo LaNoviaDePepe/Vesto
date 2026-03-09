@@ -1,4 +1,4 @@
-import { Heart } from "lucide-react";
+import { Heart, Trash2 } from "lucide-react";
 import type { PrendaProps } from "./Prenda";
 import { OutfitSlot } from "./OutfitSlot";
 
@@ -11,9 +11,10 @@ interface ConjuntoProps {
     favorito: boolean;
     //Función para marcar/desmarcar favorita una prenda
     toggleFavorito?: (id: number, estadoActual: boolean) => void;
+    onDelete?: (id: number, url: string) => void;
 }
 
-export default function Conjunto({ id, nombre, url_imagen, descripcion, prendas, favorito, toggleFavorito }: ConjuntoProps) {
+export default function Conjunto({ id, nombre, url_imagen, descripcion, prendas, favorito, toggleFavorito, onDelete }: ConjuntoProps) {
 
 
     // Función para encontrar la prenda por categoría.
@@ -29,19 +30,45 @@ export default function Conjunto({ id, nombre, url_imagen, descripcion, prendas,
             toggleFavorito(id, favorito);
         }
     };
+    // función para manejar el click en la papelera
+    const handleDeleteClick = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        if (onDelete && id !== undefined) {
+            onDelete(id, url_imagen);
+        }
+    };
 
     return (
         <div className="relative flex flex-col md:flex-row w-full gap-6 bg-primary-50 p-10 rounded-3xl">
-            {/* Corazón */}
-            <button
-                onClick={handleHeartClick}
-                className="absolute top-4 right-4 z-10 bg-white/70 p-1.5 rounded-full shadow-sm hover:scale-110 transition-transform cursor-pointer"
-            >
-                <Heart
-                    size={22}
-                    className={favorito ? "text-red-500 fill-red-500" : "text-gray-500"}
-                />
-            </button>
+
+            {/* Contenedor de Acciones (Agrupa botones a la derecha) */}
+            <div className="absolute top-4 right-4 z-10 flex gap-3">
+                {/* Papelera */}
+                {onDelete && (
+                    <button
+                        onClick={handleDeleteClick}
+                        className="bg-white/70 p-1.5 rounded-full shadow-sm hover:scale-110 hover:bg-red-50 transition-all cursor-pointer text-red-500"
+                        title="Eliminar conjunto"
+                    >
+                        <Trash2 size={22} />
+                    </button>
+                )}
+
+                {/* Corazón */}
+                {toggleFavorito && (
+                    <button
+                        onClick={handleHeartClick}
+                        className="bg-white/70 p-1.5 rounded-full shadow-sm hover:scale-110 transition-transform cursor-pointer"
+                        title="Marcar conjunto como favorito"
+                    >
+                        <Heart
+                            size={22}
+                            className={favorito ? "text-red-500 fill-red-500" : "text-gray-500"}
+                        />
+                    </button>
+                )}
+            </div>
+
 
             {/* Columna Izquierda: Información y Foto Principal */}
             <div className="w-full md:w-72 flex flex-col gap-4">

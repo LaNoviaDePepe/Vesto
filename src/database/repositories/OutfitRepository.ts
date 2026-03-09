@@ -36,5 +36,26 @@ export interface OutfitRepository {
      */
     createConjunto(data: ConjuntoData): Promise<{ data?: any, error?: any }>;
 
+    
+    /**
+     * Elimina un conjunto de forma definitiva del sistema.
+     * Este proceso debe asegurar:
+     * 1. El borrado del registro en la tabla principal de conjuntos.
+     * 2. El borrado físico del archivo de imagen en el storage (siempre que no sea la imagen por defecto).
+     *  
+     * @param id_conjunto - ID numérico del conjunto a eliminar.
+     * @param url_imagen - URL completa de la imagen para identificar y borrar el archivo en el storage.
+     * @returns Una promesa que confirma el éxito de la operación o devuelve un error si el proceso de borrado falla.
+     */
+    deleteConjunto(id_conjunto: number, url_imagen: string): Promise<{ data?: any, error?: any }>;
+
+    
+    /**
+     * Actualiza el estado de favorito de un conjunto específico.
+     * 
+     * @param id_conjunto - El identificador único del conjunto.
+     * @param nuevoEstado - El nuevo valor booleano para el campo favorito.
+     * @returns Una promesa con el resultado de la actualización o un error si la consulta falla.
+     */
     isFavorito(id_conjunto: number, nuevoEstado: boolean): Promise<{ data?: any, error?: any }>;
 }
