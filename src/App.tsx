@@ -21,7 +21,8 @@ import GlobalLayout from "./layouts/GlobalLayout";
 import { Toaster } from "react-hot-toast";
 import AdminProtectedRoute from "./router/AdminProtectedRoute";
 import { StatsPage } from "./pages/StatsPage";
-import { UsersPage } from "./pages/UserPage";
+import { UserPage } from "./pages/UserPage";
+// import AdminProtectedRoute from "./router/AdminProtectedRoute";
 
 
 const router = createBrowserRouter([
@@ -56,7 +57,7 @@ const router = createBrowserRouter([
               { path: "/outfits", element: <OutfitsPage /> },
               { path: "/outfitCreator", element: <OutfitCreatorPage /> },
               { path: "/profile", element: <ProfilePage /> },
-              
+
             ],
           },
         ],
@@ -68,7 +69,7 @@ const router = createBrowserRouter([
             element: <NavbarPageLayout />, // Reutilizamos el layout porque el header incluirá los elementos si hacen falta
             children: [
               { path: "/admin/dashboard", element: <StatsPage /> },
-              { path: "/admin/users", element: <UsersPage /> },
+              { path: "/admin/users", element: <UserPage /> },
             ],
           },
         ],
@@ -85,9 +86,9 @@ export default function App() {
   return (
     <>
       {/* El Toaster debe estar fuera del RouterProvider para que sea global */}
-      <Toaster 
-        position="top-right" 
-        reverseOrder={false} 
+      <Toaster
+        position="top-right"
+        reverseOrder={false}
         toastOptions={{
           // Opcional: Estilos que combinan con Vesto
           className: 'font-body border-2 border-auxiliary-700 rounded-2xl',

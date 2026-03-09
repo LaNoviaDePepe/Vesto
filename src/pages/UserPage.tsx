@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { createUserRepository } from '../database/repositories';
 import toast from 'react-hot-toast';
 
-export const UsersPage = () => {
+export const UserPage = () => {
     const [users, setUsers] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -44,7 +44,7 @@ export const UsersPage = () => {
                         )}
                         <div>
                             <p className="font-semibold">{user.nombre_apellidos}</p>
-                            <p className="text-sm text-gray-500">Rol: {user.rol}</p>
+                            <p className="text-sm text-gray-500">Rol: {user.user_roles?.[0]?.role ?? 'usuario'}</p>
                         </div>
                     </div>
                 ))}

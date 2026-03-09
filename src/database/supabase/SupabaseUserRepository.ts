@@ -72,7 +72,7 @@ export class SupabaseUserRepository implements UserRepository {
 
             // 2. Obtener perfil asociado
             const { data: profile, error: profileError } = await supabase
-                .from('perfiles') 
+                .from('perfiles')
                 .select('*')
                 .eq('id', authData.user.id)
                 .single();
@@ -216,7 +216,7 @@ export class SupabaseUserRepository implements UserRepository {
             // Consultamos la tabla pública de perfiles
             const { data, error } = await supabase
                 .from('perfiles')
-                .select('id, nombre_apellidos, url_avatar, rol'); // Se cambia si necesitamos otras cosas.
+                .select('id, nombre_apellidos, url_avatar, user_roles (role)'); // Se cambia si necesitamos otras cosas.
 
             if (error) {
                 console.error("Error al obtener la lista de usuarios:", error);
@@ -230,7 +230,7 @@ export class SupabaseUserRepository implements UserRepository {
         }
     }
 
-        async getDailyLogins(): Promise<{ data?: any[]; error?: any }> {
+    async getDailyLogins(): Promise<{ data?: any[]; error?: any }> {
         try {
             const { data, error } = await supabase
                 .from('daily_logins')
