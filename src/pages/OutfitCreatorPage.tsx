@@ -262,7 +262,7 @@ export default function OutfitCreatorPage() {
           {/* Botón flotante para subir */}
           <div className="absolute bottom-6 right-6 z-20">
             <Button
-              variant="out"
+              variant="icon"
               className="border-0 hover:bg-transparent hover:shadow-none"
               onClick={scrollToTopArmario}
             >
