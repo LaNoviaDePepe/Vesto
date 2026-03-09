@@ -68,4 +68,9 @@ export interface UserRepository {
      */
     getAllUsers(): Promise<{ data?: any[]; error?: any }>;
 
+    /**
+     * Obtiene el histórico de logins diarios de la tabla 'daily_logins'.
+     */
+    getDailyLogins(): Promise<{ data?: any[]; error?: any }>;
+
 }

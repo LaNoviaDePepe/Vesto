@@ -215,4 +215,23 @@ export class SupabaseUserRepository implements UserRepository {
             return { error };
         }
     }
+
+        async getDailyLogins(): Promise<{ data?: any[]; error?: any }> {
+        try {
+            const { data, error } = await supabase
+                .from('daily_logins')
+                .select('day, total_logins')
+                .order('day', { ascending: true });
+
+            if (error) {
+                console.error("Error al obtener logins diarios:", error);
+                return { error };
+            }
+
+            return { data };
+        } catch (error) {
+            console.error("Error inesperado al cargar logins:", error);
+            return { error };
+        }
+    }
 }

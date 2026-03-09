@@ -3,10 +3,23 @@ import toast from 'react-hot-toast';
 import { createItemRepository } from '../../database/repositories';
 import PieGraph from '../common/PieGraph';
 
+/**
+ * Componente inteligente (Container) que muestra la distribución de prendas por categoría.
+ * Se encarga de la lógica de negocio: obtiene la instancia del repositorio de ítems, 
+ * realiza la llamada asíncrona a la base de datos para recuperar las métricas, 
+ * maneja los estados de carga y error, y finalmente delega la renderización visual 
+ * al componente genérico `PieGraph`.
+ * @component
+ * @returns {JSX.Element} Muestra un esqueleto de carga, un mensaje de estado vacío, o el gráfico circular.
+ */
 export const CategoriasChart = () => {
     const [data, setData] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
 
+    /**
+     * Hook de efecto que se ejecuta una única vez al montar el componente.
+     * Invoca al repositorio para obtener la lista de prendas agrupadas por categoría.
+     */
     useEffect(() => {
         const fetchData = async () => {
             const itemRepository = createItemRepository();

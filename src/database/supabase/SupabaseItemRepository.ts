@@ -149,4 +149,45 @@ export class SupabaseItemRepository implements ItemRepository {
         }
     }
 
+    async getPrendasPorCategoria(): Promise<{ data?: any[]; error?: any }> {
+        try {
+            // Pedimos lo que queremos
+            const { data, error } = await supabase
+                .from('prendas')
+                .select('categoria');
+
+            if (error) {
+                return { error };
+            }
+
+            const counts: { [key: string]: number } = {};
+
+            // Contamos cuántas prendas hay de cada categoría
+            for (const item of data) {
+                // Manejamos el caso de que la categoría venga vacía 
+                const cat = item.categoria || 'Sin categoría';
+
+                if (counts[cat] === undefined) {
+                    counts[cat] = 0;
+                }
+                counts[cat] = counts[cat] + 1;
+            }
+
+            // Recharts para PieChart espera un formato exacto: [{ name: 'A', value: 10 }]
+            const finalFormat = Object.keys(counts).map(key => ({
+                name: key,
+                value: counts[key]
+            }));
+
+            // Ordenamos de mayor a menor cantidad para que el gráfico quede más estético
+            finalFormat.sort((a, b) => b.value - a.value);
+
+            return { data: finalFormat };
+
+        } catch (error) {
+            console.error("Error agrupando categorías:", error);
+            return { error };
+        }
+    }
+
 }

@@ -1,5 +1,9 @@
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
+/**
+ * Propiedades esperadas por el componente PieGraph.
+ * @interface PieGraphProps
+ */
 interface PieGraphProps {
     title: string;
     data: any[];
@@ -7,9 +11,19 @@ interface PieGraphProps {
     dataKey: string; // La propiedad para el valor numérico (ej. 'value')
 }
 
-// Cambiar los colores.
+/** Paleta de colores predefinida para las porciones del gráfico.
+ * 
+ */
 const COLORS = ['#8b5cf6', '#10b981', '#f59e0b', '#ef4444', '#3b82f6', '#ec4899', '#6366f1'];
 
+/**
+ * Componente genérico para renderizar un gráfico circular tipo Donut (PieChart).
+ * Este componente es puramente visual (Presentacional). Recibe los datos a través de props
+ * y los renderiza utilizando la librería Recharts, adaptándose al 100% del contenedor padre.
+ * @component
+ * @param {PieGraphProps} props - Propiedades del componente.
+ * @returns {JSX.Element} Un contenedor estilizado con el gráfico circular renderizado.
+ */
 export default function PieGraph({ title, data, nameKey, dataKey }: PieGraphProps) {
     return (
         <div className="p-4 bg-white rounded-xl shadow-md h-full flex flex-col">

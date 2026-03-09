@@ -1,49 +1,27 @@
-import { useEffect, useState } from 'react';
-import toast from 'react-hot-toast';
-import Graph from '../components/common/Graph';
-import { createItemRepository } from '../database/repositories';
+import { PrendasChart } from '../components/charts/PrendasChart';
+import { LoginsChart } from '../components/charts/LoginsChart';
+import { CategoriasChart } from '../components/charts/CategoriasChart';
 
 export const StatsPage = () => {
-    const [chartData, setChartData] = useState<any[]>([]);
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        const fetchStats = async () => {
-            const itemRepository = createItemRepository();
-            const { data, error } = await itemRepository.getNumPrendasDia();
-
-            if (error) {
-                toast.error('Error al cargar las estadísticas');
-            } else if (data) {
-                setChartData(data);
-            }
-            setLoading(false);
-        };
-
-        fetchStats();
-    }, []);
-
-    if (loading) return <p className="p-6 text-center">Cargando estadísticas...</p>;
-
     return (
-        <div className="p-6 space-y-6">
-            <h1 className="text-2xl font-bold">Estadísticas de la Aplicación</h1>
+        <div className="p-6 space-y-10">
+            {/* Cabecera de la página */}
+            <div>
+                <h1 className="text-3xl font-bold text-gray-800 tracking-tight">Panel de Estadísticas</h1>
+                <p className="text-gray-500 mt-2">Analítica del uso de la aplicación en tiempo real.</p>
+            </div>
 
-            {chartData.length > 0 ? (
-                <div className="max-w-4xl mx-auto">
-                    <Graph 
-                        title="Prendas Registradas por Día" 
-                        data={chartData} 
-                        xKey="dia"
-                        yKey="cantidad"
-                        lineColor="#8b5cf6"
-                    />
+            {/* Grid de Gráficas */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                {/* Primera fila: 2 columnas */}
+                <PrendasChart />
+                <CategoriasChart/> 
+
+                {/* Segunda fila: Ocupa todo el ancho (lg:col-span-2) */}
+                <div className="lg:col-span-2">
+                    <LoginsChart />
                 </div>
-            ) : (
-                <div className="bg-gray-100 p-10 rounded-xl text-center">
-                    <p className="text-gray-500">No hay datos suficientes para mostrar el gráfico.</p>
-                </div>
-            )}
+            </div>
         </div>
     );
 };

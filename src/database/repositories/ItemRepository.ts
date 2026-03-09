@@ -11,4 +11,9 @@ export interface ItemRepository {
      * @returns Una promesa con la lista de usuarios o un error.
      */
     getNumPrendasDia(): Promise<{ data?: any[]; error?: any }>;
+    /**
+     * Obtiene el recuento total de prendas agrupadas por su categoría.
+     * Ideal para gráficos circulares (PieChart).
+     */
+    getPrendasPorCategoria(): Promise<{ data?: any[]; error?: any }>;
 }
