@@ -15,7 +15,7 @@ export const StatsPage = () => {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 {/* Primera fila: 2 columnas */}
                 <PrendasChart />
-                <CategoriasChart/> 
+                <CategoriasChart />
 
                 {/* Segunda fila: Ocupa todo el ancho (lg:col-span-2) */}
                 <div className="lg:col-span-2">

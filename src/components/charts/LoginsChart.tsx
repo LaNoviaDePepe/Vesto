@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { createUserRepository } from '../../database/repositories';
-import Graph from '../common/Graph';
+import Graph from './Graph';
 
 export const LoginsChart = () => {
     const [data, setData] = useState<any[]>([]);
@@ -44,7 +44,7 @@ export const LoginsChart = () => {
                 />
             ) : (
                 <div className="bg-gray-50 p-10 rounded-xl text-center border border-dashed border-gray-200">
-                    <p className="text-gray-400">El historial de logins se está calculando.</p>
+                    <p className="text-gray-400">Sin datos de logins suficientes.</p>
                 </div>
             )}
         </div>

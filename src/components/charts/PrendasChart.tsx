@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
-import Graph from '../common/Graph';
+import Graph from './Graph';
 import { createItemRepository } from '../../database/repositories';
 
 export const PrendasChart = () => {
