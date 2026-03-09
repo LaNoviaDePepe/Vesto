@@ -67,4 +67,5 @@ export interface UserRepository {
      * @returns Una promesa con la lista de usuarios o un error.
      */
     getAllUsers(): Promise<{ data?: any[]; error?: any }>;
+
 }

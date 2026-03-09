@@ -5,6 +5,7 @@ import { supabase } from "./Client";
 
 export class SupabaseUserRepository implements UserRepository {
 
+
     // Implementación de crear usuario (Registro)
     async createUser(data: RegisterData): Promise<{ data?: SessionUser; error?: any }> {
         try {

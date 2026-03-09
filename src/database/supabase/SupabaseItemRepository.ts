@@ -90,11 +90,11 @@ export class SupabaseItemRepository implements ItemRepository {
 
     async toggleFavorito(id_prenda: number, nuevoEstado: boolean) {
         console.log(`Intentando guardar prenda ${id_prenda} como favorito: ${nuevoEstado}`);
-        
+
         const { data, error } = await supabase
             .from('prendas')
             .update({ favorito: nuevoEstado })
-            .eq('id', id_prenda) 
+            .eq('id', id_prenda)
             .select();
 
         if (error) {
@@ -104,6 +104,49 @@ export class SupabaseItemRepository implements ItemRepository {
         }
 
         return { data, error };
+    }
+
+    async getNumPrendasDia(): Promise<{ data?: any[]; error?: any }> {
+        try {
+            // Obtener todas las fechas (repetidas también)
+            const { data, error } = await supabase
+                .from('prendas')
+                .select('fecha_alta');
+
+            if (error) {
+                return { error };
+            }
+
+            const counts: { [key: string]: number } = {};
+
+            for (const item of data) {
+                const fullDate = item.fecha_alta;
+                const dayOnly = fullDate.split('T')[0];
+
+                if (counts[dayOnly] === undefined) {
+                    counts[dayOnly] = 0;
+                }
+
+                counts[dayOnly] = counts[dayOnly] + 1;
+            }
+
+            const finalFormat = [];
+
+            for (const date in counts) {
+                finalFormat.push({
+                    day: date,
+                    quantity: counts[date]
+                });
+            }
+
+            finalFormat.sort((a, b) => a.day.localeCompare(b.day));
+
+            return { data: finalFormat };
+
+        } catch (error) {
+            console.error("Error:", error);
+            return { error };
+        }
     }
 
 }
