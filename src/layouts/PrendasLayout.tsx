@@ -5,15 +5,18 @@ import type { PrendaProps } from "../components/clothing/Prenda.tsx"; // Importa
 interface PrendasLayoutProps {
     prendas: PrendaProps[]; // Usamos la interfaz existente en vez de redefinirla
     onToggleFavorito?: (id: number, estadoActual: boolean) => void;
+    onDelete?: (id: number, url: string) => void;
 }
 
-export default function PrendasLayout({ prendas, onToggleFavorito }: PrendasLayoutProps) {
+export default function PrendasLayout({ prendas, onToggleFavorito, onDelete }: PrendasLayoutProps) {
     return (
         <div className="flex flex-wrap justify-center gap-x-12.5 gap-y-12.5 container p-10">
-            {prendas.map((prenda, index) => (
+            {prendas.map((prenda) => (
                 // Spread operator: Pasa todas las props de golpe en vez de una a una
-                <Prenda key={index} {...prenda}
-                onToggleFavorito={onToggleFavorito} />
+                <Prenda 
+                key={prenda.id} {...prenda} //Antes la key era {index}, pero al ser posible borrar los elementos, podría dar fallos de reasignación
+                onToggleFavorito={onToggleFavorito}
+                onDelete={onDelete} />
             ))}
         </div>
     );

@@ -13,38 +13,38 @@ export interface ConjuntoData {
 export class SupabaseOutfitRepository implements OutfitRepository {
 
     async getConjuntos(id_usuario: string) {
-    const { data, error } = await supabase
-        .from('conjuntos')
-        .select(`
+        const { data, error } = await supabase
+            .from('conjuntos')
+            .select(`
             *,
             conjunto_prendas (
                 prendas (*)
             )
         `) // IMPORTANTE: Volver a traer las relaciones
-        .eq('id_usuario', id_usuario);
+            .eq('id_usuario', id_usuario);
 
-    const conjuntosMapped = data?.map(c => ({
-        id: c.id,
-        nombre: c.nombre,
-        favorito: c.favorito,
-        descripcion: c.descripcion,
-        fechaAlta: c.fecha_alta,
-        url_imagen: c.url_imagen, // Aquí se guarda la URL (ya sea la de Supabase o la default)
+        const conjuntosMapped = data?.map(c => ({
+            id: c.id,
+            nombre: c.nombre,
+            favorito: c.favorito,
+            descripcion: c.descripcion,
+            fechaAlta: c.fecha_alta,
+            url_imagen: c.url_imagen, // Aquí se guarda la URL (ya sea la de Supabase o la default)
 
-        prendas: c.conjunto_prendas?.map((cp: any) => ({
-            id: cp.prendas.id,
-            name: cp.prendas.nombre,
-            url: cp.prendas.url_imagen,
-            color: cp.prendas.color,
-            temporada: cp.prendas.temporada,
-            categoria: cp.prendas.categoria,
-        })) || []
-    })) || [];
+            prendas: c.conjunto_prendas?.map((cp: any) => ({
+                id: cp.prendas.id,
+                name: cp.prendas.nombre,
+                url: cp.prendas.url_imagen,
+                color: cp.prendas.color,
+                temporada: cp.prendas.temporada,
+                categoria: cp.prendas.categoria,
+            })) || []
+        })) || [];
 
-    return { data: conjuntosMapped, error };
+        return { data: conjuntosMapped, error };
     }
 
-    
+
     async createConjunto(data: ConjuntoData) {
         let publicUrl = "";
         let storagePath: string | null = null; // Variable de control para el borrado en storage
@@ -85,7 +85,7 @@ export class SupabaseOutfitRepository implements OutfitRepository {
                     descripcion: data.descripcion,
                     id_usuario: data.id_usuario,
                     url_imagen: publicUrl,
-                    favorito: false                  
+                    favorito: false
                 })
                 .select() //Devuelve el id del conjunto recién creado para poder realizar las inserciones en la tabla conjuntos_prendas
                 .single();
@@ -134,19 +134,51 @@ export class SupabaseOutfitRepository implements OutfitRepository {
         }
     }
 
+    async deleteConjunto(id_conjunto: number, url_imagen: string) {
+        try {
+            // Eliminamos el registro de la base de datos
+            // Las relaciones en 'conjunto_prendas' se borran automáticamente al existir ON DELETE CASCADE sobre la FK id_conjunto
+            const { error: deleteError } = await supabase
+                .from('conjuntos')
+                .delete()
+                .eq('id', id_conjunto);
+
+            if (deleteError) throw deleteError;
+
+            // Eliminamos la imagen del storage si no es la de por defecto
+            const DEFAULT_IMAGE_URL = "/img/default-outfit.png";
+            if (url_imagen && !url_imagen.includes(DEFAULT_IMAGE_URL)) {
+                // Extraemos el path relativo (usuario/nombre-archivo) de la URL pública
+                const urlParts = url_imagen.split('/object/public/conjuntos/');
+                if (urlParts.length > 1) {
+                    const filePath = urlParts[1];
+                    await supabase.storage.
+                        from('conjuntos').
+                        remove([filePath]);
+                }
+            }
+
+            return { data: true };
+        } catch (error) {
+            console.error("Error al eliminar conjunto:", error);
+            return { error };
+        }
+    }
+
+
     async isFavorito(id_conjunto: number, nuevoEstado: boolean) {
         console.log(`Intentando guardar conjunto ${id_conjunto} como favorito: ${nuevoEstado}`);
-        
+
         const { data, error } = await supabase
             .from('conjuntos')
             .update({ favorito: nuevoEstado })
-            .eq('id', id_conjunto) 
+            .eq('id', id_conjunto)
             .select();
 
         if (error) {
-            console.error("❌ Error en Supabase al guardar favorito:", error.message);
+            console.error("Error en Supabase al guardar favorito:", error.message);
         } else {
-            console.log("✅ Guardado en Supabase con éxito", data);
+            console.log("Guardado en Supabase con éxito", data);
         }
 
         return { data, error };

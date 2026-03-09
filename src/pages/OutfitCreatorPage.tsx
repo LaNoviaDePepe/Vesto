@@ -8,6 +8,7 @@ import { SupabaseOutfitRepository } from "../database/supabase/SupabaseOutfitRep
 import { SupabaseItemRepository } from "../database/supabase/SupabaseItemRepository";
 import { CircleChevronUp } from "lucide-react";
 import { useAuthStore } from "../stores/authStore";
+import toast from "react-hot-toast";
 
 
 interface ErrorsProps {
@@ -160,9 +161,9 @@ export default function OutfitCreatorPage() {
         setLoading(false);
 
         if (error) {
-          alert("Hubo un error al guardar el conjunto.");
+          toast.error("Hubo un error al guardar el conjunto.");
         } else {
-          alert(`¡Conjunto '${nombreConjunto}' guardado con éxito!`);
+          toast.success(`¡Conjunto '${nombreConjunto}' guardado con éxito!`);
 
           // Reseteo de form
           setNombreConjunto("");
