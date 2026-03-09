@@ -5,6 +5,7 @@ import { supabase } from "./Client";
 
 export class SupabaseUserRepository implements UserRepository {
 
+
     // Implementación de crear usuario (Registro)
     async createUser(data: RegisterData): Promise<{ data?: SessionUser; error?: any }> {
         try {
@@ -197,6 +198,7 @@ export class SupabaseUserRepository implements UserRepository {
             return { error };
         }
     }
+
     async resetPasswordForEmail(email: string): Promise<{ error?: any }> {
         try {
             const { error } = await supabase.auth.resetPasswordForEmail(email, {
@@ -205,6 +207,44 @@ export class SupabaseUserRepository implements UserRepository {
             });
             return { error };
         } catch (error) {
+            return { error };
+        }
+    }
+
+    async getAllUsers(): Promise<{ data?: any[]; error?: any }> {
+        try {
+            // Consultamos la tabla pública de perfiles
+            const { data, error } = await supabase
+                .from('perfiles')
+                .select('id, nombre_apellidos, url_avatar, rol'); // Se cambia si necesitamos otras cosas.
+
+            if (error) {
+                console.error("Error al obtener la lista de usuarios:", error);
+                return { error };
+            }
+
+            return { data };
+        } catch (error) {
+            console.error("Error inesperado:", error);
+            return { error };
+        }
+    }
+
+        async getDailyLogins(): Promise<{ data?: any[]; error?: any }> {
+        try {
+            const { data, error } = await supabase
+                .from('daily_logins')
+                .select('day, total_logins')
+                .order('day', { ascending: true });
+
+            if (error) {
+                console.error("Error al obtener logins diarios:", error);
+                return { error };
+            }
+
+            return { data };
+        } catch (error) {
+            console.error("Error inesperado al cargar logins:", error);
             return { error };
         }
     }

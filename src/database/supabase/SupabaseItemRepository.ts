@@ -130,11 +130,11 @@ export class SupabaseItemRepository implements ItemRepository {
 
     async toggleFavorito(id_prenda: number, nuevoEstado: boolean) {
         console.log(`Intentando guardar prenda ${id_prenda} como favorito: ${nuevoEstado}`);
-        
+
         const { data, error } = await supabase
             .from('prendas')
             .update({ favorito: nuevoEstado })
-            .eq('id', id_prenda) 
+            .eq('id', id_prenda)
             .select();
 
         if (error) {
@@ -144,6 +144,90 @@ export class SupabaseItemRepository implements ItemRepository {
         }
 
         return { data, error };
+    }
+
+    async getNumPrendasDia(): Promise<{ data?: any[]; error?: any }> {
+        try {
+            // Obtener todas las fechas (repetidas también)
+            const { data, error } = await supabase
+                .from('prendas')
+                .select('fecha_alta');
+
+            if (error) {
+                return { error };
+            }
+
+            const counts: { [key: string]: number } = {};
+
+            for (const item of data) {
+                const fullDate = item.fecha_alta;
+                const dayOnly = fullDate.split('T')[0];
+
+                if (counts[dayOnly] === undefined) {
+                    counts[dayOnly] = 0;
+                }
+
+                counts[dayOnly] = counts[dayOnly] + 1;
+            }
+
+            const finalFormat = [];
+
+            for (const date in counts) {
+                finalFormat.push({
+                    day: date,
+                    quantity: counts[date]
+                });
+            }
+
+            finalFormat.sort((a, b) => a.day.localeCompare(b.day));
+
+            return { data: finalFormat };
+
+        } catch (error) {
+            console.error("Error:", error);
+            return { error };
+        }
+    }
+
+    async getPrendasPorCategoria(): Promise<{ data?: any[]; error?: any }> {
+        try {
+            // Pedimos lo que queremos
+            const { data, error } = await supabase
+                .from('prendas')
+                .select('categoria');
+
+            if (error) {
+                return { error };
+            }
+
+            const counts: { [key: string]: number } = {};
+
+            // Contamos cuántas prendas hay de cada categoría
+            for (const item of data) {
+                // Manejamos el caso de que la categoría venga vacía 
+                const cat = item.categoria || 'Sin categoría';
+
+                if (counts[cat] === undefined) {
+                    counts[cat] = 0;
+                }
+                counts[cat] = counts[cat] + 1;
+            }
+
+            // Recharts para PieChart espera un formato exacto: [{ name: 'A', value: 10 }]
+            const finalFormat = Object.keys(counts).map(key => ({
+                name: key,
+                value: counts[key]
+            }));
+
+            // Ordenamos de mayor a menor cantidad para que el gráfico quede más estético
+            finalFormat.sort((a, b) => b.value - a.value);
+
+            return { data: finalFormat };
+
+        } catch (error) {
+            console.error("Error agrupando categorías:", error);
+            return { error };
+        }
     }
 
 }
