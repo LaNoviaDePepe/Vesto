@@ -1,32 +1,71 @@
 /* src/styles/components.css */
 @layer components {
-  .btn-primary, .btn-secondary {
+
+  .btn-primary,
+  .btn-secondary {
     @apply text-white border-2 border-transparent;
     @apply hover:bg-white;
   }
+
   .btn-primary {
     @apply bg-primary-700;
     @apply hover:text-primary-700 hover:border-primary-700;
   }
+
   .btn-secondary {
     @apply bg-auxiliary-700;
     @apply hover:text-auxiliary-700 hover:border-auxiliary-700;
   }
+
   .btn-auxiliar {
     @apply bg-transparent text-black border-2 border-black;
     @apply hover:bg-black hover:text-white hover:border-transparent;
   }
-  
+
   .btn-icon {
     @apply bg-transparent text-white border-2 border-white;
     @apply hover:bg-white hover:text-black hover:border-transparent;
-    @apply rounded-full aspect-square flex items-center justify-center; /* Redondeado total */
+    @apply rounded-full aspect-square flex items-center justify-center;
+    /* Redondeado total */
   }
 
   Input {
     @apply text-sm;
   }
-/* * {
+
+  /* * {
     @apply outline outline-2 outline-red-500 outline-dashed
   } */
+
+  @keyframes walk-in-left {
+    0% {
+      opacity: 0;
+      transform: translateX(+50vw);
+      /* Fuera de la pantalla a la izquierda */
+    }
+
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+      /* Posición final */
+    }
+  }
+
+  .animate-walkInLeft {
+    animation: walk-in-left 2.5s ease-out forwards;
+    /* 2.5s de duración, suave al final, se queda en el 100% */
+  }
+
+  .avatar-interactive {
+    /* Define qué propiedades se animan, duración y suavizado */
+    transition: transform 0.6s ease-in-out;
+    /* Asegura que la rotación sea sobre el centro */
+    transform-origin: center;
+  }
+
+  /* Estado al poner el ratón encima (hover) */
+  .avatar-interactive:hover {
+    /* Gira 360 grados y escala a 1.1 (10% más grande) */
+    transform: rotate(360deg) scale(1.1);
+  }
 }

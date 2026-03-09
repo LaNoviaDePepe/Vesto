@@ -66,7 +66,7 @@ export default function LandingPage() {
                         <img
                             src="/img/walking-man.png"
                             alt="Ilustración persona caminando"
-                            className="w-full max-w-md object-contain"
+                            className="w-full max-w-md object-contain animate-walkInLeft"
                         />
                     </div>
 
@@ -104,9 +104,9 @@ export default function LandingPage() {
                         <div className="flex flex-col items-center text-center gap-2">
                             {/* Avatar usuario */}
                             <img
-                                src="/img/opinions-default.png"
+                                src="/img/angel.png"
                                 alt="Usuario"
-                                className="w-24 h-24 rounded-full object-cover"
+                                className="w-24 h-24 rounded-full object-cover avatar-interactive"
                             />
                             <h3 className="font-bold text-lg text-black font-(--font-body)">Ángel</h3>
                             {/* Estrellas */}
@@ -122,9 +122,9 @@ export default function LandingPage() {
                         <div className="flex flex-col items-center text-center gap-2">
                             {/* Avatar usuario */}
                             <img
-                                src="/img/opinions-default.png"
+                                src="/img/jesus.png"
                                 alt="Usuario"
-                                className="w-24 h-24 rounded-full object-cover"
+                                className="w-24 h-24 rounded-full object-cover avatar-interactive"
                             />
                             <h3 className="font-bold text-lg text-black font-(--font-body)">Jesús</h3>
                             {/* Estrellas */}
@@ -140,11 +140,11 @@ export default function LandingPage() {
                         <div className="flex flex-col items-center text-center gap-2">
                             {/* Avatar usuario */}
                             <img
-                                src="/img/opinions-default.png"
+                                src="/img/paco.png"
                                 alt="Usuario"
-                                className="w-24 h-24 rounded-full object-cover"
+                                className="w-24 h-24 rounded-full object-cover avatar-interactive"
                             />
-                            <h3 className="font-bold text-lg text-black font-(--font-body)">Pepe</h3>
+                            <h3 className="font-bold text-lg text-black font-(--font-body)">Paco</h3>
                             {/* Estrellas */}
                             <img
                                 src="/img/stars.png"
@@ -152,15 +152,16 @@ export default function LandingPage() {
                                 className="h-5 w-auto"
                             />
                             <p className="text-sm text-black px-2 font-(--font-body)">
-                                Soy un hombre de pelo pobre y no sabia que habia tantas posibilidades de combinacion, ahora con Vesto me siento un rey, me ha dado confianza y estilo. Se nota que hay uno de los mios detras de esta app, gracias Gabi!
+                                Tus ojos son como dos sartenes, cuando los veo se me fri­en los huevos.
+                                Estás tan buena que te comí­a con ropa y todo... aunque pasara un mes cagando trapos.
                             </p>
                         </div>
                         <div className="flex flex-col items-center text-center gap-2">
                             {/* Avatar usuario */}
                             <img
-                                src="/img/opinions-default.png"
+                                src="/img/elias.png"
                                 alt="Usuario"
-                                className="w-24 h-24 rounded-full object-cover"
+                                className="w-24 h-24 rounded-full object-cover avatar-interactive"
                             />
                             <h3 className="font-bold text-lg text-black font-(--font-body)">Elías</h3>
                             {/* Estrellas */}
@@ -187,56 +188,57 @@ export default function LandingPage() {
                         </p>
                     </div>
                     <div className="flex flex-wrap justify-center gap-12 w-full">
+
+                        {/* Rodas */}
                         <div className="flex flex-col items-center text-center gap-2 w-32">
-                            {/* Avatar del equipo */}
-                            <img
-                                src={RodasImg}
-                                alt="Rodas"
-                                className="w-28 h-28 rounded-full object-cover mb-2"
-                            />
+                            <div className="relative w-28 h-28 mb-2 group cursor-pointer">
+                                <img src={RodasImg} alt="Rodas" className="absolute inset-0 w-28 h-28 rounded-full object-cover transition-opacity duration-500 ease-in-out group-hover:opacity-0 z-10" />
+                                <img src="/img/black-logo.png" alt="Logo de Vesto" className="absolute inset-0 w-28 h-28 rounded-full object-contain bg-orange-500 p-3 transition-opacity duration-500 ease-in-out opacity-0 group-hover:opacity-100 z-0 shadow-inner" />
+                            </div>
                             <h3 className="font-bold text-lg text-black font-(--font-body)">Rodas</h3>
                             <p className="text-sm text-blck font-(--font-body)">Cabra absoluta, no necesita presentación.</p>
                         </div>
+
+                        {/* Gabino */}
                         <div className="flex flex-col items-center text-center gap-2 w-32">
-                            {/* Avatar del equipo */}
-                            <img
-                                src={GabinoImg}
-                                alt="Gabino"
-                                className="w-28 h-28 rounded-full object-cover mb-2"
-                            />
+                            <div className="relative w-28 h-28 mb-2 group cursor-pointer">
+                                <img src={GabinoImg} alt="Gabino" className="absolute inset-0 w-28 h-28 rounded-full object-cover transition-opacity duration-500 ease-in-out group-hover:opacity-0 z-10" />
+                                <img src="/img/black-logo.png" alt="Logo de Vesto" className="absolute inset-0 w-28 h-28 rounded-full object-contain bg-white p-3 transition-opacity duration-500 ease-in-out opacity-0 group-hover:opacity-100 z-0 shadow-inner" />
+                            </div>
                             <h3 className="font-bold text-lg text-black font-(--font-body)">Pepe</h3>
                             <p className="text-sm text-blck font-(--font-body)">Aporta mucha veteranía, tiene más años que un bosque.</p>
                         </div>
+
+                        {/* Gloria */}
                         <div className="flex flex-col items-center text-center gap-2 w-32">
-                            {/* Avatar del equipo */}
-                            <img
-                                src={GloriajinImg}
-                                alt="Gloriajin"
-                                className="w-28 h-28 rounded-full object-cover mb-2"
-                            />
+                            <div className="relative w-28 h-28 mb-2 group cursor-pointer">
+                                <img src={GloriajinImg} alt="Gloriajin" className="absolute inset-0 w-28 h-28 rounded-full object-cover transition-opacity duration-500 ease-in-out group-hover:opacity-0 z-10" />
+                                <img src="/img/black-logo.png" alt="Logo de Vesto" className="absolute inset-0 w-28 h-28 rounded-full object-contain bg-orange-500 p-3 transition-opacity duration-500 ease-in-out opacity-0 group-hover:opacity-100 z-0 shadow-inner" />
+                            </div>
                             <h3 className="font-bold text-lg text-black font-(--font-body)">Gloriajin</h3>
                             <p className="text-sm text-blck font-(--font-body)">Diva absoluta, le da el toque chick.</p>
                         </div>
+
+                        {/* Miguel */}
                         <div className="flex flex-col items-center text-center gap-2 w-32">
-                            {/* Avatar del equipo */}
-                            <img
-                                src={MiguelImg}
-                                alt="Miguel"
-                                className="w-28 h-28 rounded-full object-cover mb-2"
-                            />
+                            <div className="relative w-28 h-28 mb-2 group cursor-pointer">
+                                <img src={MiguelImg} alt="Miguel" className="absolute inset-0 w-28 h-28 rounded-full object-cover transition-opacity duration-500 ease-in-out group-hover:opacity-0 z-10" />
+                                <img src="/img/black-logo.png" alt="Logo de Vesto" className="absolute inset-0 w-28 h-28 rounded-full object-contain bg-white p-3 transition-opacity duration-500 ease-in-out opacity-0 group-hover:opacity-100 z-0 shadow-inner" />
+                            </div>
                             <h3 className="font-bold text-lg text-black font-(--font-body)">Miguel</h3>
                             <p className="text-sm text-blck font-(--font-body)">Obsesionado con el trabajo, dentro y fuera del campo.</p>
                         </div>
+
+                        {/* Lucía */}
                         <div className="flex flex-col items-center text-center gap-2 w-32">
-                            {/* Avatar del equipo */}
-                            <img
-                                src={LuciaImg}
-                                alt="Lucía"
-                                className="w-28 h-28 rounded-full object-cover mb-2"
-                            />
+                            <div className="relative w-28 h-28 mb-2 group cursor-pointer">
+                                <img src={LuciaImg} alt="Lucía" className="absolute inset-0 w-28 h-28 rounded-full object-cover transition-opacity duration-500 ease-in-out group-hover:opacity-0 z-10" />
+                                <img src="/img/black-logo.png" alt="Logo de Vesto" className="absolute inset-0 w-28 h-28 rounded-full object-contain bg-orange-500 p-3 transition-opacity duration-500 ease-in-out opacity-0 group-hover:opacity-100 z-0 shadow-inner" />
+                            </div>
                             <h3 className="font-bold text-lg text-black font-(--font-body)">Lucía</h3>
                             <p className="text-sm text-blck font-(--font-body)">Sabe demasiado de todo, pero no lo dice, ¿falsa humilde?.</p>
                         </div>
+
                     </div>
                 </div>
             </section>
