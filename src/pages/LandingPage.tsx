@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import Button from '../components/common/Button';
-import { useTranslation } from "react-i18next";
+//import { useTranslation } from "react-i18next";
 import RodasImg from "../img/Rodas.png";
 import GabinoImg from "../img/Gabino.png";
 import GloriajinImg from "../img/Gloriajin.png";
@@ -11,8 +11,7 @@ import Orb from '../components/common/Orb';
 import Aurora from '../components/common/Aurora';
 
 export default function LandingPage() {
-    const { t } = useTranslation();
-
+    //const { t } = useTranslation();
     // Ejemplo de funcionamiento de translate
     // <h1>{t('welcome', { user: sessionUser?.profile?.username || 'Invitado' })}</h1>
     // <button>{t('actions.save')}</button>

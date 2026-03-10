@@ -1,29 +1,38 @@
+import { lazy, Suspense } from "react";
 import { createBrowserRouter, Navigate, RouterProvider } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
 
-// Layouts
+// Layouts - Los dejamos estáticos porque se usan casi siempre
 import NavbarPageFooterLayout from "./layouts/NavbarPageFooterLayout";
 import NavbarPageLayout from "./layouts/NavbarPageLayout";
 import LandingLayout from "./layouts/LandingLayout";
-
-// Pages
-import LoginPage from "./pages/LoginPage";
-import SignUpPage from "./pages/SignUpPage";
-import LandingPage from "./pages/LandingPage";
-import ClosetPage from "./pages/ClosetPage";
-import ClothingPage from "./pages/ClothingPage";
-import OutfitsPage from "./pages/OutfitsPage";
-import OutfitCreatorPage from "./pages/OutfitCreatorPage";
-import ProfilePage from "./pages/ProfilePage";
-import ResetPasswordPage from "./pages/ResetPasswordPage"; // <--- Importa la nueva página
+import GlobalLayout from "./layouts/GlobalLayout";
 import PublicRoute from "./router/PublicRoute";
 import ProtectedRoute from "./router/ProtectedRoute";
-import GlobalLayout from "./layouts/GlobalLayout";
-import { Toaster } from "react-hot-toast";
 import AdminProtectedRoute from "./router/AdminProtectedRoute";
-import { StatsPage } from "./pages/StatsPage";
-import { UserPage } from "./pages/UserPage";
-// import AdminProtectedRoute from "./router/AdminProtectedRoute";
 
+// Pages - CARGA DINÁMICA (Lazy Loading)
+// Esto dividirá el archivo de 1MB en trozos más pequeños.
+const LandingPage = lazy(() => import("./pages/LandingPage"));
+const LoginPage = lazy(() => import("./pages/LoginPage"));
+const SignUpPage = lazy(() => import("./pages/SignUpPage"));
+const ResetPasswordPage = lazy(() => import("./pages/ResetPasswordPage"));
+const ClosetPage = lazy(() => import("./pages/ClosetPage"));
+const ClothingPage = lazy(() => import("./pages/ClothingPage"));
+const OutfitsPage = lazy(() => import("./pages/OutfitsPage"));
+const OutfitCreatorPage = lazy(() => import("./pages/OutfitCreatorPage"));
+const ProfilePage = lazy(() => import("./pages/ProfilePage"));
+
+// Especialmente importante: las páginas de Admin que usan Recharts
+const StatsPage = lazy(() => import("./pages/StatsPage").then(module => ({ default: module.StatsPage })));
+const UserPage = lazy(() => import("./pages/UserPage").then(module => ({ default: module.UserPage })));
+
+// Componente de carga simple para el Suspense
+const PageLoader = () => (
+  <div className="w-full h-screen flex items-center justify-center bg-auxiliary-50">
+    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-500"></div>
+  </div>
+);
 
 const router = createBrowserRouter([
   {
@@ -31,7 +40,14 @@ const router = createBrowserRouter([
     children: [
       {
         element: <LandingLayout />,
-        children: [{ path: "/", element: <LandingPage /> }],
+        children: [{ 
+          path: "/", 
+          element: (
+            <Suspense fallback={<PageLoader />}>
+              <LandingPage />
+            </Suspense>
+          ) 
+        }],
       },
       {
         element: <PublicRoute />,
@@ -39,9 +55,9 @@ const router = createBrowserRouter([
           {
             element: <NavbarPageFooterLayout />,
             children: [
-              { path: "/login", element: <LoginPage /> },
-              { path: "/signUp", element: <SignUpPage /> },
-              { path: "/reset-password", element: <ResetPasswordPage /> },
+              { path: "/login", element: <Suspense fallback={<PageLoader />}><LoginPage /></Suspense> },
+              { path: "/signUp", element: <Suspense fallback={<PageLoader />}><SignUpPage /></Suspense> },
+              { path: "/reset-password", element: <Suspense fallback={<PageLoader />}><ResetPasswordPage /></Suspense> },
             ],
           },
         ],
@@ -52,12 +68,11 @@ const router = createBrowserRouter([
           {
             element: <NavbarPageLayout />,
             children: [
-              { path: "/closet", element: <ClosetPage /> },
-              { path: "/clothing", element: <ClothingPage /> },
-              { path: "/outfits", element: <OutfitsPage /> },
-              { path: "/outfitCreator", element: <OutfitCreatorPage /> },
-              { path: "/profile", element: <ProfilePage /> },
-
+              { path: "/closet", element: <Suspense fallback={<PageLoader />}><ClosetPage /></Suspense> },
+              { path: "/clothing", element: <Suspense fallback={<PageLoader />}><ClothingPage /></Suspense> },
+              { path: "/outfits", element: <Suspense fallback={<PageLoader />}><OutfitsPage /></Suspense> },
+              { path: "/outfitCreator", element: <Suspense fallback={<PageLoader />}><OutfitCreatorPage /></Suspense> },
+              { path: "/profile", element: <Suspense fallback={<PageLoader />}><ProfilePage /></Suspense> },
             ],
           },
         ],
@@ -66,10 +81,10 @@ const router = createBrowserRouter([
         element: <AdminProtectedRoute />,
         children: [
           {
-            element: <NavbarPageLayout />, // Reutilizamos el layout porque el header incluirá los elementos si hacen falta
+            element: <NavbarPageLayout />,
             children: [
-              { path: "/admin/dashboard", element: <StatsPage /> },
-              { path: "/admin/users", element: <UserPage /> },
+              { path: "/admin/dashboard", element: <Suspense fallback={<PageLoader />}><StatsPage /></Suspense> },
+              { path: "/admin/users", element: <Suspense fallback={<PageLoader />}><UserPage /></Suspense> },
             ],
           },
         ],
@@ -85,12 +100,10 @@ const router = createBrowserRouter([
 export default function App() {
   return (
     <>
-      {/* El Toaster debe estar fuera del RouterProvider para que sea global */}
       <Toaster
         position="top-right"
         reverseOrder={false}
         toastOptions={{
-          // Opcional: Estilos que combinan con Vesto
           className: 'font-body border-2 border-auxiliary-700 rounded-2xl',
           duration: 4000,
         }}

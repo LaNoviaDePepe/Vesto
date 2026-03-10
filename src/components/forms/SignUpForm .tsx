@@ -151,7 +151,7 @@ export default function SignUpForm() {
                 if (repoError) {
                     setAuthError(repoError.message || 'Error al registrar');
                 } else if (data) {
-                    setSession(data); // Guardamos en Zustand
+                    setSession(data, false); // Guardamos en Zustand , añadimos el false para quitar error
                     toast.success("Usuario registrado y logueado");
                     navigate('/');
                 }

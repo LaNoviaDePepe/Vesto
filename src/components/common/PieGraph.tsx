@@ -42,7 +42,7 @@ export default function PieGraph({ title, data, nameKey, dataKey }: PieGraphProp
                             dataKey={dataKey}
                             nameKey={nameKey}
                         >
-                            {data.map((entry, index) => (
+                            {data.map((_, index) => ( // cambiado entry por _
                                 <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                             ))}
                         </Pie>
