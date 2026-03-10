@@ -12,6 +12,8 @@ export interface PrendaData {
 }
 
 export class SupabaseItemRepository implements ItemRepository {
+    // Límite de 1MB en bytes
+    private readonly MAX_FILE_SIZE = 1 * 1024 * 1024;
 
     async getPrendas(id_usuario: string) {
         const { data, error } = await supabase
@@ -30,13 +32,21 @@ export class SupabaseItemRepository implements ItemRepository {
         })) || [];
 
         return { data: prendasMapped, error };
-
     }
 
     async createPrenda(data: PrendaData) {
         try {
-            // Subir la imagen al Storage
-            // Creamos un nombre único para el archivo. Formato: "{ID_DEL_USUARIO}/{TIMESTAMP_ACTUAL}.{EXTENSION_DEL_ARCHIVO}"
+            // 1. Validar tamaño del archivo antes de subirlo
+            if (data.imagen.size > this.MAX_FILE_SIZE) {
+                return { 
+                    error: { 
+                        message: `El archivo es demasiado grande (${(data.imagen.size / 1024 / 1024).toFixed(2)} MB). El máximo permitido es 1MB.` 
+                    } 
+                };
+            }
+
+            // 2. Subir la imagen al Storage
+            // Formato: "{ID_DEL_USUARIO}/{TIMESTAMP_ACTUAL}.{EXTENSION_DEL_ARCHIVO}"
             const fileExt = data.imagen.name.split('.').pop();
             const fileName = `${data.userId}/${Date.now()}.${fileExt}`;
             const filePath = `${fileName}`;
@@ -50,13 +60,12 @@ export class SupabaseItemRepository implements ItemRepository {
                 return { error: uploadError };
             }
 
-            // Obtenemos la URL pública de la imagen
+            // 3. Obtenemos la URL pública de la imagen
             const { data: { publicUrl } } = supabase.storage
                 .from('prendas')
                 .getPublicUrl(filePath);
 
-
-            // Guardar los datos en la tabla 'prendas' 
+            // 4. Guardar los datos en la tabla 'prendas' 
             const { data: newPrenda, error: dbError } = await supabase
                 .from('prendas')
                 .insert({
@@ -65,14 +74,15 @@ export class SupabaseItemRepository implements ItemRepository {
                     categoria: data.tipoPrenda, 
                     color: data.color,
                     temporada: data.temporada,
-                    url_imagen: publicUrl, // Guardamos la URL que nos dio el Storage
-                    favorito: false, // Por defecto no es favorita
+                    url_imagen: publicUrl,
+                    favorito: false,
                 })
                 .select()
                 .single();
 
             if (dbError) {
                 console.error("Error guardando en BBDD:", dbError);
+                // Si falla la DB, opcionalmente podrías borrar la imagen recién subida aquí
                 return { error: dbError };
             }
 
@@ -86,7 +96,6 @@ export class SupabaseItemRepository implements ItemRepository {
 
     async deletePrenda(id_prenda: number, imageUrl?: string) {
         try {
-            // Intentamos borrar el registro de la base de datos
             const { error: delError } = await supabase
                 .from('prendas')
                 .delete()
@@ -97,14 +106,12 @@ export class SupabaseItemRepository implements ItemRepository {
                 return { error: delError };
             }
 
-            // Si el borrado en BBDD fue exitoso, procedemos a borrar la imagen del Storage para que no quede huérfana y no ocupar espacio.
             if (imageUrl) {
                 const basePath = '/object/public/prendas/';
                 const urlParts = imageUrl.split(basePath);
                 
                 if (urlParts.length > 1) {
                     const filePath = decodeURIComponent(urlParts[1]); 
-                    // urlParts[1] almacena nombreDeFoto.extension. Decodificamos para conservar espacios y caracteres especiales.
 
                     if (filePath) {
                         const { error: storageError } = await supabase.storage
@@ -113,7 +120,6 @@ export class SupabaseItemRepository implements ItemRepository {
                         
                         if (storageError) {
                             console.error("Prenda borrada, pero error al borrar imagen del Storage:", storageError);
-                            // No retornamos este error porque a nivel de usuario la prenda ya se borró de su armario
                         }
                     }
                 }
@@ -129,8 +135,6 @@ export class SupabaseItemRepository implements ItemRepository {
     }
 
     async toggleFavorito(id_prenda: number, nuevoEstado: boolean) {
-        console.log(`Intentando guardar prenda ${id_prenda} como favorito: ${nuevoEstado}`);
-
         const { data, error } = await supabase
             .from('prendas')
             .update({ favorito: nuevoEstado })
@@ -148,39 +152,26 @@ export class SupabaseItemRepository implements ItemRepository {
 
     async getNumPrendasDia(): Promise<{ data?: any[]; error?: any }> {
         try {
-            // Obtener todas las fechas (repetidas también)
             const { data, error } = await supabase
                 .from('prendas')
                 .select('fecha_alta');
 
-            if (error) {
-                return { error };
-            }
+            if (error) return { error };
 
             const counts: { [key: string]: number } = {};
 
             for (const item of data) {
                 const fullDate = item.fecha_alta;
                 const dayOnly = fullDate.split('T')[0];
-
-                if (counts[dayOnly] === undefined) {
-                    counts[dayOnly] = 0;
-                }
-
-                counts[dayOnly] = counts[dayOnly] + 1;
+                counts[dayOnly] = (counts[dayOnly] || 0) + 1;
             }
 
-            const finalFormat = [];
-
-            for (const date in counts) {
-                finalFormat.push({
-                    day: date,
-                    quantity: counts[date]
-                });
-            }
+            const finalFormat = Object.keys(counts).map(date => ({
+                day: date,
+                quantity: counts[date]
+            }));
 
             finalFormat.sort((a, b) => a.day.localeCompare(b.day));
-
             return { data: finalFormat };
 
         } catch (error) {
@@ -191,37 +182,25 @@ export class SupabaseItemRepository implements ItemRepository {
 
     async getPrendasPorCategoria(): Promise<{ data?: any[]; error?: any }> {
         try {
-            // Pedimos lo que queremos
             const { data, error } = await supabase
                 .from('prendas')
                 .select('categoria');
 
-            if (error) {
-                return { error };
-            }
+            if (error) return { error };
 
             const counts: { [key: string]: number } = {};
 
-            // Contamos cuántas prendas hay de cada categoría
             for (const item of data) {
-                // Manejamos el caso de que la categoría venga vacía 
                 const cat = item.categoria || 'Sin categoría';
-
-                if (counts[cat] === undefined) {
-                    counts[cat] = 0;
-                }
-                counts[cat] = counts[cat] + 1;
+                counts[cat] = (counts[cat] || 0) + 1;
             }
 
-            // Recharts para PieChart espera un formato exacto: [{ name: 'A', value: 10 }]
             const finalFormat = Object.keys(counts).map(key => ({
                 name: key,
                 value: counts[key]
             }));
 
-            // Ordenamos de mayor a menor cantidad para que el gráfico quede más estético
             finalFormat.sort((a, b) => b.value - a.value);
-
             return { data: finalFormat };
 
         } catch (error) {
@@ -229,5 +208,4 @@ export class SupabaseItemRepository implements ItemRepository {
             return { error };
         }
     }
-
 }
