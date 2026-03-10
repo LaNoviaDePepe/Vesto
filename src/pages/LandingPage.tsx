@@ -7,6 +7,7 @@ import GabinoImg from "../img/Gabino.png";
 import GloriajinImg from "../img/Gloriajin.png";
 import LuciaImg from "../img/Lucia.png";
 import MiguelImg from "../img/Miguel.png";
+import Orb from '../components/common/Orb';
 
 export default function LandingPage() {
     const { t } = useTranslation();
@@ -36,22 +37,32 @@ export default function LandingPage() {
         <main className="w-full bg-auxiliary-50">
 
             {/* --- SECCIÓN 1: HERO --- */}
-            <section className="min-h-screen w-full bg-linear-to-br from-auxiliary-700 to-auxiliary-50 flex items-center justify-center font-sans px-32 py-12">
+            <section id="hero" className="min-h-screen w-full bg-linear-to-br from-auxiliary-700 to-auxiliary-50 flex items-center justify-center font-sans px-16 pb-8">
 
                 <div className="max-w-7xl w-full grid grid-cols-2 gap-16 items-center">
 
+                    {/* --- COLUMNA IZQUIERDA --- */}
                     <div className="flex flex-col items-start gap-8">
 
-                        <div className="logo">
-                            <Link to="/">
+                        {/* CONTENEDOR ESPECÍFICO PARA LOGO + ORB */}
+                        <div className="relative w-64 md:w-80 lg:w-96 aspect-square flex items-center justify-center">
+
+                            <Orb hoverIntensity={0.5} />
+
+                            <Link
+                                to="#hero"
+                                className="absolute flex items-center justify-center"
+                            >
                                 <img
                                     src="/img/black-logo.png"
                                     alt="Logo de Vesto"
-                                    className="h-64 w-auto object-contain"
+                                    className="h-140 w-auto object-contain drop-shadow-lg"
                                 />
                             </Link>
+
                         </div>
 
+                        {/* TEXTO Y BOTONES */}
                         <p className="font-(--font-display) text-4xl text-black max-w-xl">
                             ¿Cansado de perder demasiado tiempo eligiendo qué ponerte cada día? Eligelo rápido con Vesto, la app que te ayuda a organizar tu armario y crear outfits personalizados en segundos.
                         </p>

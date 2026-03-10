@@ -41,13 +41,12 @@
     0% {
       opacity: 0;
       transform: translateX(+50vw);
-      /* Fuera de la pantalla a la izquierda */
+
     }
 
     100% {
       opacity: 1;
       transform: translateX(0);
-      /* Posición final */
     }
   }
 
