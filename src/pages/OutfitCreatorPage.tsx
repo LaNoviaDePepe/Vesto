@@ -161,7 +161,12 @@ export default function OutfitCreatorPage() {
         setLoading(false);
 
         if (error) {
-          toast.error("Hubo un error al guardar el conjunto.");
+          if (error && typeof error === 'object' && 'code' in error && error.code === '23505') {
+            // Código 23505: nombre de conjunto duplicado
+            toast.error(`Ya tienes un conjunto llamado '${nombreConjunto}'. Elige otro nombre.`);
+          } else {
+            toast.error("Hubo un error al guardar el conjunto.");
+          }
         } else {
           toast.success(`¡Conjunto '${nombreConjunto}' guardado con éxito!`);
 
@@ -196,17 +201,17 @@ export default function OutfitCreatorPage() {
     const nuevoEstado = !estadoActual;
 
     // Actualización visual (corazón torna a rojo)
-    setPrendas(prevPrendas => 
+    setPrendas(prevPrendas =>
       prevPrendas.map(p => p.id === id ? { ...p, favorito: nuevoEstado } : p)
     );
 
     // Actualización en Supabase
     const { error } = await itemRepository.toggleFavorito(id, nuevoEstado);
-    
+
     // Si hay fallo, revertimos el color del corazón
     if (error) {
       console.error("Error guardando favorito:", error);
-      setPrendas(prevPrendas => 
+      setPrendas(prevPrendas =>
         prevPrendas.map(p => p.id === id ? { ...p, favorito: estadoActual } : p)
       );
     }
@@ -246,7 +251,7 @@ export default function OutfitCreatorPage() {
                     : 'hover:opacity-80'
                     }`}
                 >
-                  <Prenda {...prenda} onToggleFavorito={handleToggleFavorito}/>
+                  <Prenda {...prenda} onToggleFavorito={handleToggleFavorito} />
                 </div>
               ))
             ) : (
@@ -319,7 +324,7 @@ export default function OutfitCreatorPage() {
             <OutfitSlot label="Calzado" item={outfit.calzado} />
           </div>
         </div>
-              
+
         <div className="flex flex-col items-center justify-center space-y-6 mt-10 pb-20 mb-10">
           {/* Input File */}
           <div className="w-full max-w-75">

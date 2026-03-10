@@ -1,3 +1,4 @@
+import toast from "react-hot-toast";
 import type { OutfitRepository } from "../repositories/OutfitRepository";
 import { supabase } from "./Client";
 
@@ -90,12 +91,11 @@ export class SupabaseOutfitRepository implements OutfitRepository {
                 .select() //Devuelve el id del conjunto recién creado para poder realizar las inserciones en la tabla conjuntos_prendas
                 .single();
 
-            if (outfitError) {
-                // Si falla la inserción de la cabecera, limpiamos la imagen si se subió una
+            // Si falla la inserción de la cabecera, limpiamos la imagen si se subió una 
+            if (outfitError) { 
                 if (storagePath) {
                     await supabase.storage.from('conjuntos').remove([storagePath]);
                 }
-                console.error("Error creando cabecera del conjunto:", outfitError);
                 return { error: outfitError };
             }
 
