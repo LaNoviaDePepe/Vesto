@@ -8,6 +8,7 @@ import GloriajinImg from "../img/Gloriajin.png";
 import LuciaImg from "../img/Lucia.png";
 import MiguelImg from "../img/Miguel.png";
 import Orb from '../components/common/Orb';
+import Aurora from '../components/common/Aurora';
 
 export default function LandingPage() {
     const { t } = useTranslation();
@@ -97,12 +98,25 @@ export default function LandingPage() {
                             Tenemos un diseño intuitivo y fácil de usar, con funciones como subir fotos de tu ropa, crear outfits personalizados, guardar en favoritos... Todo para que elegir tu look diario sea rápido, divertido y sin complicaciones.
                         </p>
                     </div>
-                    <div className="relative w-full rounded-xl overflow-hidden">
-                        <img
-                            src="/img/video-default.png"
-                            alt="Preview del video"
-                            className="w-full h-full object-cover"
-                        />
+
+                    <div className="relative w-full aspect-video rounded-xl overflow-hidden shadow-2xl bg-black flex items-center justify-center">
+
+                        {/* FONDO ANIMADO */}
+                        <div className="absolute inset-0 z-0">
+                            <Aurora
+                                colorStops={["#7cff67", "#B19EEF", "#5227FF"]}
+                                blend={0.5}
+                                amplitude={1.0}
+                                speed={1}
+                            />
+                        </div>
+
+                        {/* TEXTO SUPERPUESTO */}
+                        <div className="relative z-10 text-center px-4 pointer-events-none">
+                            <h3 className="text-white text-2xl font-bold mb-2 font-(--font-display)">Demo de Vesto</h3>
+                            <p className="text-gray-300 text-sm font-(--font-body)">Próximamente el video de la app...</p>
+                        </div>
+
                     </div>
                 </div>
 
