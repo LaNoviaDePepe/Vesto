@@ -6,13 +6,14 @@ import { useAuthStore } from "../stores/authStore";
 import toast from "react-hot-toast";
 import type { PrendaProps } from "../components/clothing/Prenda";
 import Modal from "../components/common/Modal";
+import { useTranslation } from "react-i18next";
 
 // Sacamos la instancia fuera del componente para que solo se cree una vez al cargar la app,
 // si no cada vez que se actualiza un filtro vuelve a cargar todo.
 const itemRepository = new SupabaseItemRepository();
 
 export default function ClosetPage() {
-
+  const { t } = useTranslation();
   const [prendas, setPrendas] = useState<PrendaProps[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [itemToDelete, setItemToDelete] = useState<{ id: number, url: string } | null>(null);
@@ -129,14 +130,13 @@ export default function ClosetPage() {
       console.error("Error borrando prenda:", error);
 
       if (error && typeof error === 'object' && 'code' in error && error.code === '23503') {
-        // Código 23503: Violación de restricción de llave foránea (la prenda está en un conjunto)
-        toast.error("Esta prenda está en un conjunto y no puede eliminarse.");
+          toast.error(t('clothing.delete_error_in_outfit'));
       } else {
-        toast.error("No se pudo eliminar la prenda del armario.");
+          toast.error(t('clothing.delete_error'));
       }
       setPrendas(prendasAnteriores); // Si falla, devolvemos la prenda a la pantalla
     } else {
-      toast.success("Prenda eliminada de tu armario");
+      toast.success(t('clothing.delete_success'));
     }
     setItemToDelete(null); // Restauramos el estado inicial cuando se ha procesado el borrado
   };
@@ -161,6 +161,15 @@ export default function ClosetPage() {
             onDelete={openDeleteModal} />
         ) : (
 
+        // Si los filtros han dejado la lista vacía, mostramos esto:
+        <div className="flex flex-col items-center justify-center h-64 text-gray-400">
+          <p className="text-lg">{t('filter.no_results')}</p>
+          <button onClick={handleResetFilters} className="text-primary-600 underline mt-4 hover:text-primary-800 transition-colors cursor-pointer">
+            {t('filter.clear_filters')}
+          </button>
+        </div>
+
+      )}
           // Si los filtros han dejado la lista vacía, mostramos esto:
           <div className="flex flex-col items-center justify-center h-64 text-gray-400">
             <p className="text-lg">No se encontraron prendas con estos filtros</p>

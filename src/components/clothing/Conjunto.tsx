@@ -1,6 +1,7 @@
 import { Heart, Trash2 } from "lucide-react";
 import type { PrendaProps } from "./Prenda";
 import { OutfitSlot } from "./OutfitSlot";
+import { useTranslation } from "react-i18next";
 
 interface ConjuntoProps {
     id?: number;
@@ -15,7 +16,7 @@ interface ConjuntoProps {
 }
 
 export default function Conjunto({ id, nombre, url_imagen, descripcion, prendas, favorito, toggleFavorito, onDelete }: ConjuntoProps) {
-
+    const { t } = useTranslation();
 
     // Función para encontrar la prenda por categoría.
     // Al recibir PrendaProps[], TypeScript sabe qué propiedades tiene cada objeto.
@@ -48,7 +49,7 @@ export default function Conjunto({ id, nombre, url_imagen, descripcion, prendas,
                     <button
                         onClick={handleDeleteClick}
                         className="bg-white/70 p-1.5 rounded-full shadow-sm hover:scale-110 hover:bg-red-50 transition-all cursor-pointer text-red-500"
-                        title="Eliminar conjunto"
+                        title={t('outfit.delete_outfit_title')}
                     >
                         <Trash2 size={22} />
                     </button>
@@ -59,7 +60,7 @@ export default function Conjunto({ id, nombre, url_imagen, descripcion, prendas,
                     <button
                         onClick={handleHeartClick}
                         className="bg-white/70 p-1.5 rounded-full shadow-sm hover:scale-110 transition-transform cursor-pointer"
-                        title="Marcar conjunto como favorito"
+                        title={t('outfit.mark_favorite_title')}
                     >
                         <Heart
                             size={22}
@@ -89,38 +90,17 @@ export default function Conjunto({ id, nombre, url_imagen, descripcion, prendas,
 
                 {/* Fila Superior: Cabeza, Parte Arriba, Complemento */}
                 <div className="flex justify-center gap-4 lg:gap-8 w-full">
-                    <OutfitSlot label="Cabeza" item={getPrendaByCategoria("cabeza")} />
-                    <OutfitSlot label="Parte Arriba" item={getPrendaByCategoria("parte_arriba")} />
-                    <OutfitSlot label="Complemento" item={getPrendaByCategoria("complemento")} />
+                    <OutfitSlot label={t('outfit.head')} item={getPrendaByCategoria("cabeza")} />
+                    <OutfitSlot label={t('outfit.top')} item={getPrendaByCategoria("parte_arriba")} />
+                    <OutfitSlot label={t('outfit.accessory')} item={getPrendaByCategoria("complemento")} />
                 </div>
 
                 {/* Fila Inferior: Parte Abajo, Calzado */}
                 <div className="flex justify-center gap-4 lg:gap-8 w-full">
-                    <OutfitSlot label="Parte Abajo" item={getPrendaByCategoria("parte_abajo")} />
-                    <OutfitSlot label="Calzado" item={getPrendaByCategoria("calzado")} />
+                    <OutfitSlot label={t('outfit.bottom')} item={getPrendaByCategoria("parte_abajo")} />
+                    <OutfitSlot label={t('outfit.shoes')} item={getPrendaByCategoria("calzado")} />
                 </div>
             </div>
         </div>
     );
 }
-
-{/* CÓDIGO PREVIO */ }
-{/* <div className="flex flex-wrap justify-center gap-x-12.5 gap-y-12.5">
-                    {prendas.map((prenda, index) => (
-                        // Spread operator, en vez de pasar uno a uno, además escondemos los corazones
-                        <Prenda key={index} {...prenda} hideHeart={true} />
-                    ))}
-                </div>  */}
-
-{/* NOTA: ANTES DE UTILIZAR EL SPREAD OPERATOR, PASÁBAMOS TODOS LOS PROPS UNO A UNO
-                    {prendas.map((prenda, index) => (
-                        <Prenda
-                            key={index}
-                            name={prenda.name}
-                            url={prenda.url}
-                            color={prenda.color}
-                            temporada={prenda.temporada}
-                            categoria={prenda.categoria}
-                            favorito={prenda.favorito}                        
-                        />
-                    ))} */}

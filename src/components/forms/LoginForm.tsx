@@ -7,6 +7,7 @@ import { toast } from "react-hot-toast";
 import { isEmailTaken } from "../../database/supabase/RPCs/isEmailTaken";
 import { useAuthStore } from "../../stores/authStore";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from 'react-i18next';
 
 /**
  * Interfaz que define los campos del formulario de inicio de sesión.
@@ -34,6 +35,7 @@ interface ErrorsProps {
  * * @returns {JSX.Element} El componente del formulario de inicio de sesión.
  */
 export default function LoginForm() {
+    const { t } = useTranslation();
     // Instanciamos Repositorio, Store y Navegación
     const userRepository = new SupabaseUserRepository();
     const setSession = useAuthStore((state) => state.setSession);
@@ -89,8 +91,8 @@ export default function LoginForm() {
         const emailError = validateVestoField("email", formData.email);
 
         if (!formData.email || emailError) {
-            toast.error("Introduce un email válido para recuperar tu cuenta");
-            setErrors(prev => ({ ...prev, email: emailError || "Email requerido" }));
+            toast.error(t('form.email_required_recovery'));
+            setErrors(prev => ({ ...prev, email: emailError || t('form.email_required') }));
             return;
         }
 
@@ -98,22 +100,19 @@ export default function LoginForm() {
         const taken = await isEmailTaken(formData.email);
 
         if (!taken) {
-            toast.error("El correo electrónico no está registrado");
-            setErrors(prev => ({ ...prev, email: "Correo no registrado" }));
+            toast.error(t('form.email_not_registered'));
+            setErrors(prev => ({ ...prev, email: t('form.email_not_registered_short') }));
             return;
         }
 
         const { error } = await userRepository.resetPasswordForEmail(formData.email);
 
         if (error) {
-            toast.error("Error al enviar el enlace de recuperación");
+            toast.error(t('error.recovery_link'));
         } else {
             toast.success(
-                `¡Enlace enviado! Revisa tu correo (${formData.email})`,
-                {
-                    duration: 6000,
-                    icon: '📧',
-                }
+                t('message.recovery_link_sent', { email: formData.email }),
+                { duration: 6000, icon: '📧' }
             );
         }
     };
@@ -143,14 +142,14 @@ export default function LoginForm() {
                 const { data, isAdmin, error: repoError } = await userRepository.login(formData.email, formData.password);
 
                 if (repoError) {
-                    setAuthError(repoError.message || 'Error al iniciar sesión');
+                    setAuthError(repoError.message || t('error.login'));
                 } else if (data) {
                     setSession(data, isAdmin || false); // Guardamos en Zustand
-                    toast.success('¡Bienvenido!');
+                    toast.success(t('message.welcome_login'));
                     navigate(isAdmin ? '/admin/dashboard' : '/closet');
                 }
             } catch (err) {
-                setAuthError('Error inesperado');
+                setAuthError(t('error.random_error'));
             } finally {
                 setLoading(false);
             }
@@ -159,7 +158,7 @@ export default function LoginForm() {
 
     return (
         <div className="py-5 px-7.5 max-w-md mx-auto bg-white border-2 border-auxiliary-700 rounded-2xl shadow-xl">
-            <h3 className="text-center mb-8">Login</h3>
+            <h3 className="text-center mb-8">{t('form.login_title')}</h3>
 
             {authError && (
                 <div className="bg-red-100 text-red-600 p-2 mb-4 rounded text-center text-sm">
@@ -181,7 +180,7 @@ export default function LoginForm() {
 
                 <div className="flex flex-col">
                     <Input
-                        label="Contraseña"
+                        label={t('form.password')}
                         name="password"
                         type="password"
                         value={formData.password}
@@ -197,13 +196,13 @@ export default function LoginForm() {
                             onClick={handleForgotPassword}
                             className="text-[11px] text-primary-600 hover:text-primary-800 underline transition-colors font-medium"
                         >
-                            ¿Has olvidado tu contraseña?
+                            {t('form.forgot_password')}
                         </button>
                     </div>
                 </div>
 
                 <Input
-                    label="Recuérdame"
+                    label={t('form.remember_me')}
                     name="rememberMe"
                     type="checkbox"
                     checked={formData.rememberMe}
@@ -216,7 +215,7 @@ export default function LoginForm() {
                     disabled={loading}
                     className="btn btn-primary w-full mt-4"
                 >
-                    {loading ? "Cargando..." : "Acceder"}
+                    {loading ? t('actions.loading') : t('actions.access')}
                 </Button>
             </form>
         </div>

@@ -8,6 +8,7 @@ import { isEmailTaken } from "../../database/supabase/RPCs/isEmailTaken";
 import { SupabaseUserRepository } from "../../database/supabase/SupabaseUserRepository";
 import { useAuthStore } from "../../stores/authStore";
 import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 
 /**
  * Interfaz que define los campos requeridos para el registro de usuario.
@@ -39,6 +40,7 @@ interface ErrorsProps {
  * * @returns {JSX.Element} El componente del formulario de registro.
  */
 export default function SignUpForm() {
+    const { t } = useTranslation();
     // Instanciamos Repositorio y Store
     const userRepository = new SupabaseUserRepository();
     const setSession = useAuthStore((state) => state.setSession);
@@ -107,7 +109,7 @@ export default function SignUpForm() {
 
         const taken = await isEmailTaken(e.target.value);
         if (taken) {
-            setErrors((prev) => ({ ...prev, email: "Este correo electrónico ya está registrado" }));
+            setErrors((prev) => ({ ...prev, email: t('form.email_taken') }));
         }
     };
 
@@ -149,14 +151,15 @@ export default function SignUpForm() {
                 const { data, error: repoError } = await userRepository.createUser(newUser);
 
                 if (repoError) {
-                    setAuthError(repoError.message || 'Error al registrar');
+                    setAuthError(repoError.message || t('error.signup'));
                 } else if (data) {
-                    setSession(data); // Guardamos en Zustand
-                    toast.success("Usuario registrado y logueado");
+                    // Pasamos false porque un nuevo registro nunca es admin
+                    setSession(data, false); 
+                    toast.success(t('message.user_registered'));
                     navigate('/');
                 }
             } catch (err) {
-                setAuthError('Error inesperado');
+                setAuthError(t('error.random_error'));
             } finally {
                 setLoading(false);
             }
@@ -165,7 +168,7 @@ export default function SignUpForm() {
 
     return (
         <div className="py-5 px-7.5 max-w-md mx-auto bg-white border-2 border-auxiliary-700 rounded-2xl shadow-xl">
-            <h3 className="text-center mb-8">Registro</h3>
+            <h3 className="text-center mb-8">{t('form.signup_title')}</h3>
 
             {/* Mostrar errores de Supabase */}
             {authError && (
@@ -177,7 +180,7 @@ export default function SignUpForm() {
             <form onSubmit={handleSubmit} className="max-w-sm mx-auto space-y-8">
 
                 <Input
-                    label="Nombre y apellidos"
+                    label={t('form.name_surname')}
                     name="nombreApellidos"
                     type="text"
                     value={formData.nombreApellidos}
@@ -197,7 +200,7 @@ export default function SignUpForm() {
                     error={errors.email}
                 />
                 <Input
-                    label="Contraseña"
+                    label={t('form.password')}
                     name="password"
                     type="password"
                     value={formData.password}
@@ -207,7 +210,7 @@ export default function SignUpForm() {
                     error={errors.password}
                 />
                 <Input
-                    label="Repite contraseña"
+                    label={t('form.repeat_password')}
                     name="verifPassword"
                     type="password"
                     value={formData.verifPassword}
@@ -217,7 +220,7 @@ export default function SignUpForm() {
                     error={errors.verifPassword}
                 />
                 <Input
-                    label="Acepto los términos y condiciones"
+                    label={t('form.accept_terms')}
                     name="acceptTerms"
                     type="checkbox"
                     checked={formData.acceptTerms}
@@ -226,12 +229,12 @@ export default function SignUpForm() {
                 />
 
                 <Button type="submit" disabled={loading} className="btn btn-primary w-full">
-                    {loading ? "Registrando..." : "Dar de alta"}
+                    {loading ? t('actions.signing_up') : t('actions.signup')}
                 </Button>
                 <p className="mt-8 text-start text-sm text-gray-600">
-                    ¿Ya tienes una cuenta? Ingresa{" "}
+                    {t('form.already_have_account')}{" "}
                     <Link to="/login" className="text-primary-500 text-sm hover:underline hover:text-primary-700 hover:font-semibold">
-                        aquí
+                        {t('form.here')}
                     </Link>
                 </p>
             </form>

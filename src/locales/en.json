@@ -2,6 +2,204 @@
   "welcome": "Welcome {{user}}",
   "actions": {
     "save": "Save",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "saving": "Saving...",
+    "access": "Access",
+    "loading": "Loading...",
+    "save_changes": "Save changes",
+    "logout": "Log out",
+    "signing_up": "Signing up...",
+    "signup": "Sign up"
+  },
+  "navbar": {
+    "button": {
+      "login": "Log in",
+      "signup": "Sign up"
+    },
+    "links": {
+      "home": "Home",
+      "behaviour": "How it works",
+      "reviews": "Reviews",
+      "team": "Team",
+      "closet": "My closet",
+      "outfits": "My outfits",
+      "upload_clothing": "Upload clothing",
+      "create_outfit": "Create outfit"
+    }
+  },
+  "error": {
+    "random_error": "An unexpected error occurred",
+    "close_session": "Error logging out",
+    "saving": "Error while saving",
+    "signup": "Registration error",
+    "login": "Login error",
+    "recovery_link": "Error sending recovery link",
+    "category_loading_error": "Error loading categories"
+  },
+  "message": {
+    "2MB": "The image must be smaller than 2MB",
+    "profile_updated": "Profile updated",
+    "recovery_link_sent": "Link sent! Check your email ({{email}})",
+    "welcome_login": "Welcome!",
+    "user_registered": "User registered and logged in"
+  },
+  "footer": {
+    "feed": "",
+    "products": "Products",
+    "discover": "Discover",
+    "help": "Help",
+    "terms": "Terms",
+    "copyright_policy": "Copyright policy",
+    "download": "Download"
+  },
+  "filter": {
+    "choose_category": "Choose a category",
+    "choose_season": "Choose a season",
+    "choose_color": "Choose a color",
+    "remove": "Remove",
+    "no_results": "No clothes found with these filters",
+    "clear_filters": "Clear filters",
+    "favorites": "Favorites"
+  },
+  "clothing": {
+    "must_upload_img": "You must upload an image",
+    "must_login": "You must log in to upload clothing",
+    "error_upload_clothing": "Error uploading clothing:",
+    "ok_upload_clothing": "Clothing created successfully",
+    "delete_confirm": "Are you sure you want to delete this item from your closet?",
+    "delete_error_in_outfit": "This item is part of an outfit and cannot be deleted.",
+    "delete_error": "Could not delete the item from the closet.",
+    "delete_success": "Item deleted from your closet",
+    "add_edit_title": "Upload item/Edit item",
+    "name": "Item name",
+    "type": "Clothing type",
+    "select_type": "Select type...",
+    "color": "Color",
+    "select_color": "Select color...",
+    "season": "Season",
+    "select_season": "Select season...",
+    "preview": "Preview",
+    "no_image": "No Image Available",
+    "error_unexpected_upload": "Unexpected error uploading item",
+    "delete_item_title": "Delete item"
+  },
+  "form": {
+    "password": "Password",
+    "current_password": "Current password",
+    "new_password": "New password",
+    "required_to_change_password": "Required to change password",
+    "write_new_password": "Enter new password",
+    "remember_me": "Remember me",
+    "name_surname": "Full name",
+    "user_profile": "User Profile",
+    "signup_title": "Sign Up",
+    "login_title": "Login",
+    "email_taken": "This email is already registered",
+    "accept_terms_error": "You must accept the terms and conditions",
+    "repeat_password": "Repeat password",
+    "accept_terms": "I accept the terms and conditions",
+    "already_have_account": "Already have an account? Log in",
+    "here": "here",
+    "email_required_recovery": "Enter a valid email to recover your account",
+    "email_required": "Email required",
+    "email_not_registered": "The email is not registered",
+    "email_not_registered_short": "Unregistered email",
+    "email_placeholder": "example@email.com",
+    "forgot_password": "Forgot your password?"
+  },
+  "graph": {
+    "analysing_categories": "Analyzing categories...",
+    "not_enought_clothing": "Not enough clothes yet.",
+    "clothing_distribution": "Distribution by Category",
+    "error_loading_categories": "Error loading category data",
+    "loading_items": "Loading items chart...",
+    "items_history": "Registered Items (History)",
+    "items_per_day": "Items per Day",
+    "not_enought_items_data": "Not enough item data.",
+    "error_loading_items": "Error loading items data",
+    "loading_logins": "Loading access chart...",
+    "user_traffic": "User Traffic (Logins)",
+    "daily_logins": "Daily Logins",
+    "not_enought_logins_data": "Not enough login data.",
+    "error_loading_logins": "Error loading logins data"
+  },
+  "landing": {
+    "hero": {
+      "description": "Tired of wasting too much time choosing what to wear every day? Choose it quickly with Vesto, the app that helps you organize your closet and create personalized outfits in seconds.",
+      "goToCloset": "Go to my closet",
+      "login": "Login",
+      "signup": "Sign up"
+    },
+    "howItWorks": {
+      "title": "How does Vesto work?",
+      "description": "We have an intuitive and easy-to-use design, with features like uploading photos of your clothes, creating personalized outfits, saving to favorites... Everything so that choosing your daily look is fast, fun, and hassle-free.",
+      "demoTitle": "Vesto Demo",
+      "demoSubtitle": "App video coming soon..."
+    },
+    "reviews": {
+      "title": "+50K satisfied users",
+      "angel": "A work of art, you can tell Manuel's touch is in this app. It has changed my life; now choosing what to wear is a pleasure and not a torture. Thanks Vesto!",
+      "jesus": "Since I've been using it I'm happier. Thanks to Vesto I've discovered clothing combinations I wouldn't have thought of, and now I feel more confident with my style. 100% recommended!",
+      "paco": "Your eyes are like two frying pans, when I see them my eggs fry. You're so hot I'd eat you clothes and all... even if I spent a month shitting rags.",
+      "elias": "I hadn't seen such a complete and functional app. Vesto has revolutionized how I choose my clothes! I love the feature to create custom outfits, it's like having a personal stylist in your pocket. Highly recommended!"
+    },
+    "team": {
+      "title": "Our team",
+      "subtitle": "The true creators of Vesto.",
+      "rodas": "Absolute GOAT, needs no introduction.",
+      "pepe": "Brings a lot of experience, older than a forest.",
+      "gloria": "Absolute diva, gives it the chic touch.",
+      "miguel": "Obsessed with work, on and off the field.",
+      "lucia": "Knows too much about everything, but doesn't say it. False modesty?"
+    }
+  },
+  "outfit": {
+    "name_required": "Please enter a name for the outfit.",
+    "min_one_item": "You must select at least one item.",
+    "duplicate_name": "You already have an outfit named '{{name}}'. Choose another name.",
+    "save_error": "There was an error saving the outfit.",
+    "save_success": "Outfit '{{name}}' saved successfully!",
+    "name_placeholder": "Outfit name",
+    "desc_placeholder": "Outfit description, occasion, etc...",
+    "head": "Head",
+    "top": "Top",
+    "accessory": "Accessory",
+    "bottom": "Bottom",
+    "shoes": "Shoes",
+    "upload_photo": "Upload photo of your outfit",
+    "loading_outfits": "Loading outfits...",
+    "delete_confirm": "Are you sure you want to delete this outfit?",
+    "delete_error": "There was a problem deleting the outfit",
+    "delete_success": "Outfit successfully deleted",
+    "no_outfits": "You haven't created any outfits yet",
+    "delete_outfit_title": "Delete outfit",
+    "mark_favorite_title": "Mark outfit as favorite"
+  },
+  "profile": {
+    "walking_man_alt": "Walking person illustration"
+  },
+  "reset_password": {
+    "passwords_mismatch": "Passwords do not match",
+    "update_error": "Error updating: ",
+    "update_success": "Password updated successfully!",
+    "title": "New Password",
+    "new_password_label": "Enter your new password",
+    "confirm_password_label": "Confirm your new password",
+    "changing": "Changing...",
+    "update_btn": "Update password"
+  },
+  "admin": {
+    "stats_title": "Statistics Dashboard",
+    "stats_subtitle": "Real-time application usage analytics.",
+    "users_title": "Users List",
+    "users_loading": "Loading users...",
+    "users_error_toast": "Oops, we couldn't load the users list. Please try again later.",
+    "users_error_msg": "Could not load user information.",
+    "role": "Role: ",
+    "default_role": "user",
+    "no_users": "No registered users.",
+    "avatar_alt": "Avatar",
+    "user_management_title": "User Management",
+    "dashboard_title": "Dashboard"
   }
 }
