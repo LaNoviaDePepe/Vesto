@@ -5,6 +5,8 @@ import { createUserRepository } from '../../database/repositories';
 import { useAuthStore } from '../../stores/authStore';
 import toast from 'react-hot-toast';
 import { LogOut, Menu, X } from 'lucide-react';
+import { LanguageSwitcher } from './LanguageSwitcher';
+import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
 
 /**
@@ -40,11 +42,12 @@ export default function UserHeader({ children }: UserHeaderProps) {
      * Lista de enlaces privados correspondientes a las herramientas de la aplicación.
      * @type {Array<{label: string, path: string}>}
      */
+    const { t } = useTranslation();
     const userLinks = [
-        { label: 'Mi armario', path: '/closet' },
-        { label: 'Mis conjuntos', path: '/outfits' },
-        { label: 'Subir prenda', path: '/clothing' },
-        { label: 'Crear conjunto', path: '/outfitCreator' },
+        { label: t('navbar.links.closet'), path: '/closet' },
+        { label: t('navbar.links.outfits'), path: '/outfits' },
+        { label: t('navbar.links.upload_clothing'), path: '/clothing' },
+        { label: t('navbar.links.create_outfit'), path: '/outfitCreator' },
     ];
 
 
@@ -64,7 +67,7 @@ export default function UserHeader({ children }: UserHeaderProps) {
         try {
             const result = await userRepository.logout();
             if (result.error) {
-                toast.error('Error al cerrar sesión');
+                toast.error(t('error.close_session'));
 
                 return;
             }
@@ -73,7 +76,7 @@ export default function UserHeader({ children }: UserHeaderProps) {
             navigate('/');
 
         } catch (error) {
-            toast.error('Ocurrió un error inesperado');
+            toast.error(t('error.random_error'));
             console.log(error);
         }
     }
@@ -123,14 +126,15 @@ export default function UserHeader({ children }: UserHeaderProps) {
                         {/* Usamos la variable avatarImg en el src */}
                         <img
                             src={avatarImg}
-                            alt="Perfil de usuario"
+                            alt={t('form.user_profile')}
                             className="h-full w-full object-cover shadow-sm rounded-full"
                         />
                     </Link>
 
-                    <Button variant='icon' onClick={handleLogout} className='min-w-0' title="Cerrar sesión">
+                    <Button variant='icon' onClick={handleLogout} className='min-w-0' title="{t('actions.logout')}">
                         <LogOut size={20} strokeWidth={2.5} />
-                    </Button>
+                    </Button> 
+                    <LanguageSwitcher />                      
                 </div>
             </div>
         </header>

@@ -13,6 +13,7 @@ import { useTranslation } from "react-i18next";
  *
  * @returns {JSX.Element} La estructura de la cabecera para visitantes.
  */
+
 export default function GuestHeader() {
     /**
      * Estado que controla la visibilidad del menú desplegable en dispositivos móviles.
@@ -34,19 +35,20 @@ export default function GuestHeader() {
         setIsMenuOpen(false);
     };
 
-    // Constante que almacena los links para los usuarios anónimos
     const { t } = useTranslation();
 
     /**
      * Lista de enlaces de navegación pública para la vista de invitado.
      * @type {Array<{label: string, path: string}>}
      */
+
     const guestLinks = [
         { label: t('navbar.links.home'), path: '/#hero' },
         { label: t('navbar.links.behaviour'), path: '/#funcionamiento' },
         { label: t('navbar.links.reviews'), path: '/#reviews' },
-        { label: t('navbar.links.team'), path: '/#equipo' },
+        { label: t('navbar.links.team'), path: '/#equipo' }
     ];
+
 
     return (
         <header className="bg-auxiliary-700 header-container">

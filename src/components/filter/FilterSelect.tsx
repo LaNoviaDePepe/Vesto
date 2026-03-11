@@ -1,4 +1,5 @@
 import type { SelectHTMLAttributes } from "react";
+import { useTranslation } from "react-i18next";
 
 
 type FilterSelectOption = {
@@ -10,12 +11,13 @@ interface FilterSelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
     name: string;
     options: FilterSelectOption[];
     placeholder: string;
-    value: string; 
+    value: string;
     disabled?: boolean;
 
 }
 
 export default function FilterSelect({ name, options, placeholder, disabled, value, onChange }: FilterSelectProps) {
+    const { t } = useTranslation();
 
     const baseClasses =
         "w-full bg-transparent border-none outline-none appearance-none";
@@ -30,7 +32,7 @@ export default function FilterSelect({ name, options, placeholder, disabled, val
                 value={value}
                 // CUANDO CAMBIA, LE PASAMOS EL EVENTO DIRECTAMENTE AL PADRE
                 // El padre ya se encarga de saber si es "quitar" u otra opción
-                onChange={onChange} 
+                onChange={onChange}
                 // Si 'isPlaceholder' es true (value está vacío), el texto es gris.
                 // Si hay un valor seleccionado, el texto es negro.
                 className={`${baseClasses} ${isPlaceholder ? "text-gray-400" : "text-black"}`}
@@ -42,12 +44,12 @@ export default function FilterSelect({ name, options, placeholder, disabled, val
 
                 {options.map((option) => (
                     <option key={option.value} value={option.value} className="bg-primary-50 text-black">
-                        {option.label}
+                        {t(option.label as any)}
                     </option>
                 ))}
 
                 <option value="quitar" className="bg-primary-50 text-black">
-                    Quitar ❌
+                    {t('filter.remove')} ❌
                 </option>
             </select>
         </div>

@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import Button from "./Button";
 
 interface ModalProps {
@@ -9,6 +10,7 @@ interface ModalProps {
 }
 
 export default function Modal({ isOpen, onClose, onConfirm, title, message }: ModalProps) {
+  const { t } = useTranslation();
   if (!isOpen) return null;
 
   return (
@@ -19,16 +21,16 @@ export default function Modal({ isOpen, onClose, onConfirm, title, message }: Mo
         <p className="text-gray-600 mb-8 leading-relaxed">
           {message}
         </p>
-        
+
         <div className="flex justify-end gap-3">
           <Button variant="secondary" onClick={onClose}>
-            Cancelar
+            {t('actions.cancel')}
           </Button>
-          <Button 
-            onClick={onConfirm} 
+          <Button
+            onClick={onConfirm}
             className="bg-white hover:bg-red-600 border-red-500 text-red-600 hover:text-white"
           >
-            Eliminar
+            {t('actions.delete')}
           </Button>
         </div>
       </div>

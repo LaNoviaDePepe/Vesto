@@ -1,4 +1,5 @@
 import { Heart, Trash2 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 export interface PrendaProps {
     id?: number;
@@ -23,6 +24,8 @@ export default function Prenda({
     id, name, url, color, temporada, categoria, 
     favorito, onToggleFavorito, hideHeart, 
     onDelete, hideDelete }: PrendaProps) {
+
+    const { t } = useTranslation();
 
     // función para manejar el click en el corazón
     const handleHeartClick = (e: React.MouseEvent) => {
@@ -61,7 +64,7 @@ export default function Prenda({
                 <button
                     onClick={handleDeleteClick}
                     className="absolute top-4 left-4 z-10 bg-white/70 p-1.5 rounded-full shadow-sm hover:scale-110 hover:bg-red-50 transition-all cursor-pointer text-red-500"
-                    title="Eliminar prenda"
+                    title={t('clothing.delete_item_title')}
                 >
                     <Trash2 size={22} />
                 </button>

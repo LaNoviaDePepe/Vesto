@@ -69,12 +69,12 @@ export default function LandingPage() {
                         {/* BOTONES */}
                         {isAuthenticated ? (
                             <Link to="/closet">
-                                <Button variant='primary'>Ir a mi armario</Button>
+                                <Button variant='primary'>{t('landing.hero.goToCloset')}</Button>
                             </Link>
                         ) : (
                             <div className="flex gap-4">
-                                <Link to="/login"><Button variant='primary'>Iniciar sesión</Button></Link>
-                                <Link to="/signup"><Button variant='auxiliar'>Registro</Button></Link>
+                                <Link to="/login"><Button variant='primary'>{t('landing.hero.login')}</Button></Link>
+                                <Link to="/signup"><Button variant='auxiliar'>{t('landing.hero.signup')}</Button></Link>
                             </div>
                         )}
                     </div>
@@ -112,10 +112,10 @@ export default function LandingPage() {
                     <AnimatedCard id="funcionamiento" className="scroll-mt-25 w-full max-w-7xl bg-white rounded-4xl shadow-xl p-6 md:p-12 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-center">
                         <div className="flex flex-col gap-6">
                             <h2 className="text-2xl md:text-4xl font-bold text-black font-(--font-display)">
-                                ¿Cómo funciona Vesto?
+                                {t('landing.howItWorks.title')}
                             </h2>
-                            <p className="text-black text-base md:text-lg font-(--font-body)">
-                                Tenemos un diseño intuitivo y fácil de usar, con funciones como subir fotos de tu ropa, crear outfits personalizados, guardar en favoritos... Todo para que elegir tu look diario sea rápido, divertido y sin complicaciones.
+                            <p className="text-black text-lg font-(--font-body)">
+                                {t('landing.howItWorks.description')}
                             </p>
                         </div>
 
@@ -129,8 +129,8 @@ export default function LandingPage() {
                                 />
                             </div>
                             <div className="relative z-10 text-center px-4 pointer-events-none">
-                                <h3 className="text-white text-xl md:text-2xl font-bold mb-2 font-(--font-display)">Demo de Vesto</h3>
-                                <p className="text-gray-300 text-sm font-(--font-body)">Próximamente el video de la app...</p>
+                                <h3 className="text-white text-2xl font-bold mb-2 font-(--font-display)">{t('landing.howItWorks.demoTitle')}</h3>
+                                <p className="text-gray-300 text-sm font-(--font-body)">{t('landing.howItWorks.demoSubtitle')}</p>
                             </div>
                         </div>
                     </AnimatedCard>
@@ -138,7 +138,7 @@ export default function LandingPage() {
                     {/* CARD 2: RECOMENDACIONES */}
                     <AnimatedCard id="reviews" delay={100} className="scroll-mt-25 w-full max-w-7xl bg-white rounded-4xl shadow-xl p-6 md:p-12 flex flex-col items-center gap-8 md:gap-12">
                         <h2 className="text-2xl md:text-4xl font-bold text-black text-center font-(--font-display)">
-                            +50K usuarios satisfechos
+                            {t('landing.reviews.title')}
                         </h2>
                         {/* En móvil 2 columnas, en md 4 columnas */}
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 w-full">
@@ -147,7 +147,7 @@ export default function LandingPage() {
                                 <h3 className="font-bold text-base md:text-lg text-black font-(--font-body)">Ángel</h3>
                                 <img src="/img/stars.png" alt="5 estrellas" className="h-4 md:h-5 w-auto" />
                                 <p className="text-xs md:text-sm text-black px-2 font-(--font-body)">
-                                    Obra de arte se nota la mano de Manuel en esta app, me ha cambiado la vida, ahora elegir qué ponerme es un placer y no una tortura. ¡Gracias Vesto!
+                                    {t('landing.reviews.angel')}
                                 </p>
                             </div>
                             <div className="flex flex-col items-center text-center gap-2">
@@ -155,7 +155,7 @@ export default function LandingPage() {
                                 <h3 className="font-bold text-base md:text-lg text-black font-(--font-body)">Jesús</h3>
                                 <img src="/img/stars.png" alt="5 estrellas" className="h-4 md:h-5 w-auto" />
                                 <p className="text-xs md:text-sm text-black px-2 font-(--font-body)">
-                                    Desde que la uso soy más feliz, gracias a Vesto he descubierto combinaciones que no se me habrían ocurrido. ¡Recomendada al 100%!
+                                    {t('landing.reviews.jesus')}
                                 </p>
                             </div>
                             <div className="flex flex-col items-center text-center gap-2">
@@ -163,8 +163,7 @@ export default function LandingPage() {
                                 <h3 className="font-bold text-base md:text-lg text-black font-(--font-body)">Paco</h3>
                                 <img src="/img/stars.png" alt="5 estrellas" className="h-4 md:h-5 w-auto" />
                                 <p className="text-xs md:text-sm text-black px-2 font-(--font-body)">
-                                    Tus ojos son como dos sartenes, cuando los veo se me fríen los huevos.
-                                    Estás tan buena que te comía con ropa y todo... aunque pasara un mes cagando trapos.
+                                    {t('landing.reviews.paco')}
                                 </p>
                             </div>
                             <div className="flex flex-col items-center text-center gap-2">
@@ -172,7 +171,7 @@ export default function LandingPage() {
                                 <h3 className="font-bold text-base md:text-lg text-black font-(--font-body)">Elías</h3>
                                 <img src="/img/stars.png" alt="5 estrellas" className="h-4 md:h-5 w-auto" />
                                 <p className="text-xs md:text-sm text-black px-2 font-(--font-body)">
-                                    No había visto una app tan completa. ¡Vesto ha revolucionado mi forma de elegir la ropa! Es como tener un estilista personal en el bolsillo.
+                                    {t('landing.reviews.elias')}
                                 </p>
                             </div>
                         </div>
@@ -180,35 +179,69 @@ export default function LandingPage() {
 
                     {/* CARD 3: EQUIPO */}
                     <AnimatedCard id="equipo" delay={200} className="scroll-mt-25 w-full max-w-7xl bg-white rounded-4xl shadow-xl p-6 md:p-12 flex flex-col items-center gap-8 md:gap-12">
+
                         <div className="text-center max-w-3xl">
-                            <h2 className="text-2xl md:text-4xl font-bold text-black mb-4 font-(--font-display)">
-                                Nuestro equipo
+                            <h2 className="text-4xl font-bold text-black mb-4 font-(--font-display)">
+                                {t('landing.team.title')}
                             </h2>
-                            <p className="text-black text-base md:text-lg font-(--font-body)">
-                                Los verdaderos creadores de Vesto.
+                            <p className=" text-black text-lg font-(--font-body)">
+                                {t('landing.team.subtitle')}
                             </p>
                         </div>
-                        {/* flex-wrap ya funciona bien en móvil, solo ajustamos gap */}
-                        <div className="flex flex-wrap justify-center gap-8 md:gap-12 w-full">
+                        <div className="flex flex-wrap justify-center gap-12 w-full">
 
-                            {[
-                                { src: RodasImg, name: 'Rodas', desc: 'Cabra absoluta, no necesita presentación.', bg: 'bg-orange-500' },
-                                { src: GabinoImg, name: 'Pepe', desc: 'Aporta mucha veteranía, tiene más años que un bosque.', bg: 'bg-white' },
-                                { src: GloriajinImg, name: 'Gloriajin', desc: 'Diva absoluta, le da el toque chick.', bg: 'bg-orange-500' },
-                                { src: MiguelImg, name: 'Miguel', desc: 'Obsesionado con el trabajo, dentro y fuera del campo.', bg: 'bg-white' },
-                                { src: LuciaImg, name: 'Lucía', desc: 'Sabe demasiado de todo, pero no lo dice, ¿falsa humilde?', bg: 'bg-orange-500' },
-                            ].map(({ src, name, desc, bg }) => (
-                                <div key={name} className="flex flex-col items-center text-center gap-2 w-28 md:w-32">
-                                    <div className="relative w-24 h-24 md:w-28 md:h-28 mb-2 group cursor-pointer">
-                                        <img src={src} alt={name} className="absolute inset-0 w-full h-full rounded-full object-cover transition-opacity duration-500 ease-in-out group-hover:opacity-0 z-10" />
-                                        <img src="/img/black-logo.png" alt="Logo de Vesto" className={`absolute inset-0 w-full h-full rounded-full object-contain ${bg} p-3 transition-opacity duration-500 ease-in-out opacity-0 group-hover:opacity-100 z-0 shadow-inner`} />
-                                    </div>
-                                    <h3 className="font-bold text-base md:text-lg text-black font-(--font-body)">{name}</h3>
-                                    <p className="text-xs md:text-sm text-black font-(--font-body)">{desc}</p>
+                            {/* Rodas */}
+                            <div className="flex flex-col items-center text-center gap-2 w-32">
+                                <div className="relative w-28 h-28 mb-2 group cursor-pointer">
+                                    <img src={RodasImg} alt="Rodas" className="absolute inset-0 w-28 h-28 rounded-full object-cover transition-opacity duration-500 ease-in-out group-hover:opacity-0 z-10" />
+                                    <img src="/img/black-logo.png" alt="Logo de Vesto" className="absolute inset-0 w-28 h-28 rounded-full object-contain bg-orange-500 p-3 transition-opacity duration-500 ease-in-out opacity-0 group-hover:opacity-100 z-0 shadow-inner" />
                                 </div>
-                            ))}
+                                <h3 className="font-bold text-lg text-black font-(--font-body)">Rodas</h3>
+                                <p className="text-sm text-blck font-(--font-body)">{t('landing.team.rodas')}</p>
+                            </div>
+
+                            {/* Gabino */}
+                            <div className="flex flex-col items-center text-center gap-2 w-32">
+                                <div className="relative w-28 h-28 mb-2 group cursor-pointer">
+                                    <img src={GabinoImg} alt="Gabino" className="absolute inset-0 w-28 h-28 rounded-full object-cover transition-opacity duration-500 ease-in-out group-hover:opacity-0 z-10" />
+                                    <img src="/img/black-logo.png" alt="Logo de Vesto" className="absolute inset-0 w-28 h-28 rounded-full object-contain bg-white p-3 transition-opacity duration-500 ease-in-out opacity-0 group-hover:opacity-100 z-0 shadow-inner" />
+                                </div>
+                                <h3 className="font-bold text-lg text-black font-(--font-body)">Pepe</h3>
+                                <p className="text-sm text-blck font-(--font-body)">{t('landing.team.pepe')}</p>
+                            </div>
+
+                            {/* Gloria */}
+                            <div className="flex flex-col items-center text-center gap-2 w-32">
+                                <div className="relative w-28 h-28 mb-2 group cursor-pointer">
+                                    <img src={GloriajinImg} alt="Gloriajin" className="absolute inset-0 w-28 h-28 rounded-full object-cover transition-opacity duration-500 ease-in-out group-hover:opacity-0 z-10" />
+                                    <img src="/img/black-logo.png" alt="Logo de Vesto" className="absolute inset-0 w-28 h-28 rounded-full object-contain bg-orange-500 p-3 transition-opacity duration-500 ease-in-out opacity-0 group-hover:opacity-100 z-0 shadow-inner" />
+                                </div>
+                                <h3 className="font-bold text-lg text-black font-(--font-body)">Gloria</h3>
+                                <p className="text-sm text-blck font-(--font-body)">{t('landing.team.gloria')}</p>
+                            </div>
+
+                            {/* Miguel */}
+                            <div className="flex flex-col items-center text-center gap-2 w-32">
+                                <div className="relative w-28 h-28 mb-2 group cursor-pointer">
+                                    <img src={MiguelImg} alt="Miguel" className="absolute inset-0 w-28 h-28 rounded-full object-cover transition-opacity duration-500 ease-in-out group-hover:opacity-0 z-10" />
+                                    <img src="/img/black-logo.png" alt="Logo de Vesto" className="absolute inset-0 w-28 h-28 rounded-full object-contain bg-white p-3 transition-opacity duration-500 ease-in-out opacity-0 group-hover:opacity-100 z-0 shadow-inner" />
+                                </div>
+                                <h3 className="font-bold text-lg text-black font-(--font-body)">Miguel</h3>
+                                <p className="text-sm text-blck font-(--font-body)">{t('landing.team.miguel')}</p>
+                            </div>
+
+                            {/* Lucía */}
+                            <div className="flex flex-col items-center text-center gap-2 w-32">
+                                <div className="relative w-28 h-28 mb-2 group cursor-pointer">
+                                    <img src={LuciaImg} alt="Lucía" className="absolute inset-0 w-28 h-28 rounded-full object-cover transition-opacity duration-500 ease-in-out group-hover:opacity-0 z-10" />
+                                    <img src="/img/black-logo.png" alt="Logo de Vesto" className="absolute inset-0 w-28 h-28 rounded-full object-contain bg-orange-500 p-3 transition-opacity duration-500 ease-in-out opacity-0 group-hover:opacity-100 z-0 shadow-inner" />
+                                </div>
+                                <h3 className="font-bold text-lg text-black font-(--font-body)">Lucía</h3>
+                                <p className="text-sm text-blck font-(--font-body)">{t('landing.team.lucia')}</p>
+                            </div>
 
                         </div>
+
                     </AnimatedCard>
 
                 </div>
