@@ -68,6 +68,10 @@ export default function OutfitCreatorPage() {
     setFilters(prev => ({ ...prev, [key]: value }));
   };
 
+  const handleResetFilters = () => {
+    setFilters({ categoria: "", temporada: "", color: "", favorito: false });
+  };
+
   const prendasFiltradas = prendas.filter(p => {
     if (filters.categoria && p.categoria !== filters.categoria) return false;
     if (filters.temporada && p.temporada !== filters.temporada) return false;
@@ -97,26 +101,31 @@ export default function OutfitCreatorPage() {
         />
         <div className="flex-1 overflow-y-auto p-6 bg-gray-50/50" id="closet-container">
           <div className="flex flex-wrap gap-6 justify-center">
-            {
+            {prendasFiltradas.length > 0 ? (
               prendasFiltradas.map((prenda) => (
                 <div
                   key={prenda.id}
                   onClick={() => handleSelectPrenda(prenda)}
-                  className={`cursor-pointer transition-all duration-200 rounded-xl ${outfit[prenda.categoria]?.id === prenda.id ? 'ring-4 ring-primary-700 scale-105' : 'hover:opacity-80'
-                    }`}
+                  className={`cursor-pointer transition-all duration-200 rounded-xl ${
+                    outfit[prenda.categoria]?.id === prenda.id 
+                    ? 'ring-4 ring-primary-700 shadow-lg scale-105' 
+                    : 'hover:opacity-80'
+                  }`}
                 >
                   <Prenda {...prenda} onToggleFavorito={handleToggleFavorito} />
                 </div>
               ))
-            // ) : (
-            //   <div className="flex flex-col items-center justify-center h-64 text-gray-400 w-full">
-            //     <p className="text-lg">{t('filter.no_results')}</p>
-            //     <button onClick={handleResetFilters} className="text-primary-600 underline mt-4 hover:text-primary-800 transition-colors cursor-pointer">
-            //       {t('filter.clear_filters')}
-            //     </button>
-            //   </div>
-            // )
-            }
+            ) : (
+              <div className="flex flex-col items-center justify-center h-64 text-gray-400 w-full">
+                <p className="text-lg">{t('filter.no_results')}</p>
+                <button 
+                  onClick={handleResetFilters} 
+                  className="text-primary-600 underline mt-4 hover:text-primary-800 transition-colors cursor-pointer"
+                >
+                  {t('filter.clear_filters')}
+                </button>
+              </div>
+            )}
 
           </div>
           
