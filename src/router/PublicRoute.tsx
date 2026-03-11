@@ -10,13 +10,14 @@ function PublicRoute() {
 
   if (isAuthenticated) {
     if(isAdmin) {
+      // Si está autenticado y es admin, redirige al panel de control
       return <Navigate to="/admin/dashboard" replace />;
     }
     // Si está autenticado, redirige al armario
     return <Navigate to="/closet" replace />;
   }
 
-  // Si está autenticado, renderiza el contenido protegido
+  // Si no está autenticado, renderiza el contenido público
   return <Outlet />;
 }
 
