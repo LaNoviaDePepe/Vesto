@@ -3,6 +3,8 @@ import Navbar from './Navbar';
 import Button from './Button';
 import { useState } from 'react';
 import { Menu, X } from 'lucide-react';
+import { LanguageSwitcher } from './LanguageSwitcher';
+import { useTranslation } from "react-i18next";
 
 /**
  * Componente que renderiza la cabecera de navegación para usuarios no autenticados (invitados).
@@ -32,15 +34,18 @@ export default function GuestHeader() {
         setIsMenuOpen(false);
     };
 
+    // Constante que almacena los links para los usuarios anónimos
+    const { t } = useTranslation();
+
     /**
      * Lista de enlaces de navegación pública para la vista de invitado.
      * @type {Array<{label: string, path: string}>}
      */
     const guestLinks = [
-        { label: 'Inicio', path: '/#hero' },
-        { label: 'Funcionamiento', path: '/#funcionamiento' },
-        { label: 'Reviews', path: '/#reviews' },
-        { label: 'Equipo', path: '/#equipo' },
+        { label: t('navbar.links.home'), path: '/#hero' },
+        { label: t('navbar.links.behaviour'), path: '/#funcionamiento' },
+        { label: t('navbar.links.reviews'), path: '/#reviews' },
+        { label: t('navbar.links.team'), path: '/#equipo' },
     ];
 
     return (
@@ -72,12 +77,13 @@ export default function GuestHeader() {
 
                 <div className="nav-actions">
                     <Link to="/login" className="nav-btn-mobile" onClick={() => setIsMenuOpen(false)}>
-                        <Button variant='primary' className="w-full">Iniciar sesión</Button>
+                        <Button variant='primary' className="w-full">{t('navbar.button.login')}</Button>
                     </Link>
                     <Link to="/signup" className="nav-btn-mobile" onClick={() => setIsMenuOpen(false)}>
-                        <Button variant='auxiliar' className="w-full">Registro</Button>
+                        <Button variant='auxiliar' className="w-full">{t('navbar.button.signup')}</Button>
                     </Link>
                 </div>
+                <LanguageSwitcher />
             </div>
         </header>
     );
