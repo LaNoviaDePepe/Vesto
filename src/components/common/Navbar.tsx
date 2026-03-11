@@ -16,7 +16,7 @@ interface NavbarProps {
 export default function Navbar({ links, isUser = false, onLinkClick }: NavbarProps) {
 
     return (
-        <nav className="flex items-center gap-6 p-4">
+        <nav className={`p-4 nav-links-container ${!isUser ? 'nav-links-guest-grid' : ''}`}>
             {
                 links.map((link) => {
                     const sectionId = link.path.split('#')[1];
