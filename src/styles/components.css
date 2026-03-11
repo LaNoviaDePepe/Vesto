@@ -96,42 +96,73 @@
   }
 
   .hamburger-btn {
-    /* Visible en pantallas pequeñas, oculto a partir de 720px */
-    @apply block min-[720px]:hidden p-2 cursor-pointer transition-transform duration-200;
+    /* Mantenemos las clases base */
+    @apply block p-2 cursor-pointer transition-transform duration-200;
+    
+    /* Sustituimos el breakpoint arbitrario por @media */
+    @media (min-width: 720px) {
+      display: none;
+    }
   }
 
   .nav-menu {
-    /* Estilos por defecto */
     @apply flex gap-3 items-center;
+
     /* Estilos para móvil (< 720px) */
-    @apply max-[720px]:absolute max-[720px]:top-full max-[720px]:left-0 max-[720px]:w-full;
-    @apply max-[720px]:flex-col max-[720px]:p-5 max-[720px]:shadow-lg max-[720px]:hidden;
+    @media (max-width: 720px) {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 100%;
+      flex-direction: column;
+      padding: 1.25rem; /* equivalente a p-5 */
+      background-color: white; /* Asegura el fondo para la sombra */
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); /* equivalente a shadow-lg */
+      display: none; /* hidden por defecto en móvil */
+    }
   }
 
-  /* Clase que añadiremos desde React cuando el menú esté abierto */
   .nav-menu.is-open {
-    @apply max-[720px]:flex;
+    @media (max-width: 720px) {
+      display: flex;
+    }
   }
 
   .nav-actions {
-    /* Contenedor de los botones/perfil */
     @apply flex items-center gap-3;
-    @apply max-[720px]:flex-col max-[720px]:w-full max-[720px]:mt-4 max-[720px]:justify-center;
+
+    @media (max-width: 720px) {
+      flex-direction: column;
+      width: 100%;
+      margin-top: 1rem; /* equivalente a mt-4 */
+      justify-content: center;
+    }
   }
 
   .nav-btn-mobile {
-    /* Para que los botones ocupen el 100% del ancho en móvil */
-    @apply max-[720px]:w-full;
+    @media (max-width: 720px) {
+      width: 100%;
+    }
   }
 
   .nav-links-container {
     @apply flex gap-3 items-center;
-    /* Al abrir hamburguesa (< 720px), en columna */
-    @apply max-[720px]:flex-col max-[720px]:w-full;
+
+    @media (max-width: 720px) {
+      flex-direction: column;
+      width: 100%;
+    }
   }
 
-  /* Esta es la clase para el grid 2x2 en < 400px */
+  /* Clase para el grid 2x2 en < 400px */
   .nav-links-guest-grid {
-    @apply max-[400px]: !grid max-[400px]: !grid-cols-2 max-[400px]:gap-4 max-[400px]:w-full max-[400px]:justify-items-center max-[400px]:text-center;
+    @media (max-width: 400px) {
+      display: grid !important;
+      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+      gap: 1rem; /* equivalente a gap-4 */
+      width: 100%;
+      justify-items: center;
+      text-align: center;
+    }
   }
 }
