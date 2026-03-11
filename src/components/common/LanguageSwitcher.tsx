@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Languages, Check } from 'lucide-react';
+import Button from './Button';
 
 export const LanguageSwitcher = () => {
   const { i18n } = useTranslation();
@@ -17,13 +18,14 @@ export const LanguageSwitcher = () => {
   return (
     <div className="relative">
       {/* BOTÓN PRINCIPAL (Icono) */}
-      <button
+      <Button
+        variant='icon'
         onClick={() => setIsOpen(!isOpen)}
-        className="p-2 rounded-full hover:bg-gray-100 transition-colors"
+        className="p-0 rounded-full min-w-0"
         aria-label="Cambiar idioma"
       >
         <Languages size={24} />
-      </button>
+      </Button>
 
       {/* MENÚ DESPLEGABLE */}
       {isOpen && (

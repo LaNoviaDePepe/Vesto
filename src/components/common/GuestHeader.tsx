@@ -31,7 +31,7 @@ export default function GuestHeader() {
                     <img src="/img/black-logo.png" alt="Logo de Vesto" className="h-15 w-auto" />
                 </Link>
             </div>
-            <div className='flex gap-3'>
+            <div className='flex gap-3 items-center'>
                 <Navbar links={guestLinks} onLinkClick={handleScrollToSection}/>
 
                 <div className='flex items-center gap-2'>
