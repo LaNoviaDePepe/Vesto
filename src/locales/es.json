@@ -6,7 +6,10 @@
     "saving": "Guardando...",
     "access": "Acceder",
     "loading": "Cargando...",
-    "save_changes": "Guardar cambios"
+    "save_changes": "Guardar cambios",
+    "logout": "Cerrar sesión",
+    "signing_up": "Registrando...",
+    "signup": "Dar de alta"
   },
   "navbar": {
     "button": {
@@ -28,11 +31,17 @@
     "random_error": "Ocurrió un error inesperado",
     "close_session": "Error al cerrar sesión",
     "saving": "Error al guardar",
-    "category_loading_error": "Error al cargar datos de categorías"
+    "signup": "Error al registrar",
+    "login": "Error al iniciar sesión",
+    "recovery_link": "Error al enviar el enlace de recuperación",
+    "category_loading_error": "Error al cargar las categorías"
   },
   "message": {
     "2MB": "La imagen debe pesar menos de 2MB",
-    "profile_updated": "Perfil actualizado"
+    "profile_updated": "Perfil actualizado",
+    "recovery_link_sent": "¡Enlace enviado! Revisa tu correo ({{email}})",
+    "welcome_login": "¡Bienvenido!",
+    "user_registered": "Usuario registrado y logueado"
   },
   "footer": {
     "feed": "",
@@ -47,13 +56,31 @@
     "choose_category": "Elige una categoría",
     "choose_season": "Elige una temporada",
     "choose_color": "Elige un color",
-    "remove": "Quitar"
+    "remove": "Quitar",
+    "no_results": "No se encontraron prendas con estos filtros",
+    "clear_filters": "Limpiar filtros",
+    "favorites": "Favoritos"
   },
   "clothing": {
     "must_upload_img": "Debes subir una imagen",
     "must_login": "Debes iniciar sesión para subir prendas",
     "error_upload_clothing": "Error al subir la prenda:",
-    "ok_upload_clothing": "Prenda creada correctamente"
+    "ok_upload_clothing": "Prenda creada correctamente",
+    "delete_confirm": "¿Seguro que quieres eliminar esta prenda de tu armario?",
+    "delete_error_in_outfit": "Esta prenda está en un conjunto y no puede eliminarse.",
+    "delete_error": "No se pudo eliminar la prenda del armario.",
+    "delete_success": "Prenda eliminada de tu armario",
+    "add_edit_title": "Subir prenda/Modificar prenda",
+    "name": "Nombre de la prenda",
+    "type": "Tipo de Prenda",
+    "select_type": "Selecciona tipo...",
+    "color": "Color",
+    "select_color": "Selecciona color...",
+    "season": "Temporada",
+    "select_season": "Selecciona temporada...",
+    "preview": "Vista previa",
+    "no_image": "No Image Available",
+    "error_unexpected_upload": "Error inesperado al subir la prenda"
   },
   "form": {
     "password": "Contraseña",
@@ -62,7 +89,22 @@
     "required_to_change_password": "Requerida para cambiar la contraseña",
     "write_new_password": "Escribe nueva contraseña",
     "remember_me": "Recuérdame",
-    "name_surname": "Nombre y Apellidos"
+    "name_surname": "Nombre y Apellidos",
+    "user_profile": "Perfil de Usuario",
+    "signup_title": "Registro",
+    "login_title": "Login",
+    "email_taken": "Este correo electrónico ya está registrado",
+    "accept_terms_error": "Debes aceptar los términos y condiciones",
+    "repeat_password": "Repite contraseña",
+    "accept_terms": "Acepto los términos y condiciones",
+    "already_have_account": "¿Ya tienes una cuenta? Ingresa",
+    "here": "aquí",
+    "email_required_recovery": "Introduce un email válido para recuperar tu cuenta",
+    "email_required": "Email requerido",
+    "email_not_registered": "El correo electrónico no está registrado",
+    "email_not_registered_short": "Correo no registrado",
+    "email_placeholder": "ejemplo@correo.com",
+    "forgot_password": "¿Has olvidado tu contraseña?"
   },
   "graph": {
     "analysing_categories": "Analizando categorías...",

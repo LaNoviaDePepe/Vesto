@@ -7,7 +7,7 @@ import { useAuthStore } from "../../stores/authStore";
 import { useNavigate } from "react-router-dom";
 import { SupabaseUserRepository } from "../../database/supabase/SupabaseUserRepository";
 import { useTranslation } from "react-i18next";
-
+    
 /**
  * Interfaz que define los datos editables del perfil de usuario.
  */
@@ -195,7 +195,7 @@ export default function ProfileForm() {
                 state.updateSessionProfile(profileRes.data);
             }
 
-            toast.success("Perfil actualizado");
+            toast.success(t('message.profile_updated'));
             setFormData(prev => ({ ...prev, currentPassword: "", newPassword: "" }));
 
         } catch (error: any) {
@@ -207,7 +207,7 @@ export default function ProfileForm() {
 
     return (
         <div className="py-8 px-8 max-w-5xl mx-auto bg-white border-2 border-auxiliary-700 rounded-2xl shadow-xl">
-            <h3 className="text-3xl text-center mb-10 font-medium text-gray-800">Perfil de Usuario</h3>
+            <h3 className="text-3xl text-center mb-10 font-medium text-gray-800">{t('form.user_profile')}</h3>
 
             <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-12 gap-8">
                 <div className="md:col-span-7 space-y-6">
@@ -269,7 +269,7 @@ export default function ProfileForm() {
                             onClick={handleLogout}
                             disabled={loading}
                         >
-                            Cerrar sesión
+                            {t('actions.logout')}
                         </Button>
                     </div>
                 </div>

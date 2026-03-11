@@ -7,6 +7,7 @@ import { SupabaseItemRepository } from "../../database/supabase/SupabaseItemRepo
 import { useAuthStore } from "../../stores/authStore";
 import * as CONSTANTES from '../../utils/constants';
 import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 
 /**
  * Interfaz que define la estructura de los datos del formulario de prendas.
@@ -134,7 +135,7 @@ export default function AddItemForm() {
         if (!hasErrors) {
             // Verificamos sesión
             if (!sessionUser) {
-                toast.error("Debes iniciar sesión para subir prendas");
+                toast.error(t('clothing.must_login'));
                 return;
             }
 
@@ -155,14 +156,14 @@ export default function AddItemForm() {
 
                 if (result.error) {
                     const errorMsg = (result.error as any).message || "Error desconocido";
-                    toast.error("Error al subir la prenda: " + errorMsg);
+                    toast.error(`${t('clothing.error_upload_clothing')} ${errorMsg}`);
                 } else {
-                    toast.success("Prenda creada correctamente");
+                    toast.success(t('clothing.ok_upload_clothing'));
                     setFormData({ nombre: "", tipoPrenda: "", color: "", temporada: "", imagen: null });
                     setPreview(null);
                 }
             } catch (err) {
-                toast.error("Error inesperado al subir la prenda");
+                toast.error(t('clothing.error_unexpected_upload'));
             } finally {
                 setLoading(false);
             }
@@ -171,14 +172,14 @@ export default function AddItemForm() {
 
     return (
         <div className="py-5 px-7.5 max-w-4xl mx-auto bg-white border-2 border-auxiliary-700 rounded-2xl shadow-xl">
-            <h3 className="text-center mb-8">Subir prenda/Modificar prenda</h3>
+            <h3 className="text-center mb-8">{t('clothing.add_edit_title')}</h3>
 
             <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-8">
 
                 {/* COLUMNA IZQUIERDA: Formulario */}
                 <div className="flex flex-col space-y-6">
                     <Input
-                        label="Nombre de la prenda"
+                        label={t('clothing.name')}
                         name="nombre"
                         type="text"
                         value={formData.nombre}
@@ -197,7 +198,7 @@ export default function AddItemForm() {
                             onChange={handleChange}
                             onBlur={handleBlur}
                             error={errors.tipoPrenda}
-                            placeholder="Selecciona tipo..."
+                            placeholder={t('clothing.select_type')}
                         />
                     </div>
 
@@ -210,7 +211,7 @@ export default function AddItemForm() {
                             onChange={handleChange}
                             onBlur={handleBlur}
                             error={errors.color}
-                            placeholder="Selecciona color..."
+                            placeholder={t('clothing.select_color')}
                         />
                     </div>
 
@@ -223,7 +224,7 @@ export default function AddItemForm() {
                             onChange={handleChange}
                             onBlur={handleBlur}
                             error={errors.temporada}
-                            placeholder="Selecciona temporada..."
+                            placeholder={t('clothing.select_season')}
                         />
                     </div>
 
@@ -251,7 +252,7 @@ export default function AddItemForm() {
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                     </svg>
                                 </div>
-                                <p className="text-gray-400 font-medium">No Image Available</p>
+                                <p className="text-gray-400 font-medium">{t('clothing.no_image')}</p>
                             </div>
                         )}
                     </div>

@@ -14,6 +14,7 @@ import { useTranslation } from 'react-i18next';
  * @returns {JSX.Element} Muestra un esqueleto de carga, un mensaje de estado vacío, o el gráfico circular.
  */
 export const CategoriasChart = () => {
+    const { t } = useTranslation();
     const [data, setData] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
 
@@ -57,11 +58,11 @@ export const CategoriasChart = () => {
     }
 
     return (
-        <PieGraph 
+        <PieGraph
             title={t("graph.clothing_distribution")}
-            data={data} 
-            nameKey="name" 
-            dataKey="value" 
+            data={data}
+            nameKey="name"
+            dataKey="value"
         />
     );
 };

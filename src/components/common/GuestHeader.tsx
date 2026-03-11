@@ -15,11 +15,12 @@ export default function GuestHeader() {
 
     // Constante que almacena los links para los usuarios anónimos
     const { t } = useTranslation();
+
     const guestLinks = [
-        { label: 'Inicio', path: '/#hero' },
-        { label: 'Funcionamiento', path: '/#funcionamiento' },
-        { label: 'Reviews', path: '/#reviews' },
-        { label: 'Equipo', path: '/#equipo' },
+        { label: t('navbar.links.home'), path: '/#hero' },
+        { label: t('navbar.links.behaviour'), path: '/#funcionamiento' },
+        { label: t('navbar.links.reviews'), path: '/#reviews' },
+        { label: t('navbar.links.team'), path: '/#equipo' },
     ];
 
 
