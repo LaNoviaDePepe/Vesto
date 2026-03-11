@@ -56,4 +56,21 @@ export interface UserRepository {
      * @returns Una promesa con la URL pública de la imagen subida o un error de almacenamiento.
      */
     updateAvatar(userId: string, file: File): Promise<{ data?: string; error?: any }>;
+
+    /**
+     * Envía un correo de recuperación al usuario.
+     */
+    resetPasswordForEmail(email: string): Promise<{ error?: any }>;
+
+    /**
+     * Obtiene una lista de todos los perfiles de usuario registrados.
+     * @returns Una promesa con la lista de usuarios o un error.
+     */
+    getAllUsers(): Promise<{ data?: any[]; error?: any }>;
+
+    /**
+     * Obtiene el histórico de logins diarios de la tabla 'daily_logins'.
+     */
+    getDailyLogins(): Promise<{ data?: any[]; error?: any }>;
+
 }

@@ -1,24 +1,26 @@
 import FilterSelect from "./FilterSelect";
 import * as CONSTANTES from '../../utils/constants'; // Ajusta la ruta según tu estructura
-import { useFilterStore } from "../../stores/filterStore"; 
-import { useTranslation } from "react-i18next";
 
+export interface FilterState {
+    categoria: string;
+    temporada: string;
+    color: string;
+    favorito: boolean; 
+}
 
 interface FilterProps {
     width: number;
+    filters: FilterState;
+    onFilterChange: (key: string, value: string | boolean) => void;
 }
 
-export default function Filter({ width }: FilterProps) {
+export default function Filter({ width, filters, onFilterChange }: FilterProps) {
 
-    const { t } = useTranslation();
-    const { setFilter } = useFilterStore();
-
-
-    const handleSelectChange = (key: 'categoria' | 'temporada' | 'color', e: React.ChangeEvent<HTMLSelectElement>) => {
-        const rawValue = e.target.value;       
-        const cleanValue = rawValue === "quitar" ? "" : rawValue;
-
-        setFilter(key, cleanValue);
+    const handleSelectChange = (key: string, e: React.ChangeEvent<HTMLSelectElement>) => {
+        const selectedValue = e.target.value;
+        const finalValue = selectedValue === "quitar" ? "" : selectedValue;
+        
+        onFilterChange(key, finalValue);
     };
 
     return (
@@ -30,15 +32,17 @@ export default function Filter({ width }: FilterProps) {
 
             <FilterSelect 
                 name="categoria" 
-                placeholder={t('filter.choose_category')}
-                options={CONSTANTES.CATEGORIA_PRENDA} 
+                placeholder="Elige una categoría" 
+                options={CONSTANTES.CATEGORIA_PRENDA}
+                value={filters.categoria}
                 onChange={(e) => handleSelectChange('categoria', e)}
             />
             
             <FilterSelect 
                 name="temporada" 
-                placeholder={t('filter.choose_season')} 
-                options={CONSTANTES.TEMPORADA_PRENDA} 
+                placeholder="Elige una temporada" 
+                options={CONSTANTES.TEMPORADA_PRENDA}
+                value={filters.temporada}
                 onChange={(e) => handleSelectChange('temporada', e)}
             />
             
@@ -46,8 +50,26 @@ export default function Filter({ width }: FilterProps) {
                 name="color" 
                 placeholder={t('filter.choose_color')} 
                 options={CONSTANTES.COLOR_PRENDA} 
+                value={filters.color}
                 onChange={(e) => handleSelectChange('color', e)}
             />
+
+            {/* CHECKBOX FAVORITOS */}
+            <div className="flex items-center gap-2 cursor-pointer">
+                <input
+                    type="checkbox"
+                    id="fav-checkbox"
+                    checked={filters.favorito}
+                    onChange={(e) => onFilterChange('favorito', e.target.checked)}
+                    className="w-5 h-5 cursor-pointer rounded"
+                />
+                <label 
+                    htmlFor="fav-checkbox" 
+                    className="flex items-center gap-1"
+                >
+                    Favoritos
+                </label>
+            </div>
         </div>
     )
 }

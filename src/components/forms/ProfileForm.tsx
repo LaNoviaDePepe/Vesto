@@ -8,7 +8,9 @@ import { useNavigate } from "react-router-dom";
 import { SupabaseUserRepository } from "../../database/supabase/SupabaseUserRepository";
 import { useTranslation } from "react-i18next";
 
-const userRepository = new SupabaseUserRepository();
+/**
+ * Interfaz que define los datos editables del perfil de usuario.
+ */
 interface UserProfileProps {
     nombreApellidos: string;
     email: string;
@@ -17,6 +19,9 @@ interface UserProfileProps {
     avatar: File | null;
 }
 
+/**
+ * Interfaz que define los errores de validación del formulario de perfil.
+ */
 interface ErrorsProps {
     nombreApellidos: string;
     email: string;
@@ -26,21 +31,20 @@ interface ErrorsProps {
 }
 
 /**
- * Formulario de gestión de perfil de usuario.
- * * Este componente permite al usuario autenticado:
+ * Componente `ProfileForm`.
+ * * Permite al usuario autenticado:
  * - Visualizar sus datos actuales (Nombre, Email, Avatar).
  * - Actualizar su información personal.
  * - Cambiar su contraseña (requiere validación de la contraseña actual).
  * - Subir una nueva imagen de perfil con previsualización.
- * * Gestiona la validación de campos en tiempo real y la comunicación con
- * Supabase a través de `SupabaseUserRepository`.
+ * * @returns {JSX.Element} Componente renderizado para la gestión del perfil.
  */
 export default function ProfileForm() {
 
     const { t } = useTranslation();
 
     const state = useAuthStore();
-    // Instancia correcta del repositorio
+    const userRepository = new SupabaseUserRepository();
     const navigate = useNavigate();
 
     const [formData, setFormData] = useState<UserProfileProps>({
@@ -62,7 +66,10 @@ export default function ProfileForm() {
     const [preview, setPreview] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
 
-    // CARGAR DATOS DEL USUARIO
+    /**
+    * Hook de efecto que carga los datos iniciales del usuario
+    * en el formulario basándose en la sesión actual de Zustand.
+    */
     useEffect(() => {
         const session = state.sessionUser;
         if (session?.user && session?.profile) {
@@ -78,8 +85,8 @@ export default function ProfileForm() {
     }, [state.sessionUser]);
 
     /**
-     * Gestiona el cierre de sesión del usuario llamando al repositorio
-     * y limpiando el estado global.
+     * Gestiona el cierre de sesión del usuario llamando al repositorio,
+     * limpiando el estado global y redirigiendo a la portada.
      */
     const handleLogout = async () => {
         setLoading(true);
@@ -90,6 +97,10 @@ export default function ProfileForm() {
         navigate('/');
     }
 
+    /**
+     * Maneja el cambio de valores en los campos de texto del formulario.
+     * * @param {ChangeEvent<HTMLInputElement>} e - Evento de cambio del input.
+     */
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setFormData((prev) => ({ ...prev, [name]: value }));
@@ -98,6 +109,11 @@ export default function ProfileForm() {
         }
     };
 
+    /**
+     * Valida los campos del formulario cuando el usuario retira el foco.
+     * Aplica validaciones especiales si se trata del cambio de contraseñas.
+     * * @param {FocusEvent<HTMLInputElement>} e - Evento de pérdida de foco.
+     */
     const handleBlur = (e: FocusEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
 
@@ -112,6 +128,11 @@ export default function ProfileForm() {
         }
     };
 
+    /**
+     * Maneja la subida y previsualización de una nueva imagen de perfil.
+     * Valida que el tamaño de la imagen no supere los 2MB.
+     * * @param {ChangeEvent<HTMLInputElement>} e - Evento del input file.
+     */
     const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files[0]) {
             const file = e.target.files[0];
@@ -126,11 +147,11 @@ export default function ProfileForm() {
     };
 
     /**
-     * Envía los datos del formulario.
-     * Realiza validaciones finales y decide qué datos enviar al repositorio
-     * basándose en los cambios realizados.
+     * Envía los datos actualizados del perfil al backend.
+     * Solo envía los campos que han sido modificados (como un nuevo avatar o contraseña).
+     * * @param {React.FormEvent<HTMLFormElement>} e - Evento de envío del formulario.
      */
-    const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         // Limpieza (Solo nombre, email ya no se toca)
@@ -174,7 +195,7 @@ export default function ProfileForm() {
                 state.updateSessionProfile(profileRes.data);
             }
 
-            toast.success(t('message.profile_updated')+" ✅");
+            toast.success("Perfil actualizado");
             setFormData(prev => ({ ...prev, currentPassword: "", newPassword: "" }));
 
         } catch (error: any) {

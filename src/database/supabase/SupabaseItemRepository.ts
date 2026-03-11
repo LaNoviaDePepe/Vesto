@@ -26,6 +26,7 @@ export class SupabaseItemRepository implements ItemRepository {
             color: p.color,
             temporada: p.temporada,
             categoria: p.categoria,
+            favorito: p.favorito
         })) || [];
 
         return { data: prendasMapped, error };
@@ -35,7 +36,7 @@ export class SupabaseItemRepository implements ItemRepository {
     async createPrenda(data: PrendaData) {
         try {
             // Subir la imagen al Storage
-            // Creamos un nombre único para el archivo (ej: usuarioID/timestamp.png)
+            // Creamos un nombre único para el archivo. Formato: "{ID_DEL_USUARIO}/{TIMESTAMP_ACTUAL}.{EXTENSION_DEL_ARCHIVO}"
             const fileExt = data.imagen.name.split('.').pop();
             const fileName = `${data.userId}/${Date.now()}.${fileExt}`;
             const filePath = `${fileName}`;
@@ -56,18 +57,16 @@ export class SupabaseItemRepository implements ItemRepository {
 
 
             // Guardar los datos en la tabla 'prendas' 
-            // Ajusta los nombres de las columnas según tu imagen de BBDD
             const { data: newPrenda, error: dbError } = await supabase
                 .from('prendas')
                 .insert({
-                    id_usuario: data.userId, // Relación con la tabla usuarios
+                    id_usuario: data.userId, 
                     nombre: data.nombre,
-                    categoria: data.tipoPrenda, // En tu BBDD se llama 'categoria'
+                    categoria: data.tipoPrenda, 
                     color: data.color,
                     temporada: data.temporada,
                     url_imagen: publicUrl, // Guardamos la URL que nos dio el Storage
                     favorito: false, // Por defecto no es favorita
-                    // fecha_alta se pone sola si tienes default now()
                 })
                 .select()
                 .single();
@@ -84,4 +83,151 @@ export class SupabaseItemRepository implements ItemRepository {
             return { error };
         }
     }
+
+    async deletePrenda(id_prenda: number, imageUrl?: string) {
+        try {
+            // Intentamos borrar el registro de la base de datos
+            const { error: delError } = await supabase
+                .from('prendas')
+                .delete()
+                .eq('id', id_prenda);
+
+            if (delError) {
+                console.error("Error al borrar prenda de la BBDD:", delError);
+                return { error: delError };
+            }
+
+            // Si el borrado en BBDD fue exitoso, procedemos a borrar la imagen del Storage para que no quede huérfana y no ocupar espacio.
+            if (imageUrl) {
+                const basePath = '/object/public/prendas/';
+                const urlParts = imageUrl.split(basePath);
+                
+                if (urlParts.length > 1) {
+                    const filePath = decodeURIComponent(urlParts[1]); 
+                    // urlParts[1] almacena nombreDeFoto.extension. Decodificamos para conservar espacios y caracteres especiales.
+
+                    if (filePath) {
+                        const { error: storageError } = await supabase.storage
+                            .from('prendas')
+                            .remove([filePath]);
+                        
+                        if (storageError) {
+                            console.error("Prenda borrada, pero error al borrar imagen del Storage:", storageError);
+                            // No retornamos este error porque a nivel de usuario la prenda ya se borró de su armario
+                        }
+                    }
+                }
+            }
+
+            console.log(`Prenda ${id_prenda} eliminada correctamente`);
+            return {};
+
+        } catch (error) {
+            console.error("Error inesperado al borrar prenda:", error);
+            return { error };
+        }
+    }
+
+    async toggleFavorito(id_prenda: number, nuevoEstado: boolean) {
+        console.log(`Intentando guardar prenda ${id_prenda} como favorito: ${nuevoEstado}`);
+
+        const { data, error } = await supabase
+            .from('prendas')
+            .update({ favorito: nuevoEstado })
+            .eq('id', id_prenda)
+            .select();
+
+        if (error) {
+            console.error("❌ Error en Supabase al guardar favorito:", error.message);
+        } else {
+            console.log("✅ Guardado en Supabase con éxito", data);
+        }
+
+        return { data, error };
+    }
+
+    async getNumPrendasDia(): Promise<{ data?: any[]; error?: any }> {
+        try {
+            // Obtener todas las fechas (repetidas también)
+            const { data, error } = await supabase
+                .from('prendas')
+                .select('fecha_alta');
+
+            if (error) {
+                return { error };
+            }
+
+            const counts: { [key: string]: number } = {};
+
+            for (const item of data) {
+                const fullDate = item.fecha_alta;
+                const dayOnly = fullDate.split('T')[0];
+
+                if (counts[dayOnly] === undefined) {
+                    counts[dayOnly] = 0;
+                }
+
+                counts[dayOnly] = counts[dayOnly] + 1;
+            }
+
+            const finalFormat = [];
+
+            for (const date in counts) {
+                finalFormat.push({
+                    day: date,
+                    quantity: counts[date]
+                });
+            }
+
+            finalFormat.sort((a, b) => a.day.localeCompare(b.day));
+
+            return { data: finalFormat };
+
+        } catch (error) {
+            console.error("Error:", error);
+            return { error };
+        }
+    }
+
+    async getPrendasPorCategoria(): Promise<{ data?: any[]; error?: any }> {
+        try {
+            // Pedimos lo que queremos
+            const { data, error } = await supabase
+                .from('prendas')
+                .select('categoria');
+
+            if (error) {
+                return { error };
+            }
+
+            const counts: { [key: string]: number } = {};
+
+            // Contamos cuántas prendas hay de cada categoría
+            for (const item of data) {
+                // Manejamos el caso de que la categoría venga vacía 
+                const cat = item.categoria || 'Sin categoría';
+
+                if (counts[cat] === undefined) {
+                    counts[cat] = 0;
+                }
+                counts[cat] = counts[cat] + 1;
+            }
+
+            // Recharts para PieChart espera un formato exacto: [{ name: 'A', value: 10 }]
+            const finalFormat = Object.keys(counts).map(key => ({
+                name: key,
+                value: counts[key]
+            }));
+
+            // Ordenamos de mayor a menor cantidad para que el gráfico quede más estético
+            finalFormat.sort((a, b) => b.value - a.value);
+
+            return { data: finalFormat };
+
+        } catch (error) {
+            console.error("Error agrupando categorías:", error);
+            return { error };
+        }
+    }
+
 }

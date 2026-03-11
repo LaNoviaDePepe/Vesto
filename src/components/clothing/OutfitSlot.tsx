@@ -8,7 +8,7 @@ export function OutfitSlot({ label, item }: { label: string; item: any | null })
                 }`}>
                 <div className="w-full h-full bg-gray-50 rounded-lg overflow-hidden flex items-center justify-center border border-gray-100">
                     {item ? (
-                        <img src={item.url_imagen} alt={item.nombre} className="w-full h-full object-cover" />
+                        <img src={item.url} alt={item.name} className="w-full h-full object-cover" />
                     ) : (
                         <span className="text-gray-300 text-3xl font-light">+</span>
                     )}
