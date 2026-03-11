@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { createItemRepository } from '../../database/repositories';
 import PieGraph from '../common/PieGraph';
+import { useTranslation } from 'react-i18next';
 
 /**
  * Componente inteligente (Container) que muestra la distribución de prendas por categoría.
@@ -26,7 +27,7 @@ export const CategoriasChart = () => {
             const { data: chartData, error } = await itemRepository.getPrendasPorCategoria();
 
             if (error) {
-                toast.error('Error al cargar datos de categorías');
+                toast.error(t("error.category_loading_error"));
             } else if (chartData) {
                 setData(chartData);
             }
@@ -39,7 +40,7 @@ export const CategoriasChart = () => {
     if (loading) {
         return (
             <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 h-95 flex items-center justify-center">
-                <p className="text-gray-400 animate-pulse">Analizando categorías...</p>
+                <p className="text-gray-400 animate-pulse">{t('graph.analysing_categories')}</p>
             </div>
         );
     }
@@ -49,7 +50,7 @@ export const CategoriasChart = () => {
         return (
             <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 h-95 flex items-center justify-center">
                 <div className="bg-gray-50 p-10 rounded-xl text-center border border-dashed border-gray-200">
-                    <p className="text-gray-400">Aún no hay prendas suficientes.</p>
+                    <p className="text-gray-400">{t('graph.not_enought_clothing')}</p>
                 </div>
             </div>
         );
@@ -57,7 +58,7 @@ export const CategoriasChart = () => {
 
     return (
         <PieGraph 
-            title="Distribución por Categoría" 
+            title={t("graph.clothing_distribution")}
             data={data} 
             nameKey="name" 
             dataKey="value" 

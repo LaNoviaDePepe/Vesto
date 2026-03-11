@@ -34,7 +34,7 @@ export default function UserHeader({ children }: UserHeaderProps) {
         try {
             const result = await userRepository.logout();
             if (result.error) {
-                toast.error(t('error.close_section'));
+                toast.error(t('error.close_session'));
 
                 return;
             }

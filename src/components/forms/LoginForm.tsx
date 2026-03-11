@@ -7,6 +7,7 @@ import { toast } from "react-hot-toast";
 import { isEmailTaken } from "../../database/supabase/RPCs/isEmailTaken";
 import { useAuthStore } from "../../stores/authStore";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from 'react-i18next';
 
 /**
  * Interfaz que define los campos del formulario de inicio de sesión.

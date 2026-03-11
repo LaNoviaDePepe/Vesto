@@ -27,7 +27,8 @@
   "error": {
     "random_error": "Ocurrió un error inesperado",
     "close_session": "Error al cerrar sesión",
-    "saving": "Error al guardar"
+    "saving": "Error al guardar",
+    "category_loading_error": "Error al cargar datos de categorías"
   },
   "message":{
     "2MB": "La imagen debe pesar menos de 2MB",
@@ -62,5 +63,10 @@
     "write_new_password": "Escribe nueva contraseña",
     "remember_me": "Recuérdame",
     "name_surname": "Nombre y Apellidos"
+  },
+  "graph":{
+    "analysing_categories": "Analizando categorías...",
+    "not_enought_clothing": "Aún no hay prendas suficientes.",
+    "clothing_distribution": "Distribución por Categoría"
   }
 }
