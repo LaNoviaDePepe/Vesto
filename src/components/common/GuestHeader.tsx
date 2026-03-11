@@ -12,8 +12,7 @@ import { useTranslation } from "react-i18next";
  * enlaces ancla para navegación suave (smooth scroll) dentro de la Landing Page.
  *
  * @returns {JSX.Element} La estructura de la cabecera para visitantes.
- */import { LanguageSwitcher } from './LanguageSwitcher';
-import { useTranslation } from "react-i18next";
+ */
 
 export default function GuestHeader() {
     /**
@@ -36,24 +35,18 @@ export default function GuestHeader() {
         setIsMenuOpen(false);
     };
 
-    // Constante que almacena los links para los usuarios anónimos
     const { t } = useTranslation();
 
     /**
      * Lista de enlaces de navegación pública para la vista de invitado.
      * @type {Array<{label: string, path: string}>}
      */
-    const { t } = useTranslation();
 
     const guestLinks = [
         { label: t('navbar.links.home'), path: '/#hero' },
         { label: t('navbar.links.behaviour'), path: '/#funcionamiento' },
         { label: t('navbar.links.reviews'), path: '/#reviews' },
-        { label: t('navbar.links.team'), path: '/#equipo' },
-        { label: t('navbar.links.home'), path: '/#hero' },
-        { label: t('navbar.links.behaviour'), path: '/#funcionamiento' },
-        { label: t('navbar.links.reviews'), path: '/#reviews' },
-        { label: t('navbar.links.team'), path: '/#equipo' },
+        { label: t('navbar.links.team'), path: '/#equipo' }
     ];
 
 

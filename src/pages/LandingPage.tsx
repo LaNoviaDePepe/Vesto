@@ -180,34 +180,69 @@ export default function LandingPage() {
 
                     {/* CARD 3: EQUIPO */}
                     <AnimatedCard id="equipo" delay={200} className="scroll-mt-25 w-full max-w-7xl bg-white rounded-4xl shadow-xl p-6 md:p-12 flex flex-col items-center gap-8 md:gap-12">
+
                         <div className="text-center max-w-3xl">
-                            <h2 className="text-2xl md:text-4xl font-bold text-black mb-4 font-(--font-display)">
-                                Nuestro equipo
+                            <h2 className="text-4xl font-bold text-black mb-4 font-(--font-display)">
+                                {t('landing.team.title')}
                             </h2>
-                            <p className="text-black text-base md:text-lg font-(--font-body)">
-                                Los verdaderos creadores de Vesto.
+                            <p className=" text-black text-lg font-(--font-body)">
+                                {t('landing.team.subtitle')}
                             </p>
                         </div>
+                        <div className="flex flex-wrap justify-center gap-12 w-full">
 
-                        {/* Gabino */}
-                        <div className="flex flex-col items-center text-center gap-2 w-32">
-                            <div className="relative w-28 h-28 mb-2 group cursor-pointer">
-                                <img src={GabinoImg} alt="Gabino" className="absolute inset-0 w-28 h-28 rounded-full object-cover transition-opacity duration-500 ease-in-out group-hover:opacity-0 z-10" />
-                                <img src="/img/black-logo.png" alt="Logo de Vesto" className="absolute inset-0 w-28 h-28 rounded-full object-contain bg-white p-3 transition-opacity duration-500 ease-in-out opacity-0 group-hover:opacity-100 z-0 shadow-inner" />
+                            {/* Rodas */}
+                            <div className="flex flex-col items-center text-center gap-2 w-32">
+                                <div className="relative w-28 h-28 mb-2 group cursor-pointer">
+                                    <img src={RodasImg} alt="Rodas" className="absolute inset-0 w-28 h-28 rounded-full object-cover transition-opacity duration-500 ease-in-out group-hover:opacity-0 z-10" />
+                                    <img src="/img/black-logo.png" alt="Logo de Vesto" className="absolute inset-0 w-28 h-28 rounded-full object-contain bg-orange-500 p-3 transition-opacity duration-500 ease-in-out opacity-0 group-hover:opacity-100 z-0 shadow-inner" />
+                                </div>
+                                <h3 className="font-bold text-lg text-black font-(--font-body)">Rodas</h3>
+                                <p className="text-sm text-blck font-(--font-body)">{t('landing.team.rodas')}</p>
                             </div>
-                            <h3 className="font-bold text-lg text-black font-(--font-body)">Pepe</h3>
-                            <p className="text-sm text-blck font-(--font-body)">Aporta mucha veteranía, tiene más años que un bosque.</p>
+
+                            {/* Gabino */}
+                            <div className="flex flex-col items-center text-center gap-2 w-32">
+                                <div className="relative w-28 h-28 mb-2 group cursor-pointer">
+                                    <img src={GabinoImg} alt="Gabino" className="absolute inset-0 w-28 h-28 rounded-full object-cover transition-opacity duration-500 ease-in-out group-hover:opacity-0 z-10" />
+                                    <img src="/img/black-logo.png" alt="Logo de Vesto" className="absolute inset-0 w-28 h-28 rounded-full object-contain bg-white p-3 transition-opacity duration-500 ease-in-out opacity-0 group-hover:opacity-100 z-0 shadow-inner" />
+                                </div>
+                                <h3 className="font-bold text-lg text-black font-(--font-body)">Pepe</h3>
+                                <p className="text-sm text-blck font-(--font-body)">{t('landing.team.pepe')}</p>
+                            </div>
+
+                            {/* Gloria */}
+                            <div className="flex flex-col items-center text-center gap-2 w-32">
+                                <div className="relative w-28 h-28 mb-2 group cursor-pointer">
+                                    <img src={GloriajinImg} alt="Gloriajin" className="absolute inset-0 w-28 h-28 rounded-full object-cover transition-opacity duration-500 ease-in-out group-hover:opacity-0 z-10" />
+                                    <img src="/img/black-logo.png" alt="Logo de Vesto" className="absolute inset-0 w-28 h-28 rounded-full object-contain bg-orange-500 p-3 transition-opacity duration-500 ease-in-out opacity-0 group-hover:opacity-100 z-0 shadow-inner" />
+                                </div>
+                                <h3 className="font-bold text-lg text-black font-(--font-body)">Gloria</h3>
+                                <p className="text-sm text-blck font-(--font-body)">{t('landing.team.gloria')}</p>
+                            </div>
+
+                            {/* Miguel */}
+                            <div className="flex flex-col items-center text-center gap-2 w-32">
+                                <div className="relative w-28 h-28 mb-2 group cursor-pointer">
+                                    <img src={MiguelImg} alt="Miguel" className="absolute inset-0 w-28 h-28 rounded-full object-cover transition-opacity duration-500 ease-in-out group-hover:opacity-0 z-10" />
+                                    <img src="/img/black-logo.png" alt="Logo de Vesto" className="absolute inset-0 w-28 h-28 rounded-full object-contain bg-white p-3 transition-opacity duration-500 ease-in-out opacity-0 group-hover:opacity-100 z-0 shadow-inner" />
+                                </div>
+                                <h3 className="font-bold text-lg text-black font-(--font-body)">Miguel</h3>
+                                <p className="text-sm text-blck font-(--font-body)">{t('landing.team.miguel')}</p>
+                            </div>
+
+                            {/* Lucía */}
+                            <div className="flex flex-col items-center text-center gap-2 w-32">
+                                <div className="relative w-28 h-28 mb-2 group cursor-pointer">
+                                    <img src={LuciaImg} alt="Lucía" className="absolute inset-0 w-28 h-28 rounded-full object-cover transition-opacity duration-500 ease-in-out group-hover:opacity-0 z-10" />
+                                    <img src="/img/black-logo.png" alt="Logo de Vesto" className="absolute inset-0 w-28 h-28 rounded-full object-contain bg-orange-500 p-3 transition-opacity duration-500 ease-in-out opacity-0 group-hover:opacity-100 z-0 shadow-inner" />
+                                </div>
+                                <h3 className="font-bold text-lg text-black font-(--font-body)">Lucía</h3>
+                                <p className="text-sm text-blck font-(--font-body)">{t('landing.team.lucia')}</p>
+                            </div>
+
                         </div>
 
-                        {/* Gloria */}
-                        <div className="flex flex-col items-center text-center gap-2 w-32">
-                            <div className="relative w-28 h-28 mb-2 group cursor-pointer">
-                                <img src={GloriajinImg} alt="Gloriajin" className="absolute inset-0 w-28 h-28 rounded-full object-cover transition-opacity duration-500 ease-in-out group-hover:opacity-0 z-10" />
-                                <img src="/img/black-logo.png" alt="Logo de Vesto" className="absolute inset-0 w-28 h-28 rounded-full object-contain bg-orange-500 p-3 transition-opacity duration-500 ease-in-out opacity-0 group-hover:opacity-100 z-0 shadow-inner" />
-                            </div>
-                            <h3 className="font-bold text-lg text-black font-(--font-body)">Gloriajin</h3>
-                            <p className="text-sm text-blck font-(--font-body)">Diva absoluta, le da el toque chick.</p>
-                        </div>
                     </AnimatedCard>
 
                 </div>
