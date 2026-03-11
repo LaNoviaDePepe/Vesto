@@ -3,9 +3,10 @@ import Conjunto from "../components/clothing/Conjunto";
 import { SupabaseOutfitRepository } from "../database/supabase/SupabaseOutfitRepository";
 import { useAuthStore } from "../stores/authStore";
 import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 
 export default function OutfitsPage() {
-
+  const { t } = useTranslation();
   const [conjuntos, setConjuntos] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const outfitRepository = new SupabaseOutfitRepository();
@@ -32,7 +33,7 @@ export default function OutfitsPage() {
 
 
 
-  if (loading) return <div>Loading outfits...</div>;
+  if (loading) return <div>{t('outfit.loading_outfits')}</div>;
 
   const handleToggleFavorito = async (id: number, estadoActual: boolean) => {
     const nuevoEstado = !estadoActual;
@@ -56,7 +57,7 @@ export default function OutfitsPage() {
 
   // Función para eliminar conjunto con borrado optimista (visualmente es automático, asumimos que será exitoso, pero podemos revertirlo) y toast
   const handleDeleteConjunto = async (id: number, url_imagen: string) => {
-    if (!window.confirm("¿Estás seguro de que deseas eliminar este conjunto?")) return;
+    if (!window.confirm(t('outfit.delete_confirm'))) return;
 
     // Guardamos una copia por si la BBDD falla y tenemos que revertir
     const conjuntosAnteriores = [...conjuntos];
@@ -68,11 +69,11 @@ export default function OutfitsPage() {
 
     if (error) {
       console.error("Error borrando conjunto:", error);
-      toast.error("Hubo un problema al eliminar el conjunto");
+      toast.error(t('outfit.delete_error'));
       // Si falla, devolvemos el conjunto a la pantalla
       setConjuntos(conjuntosAnteriores);
     } else {
-      toast.success("Conjunto eliminado correctamente");
+      toast.success(t('outfit.delete_success'));
     }
   };
 
@@ -89,7 +90,7 @@ export default function OutfitsPage() {
         ))
       ) : (
         <div className="flex flex-col items-center justify-center h-64 text-gray-400">
-          <p className="text-lg">Aún no has creado ningún conjunto</p>
+          <p className="text-lg">{t('outfit.no_outfits')}</p>
         </div>
       )}
     </div>

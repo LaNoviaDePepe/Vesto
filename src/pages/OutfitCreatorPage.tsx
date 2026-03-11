@@ -9,6 +9,7 @@ import { SupabaseItemRepository } from "../database/supabase/SupabaseItemReposit
 import { CircleChevronUp } from "lucide-react";
 import { useAuthStore } from "../stores/authStore";
 import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 
 
 interface ErrorsProps {
@@ -22,7 +23,7 @@ const itemRepository = new SupabaseItemRepository();
 
 
 export default function OutfitCreatorPage() {
-
+  const { t } = useTranslation();
   const { sessionUser } = useAuthStore();
 
   //Estado de prendas
@@ -131,8 +132,8 @@ export default function OutfitCreatorPage() {
 
     // Validaciones previas 
     const newErrors = {
-      nombre: !nombreConjunto.trim() ? "Por favor, introduce un nombre para el conjunto." : "",
-      outfit: prendasSeleccionadas.length === 0 ? "Debes seleccionar al menos una prenda." : "",
+      nombre: !nombreConjunto.trim() ? t('outfit.name_required') : "",
+      outfit: prendasSeleccionadas.length === 0 ? t('outfit.min_one_item') : "",
       imagen: ""
     };
 
@@ -163,12 +164,12 @@ export default function OutfitCreatorPage() {
         if (error) {
           if (error && typeof error === 'object' && 'code' in error && error.code === '23505') {
             // Código 23505: nombre de conjunto duplicado
-            toast.error(`Ya tienes un conjunto llamado '${nombreConjunto}'. Elige otro nombre.`);
+            toast.error(t('outfit.duplicate_name', { name: nombreConjunto }));
           } else {
-            toast.error("Hubo un error al guardar el conjunto.");
+            toast.error(t('outfit.save_error'));
           }
         } else {
-          toast.success(`¡Conjunto '${nombreConjunto}' guardado con éxito!`);
+          toast.success(t('outfit.save_success', { name: nombreConjunto }));
 
           // Reseteo de form
           setNombreConjunto("");
@@ -256,9 +257,9 @@ export default function OutfitCreatorPage() {
               ))
             ) : (
               <div className="flex flex-col items-center justify-center h-64 text-gray-400 w-full">
-                <p className="text-lg">No se encontraron prendas con estos filtros</p>
+                <p className="text-lg">{t('filter.no_results')}</p>
                 <button onClick={handleResetFilters} className="text-primary-600 underline mt-4 hover:text-primary-800 transition-colors cursor-pointer">
-                  Limpiar filtros
+                  {t('filter.clear_filters')}
                 </button>
               </div>
             )}
@@ -284,7 +285,7 @@ export default function OutfitCreatorPage() {
           {/* Fila del Nombre y Botón */}
           <div className="flex gap-3 ">
             <Input
-              placeholder="Nombre del conjunto"
+              placeholder={t('outfit.name_placeholder')}
               value={nombreConjunto}
               disabled={loading}
               onChange={(e) => {
@@ -295,14 +296,14 @@ export default function OutfitCreatorPage() {
             />
             <Button variant="primary" type="submit" disabled={loading}
               className="min-w-30 self-center">
-              {loading ? "Guardando..." : "Guardar"}
+              {loading ? t('actions.saving') : t('actions.save')}
             </Button>
           </div>
 
           {/* Textarea para la descripción */}
           <div className="flex flex-col gap-2 w-full">
             <textarea
-              placeholder="Descripción del conjunto, ocasión, etc..."
+              placeholder={t('outfit.desc_placeholder')}
               value={descripcion}
               disabled={loading}
               onChange={(e) => setDescripcion(e.target.value)}
@@ -315,13 +316,13 @@ export default function OutfitCreatorPage() {
         {/* Grid de Slots */}
         <div className="flex flex-col gap-8 items-center">
           <div className="flex justify-center gap-6 w-full">
-            <OutfitSlot label="Cabeza" item={outfit.cabeza} />
-            <OutfitSlot label="Parte Arriba" item={outfit.parte_arriba} />
-            <OutfitSlot label="Complemento" item={outfit.complemento} />
+            <OutfitSlot label={t('outfit.head')} item={outfit.cabeza} />
+            <OutfitSlot label={t('outfit.top')} item={outfit.parte_arriba} />
+            <OutfitSlot label={t('outfit.accessory')} item={outfit.complemento} />
           </div>
           <div className="flex justify-center gap-6 w-full">
-            <OutfitSlot label="Parte Abajo" item={outfit.parte_abajo} />
-            <OutfitSlot label="Calzado" item={outfit.calzado} />
+            <OutfitSlot label={t('outfit.bottom')} item={outfit.parte_abajo} />
+            <OutfitSlot label={t('outfit.shoes')} item={outfit.calzado} />
           </div>
         </div>
 
@@ -348,7 +349,7 @@ export default function OutfitCreatorPage() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                   </svg>
                 </div>
-                <p className="text-gray-400 font-medium">Sube foto de tu outfit</p>
+                <p className="text-gray-400 font-medium">{t('outfit.upload_photo')}</p>
               </div>
             )}
           </div>

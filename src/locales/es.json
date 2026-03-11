@@ -80,7 +80,8 @@
     "select_season": "Selecciona temporada...",
     "preview": "Vista previa",
     "no_image": "No Image Available",
-    "error_unexpected_upload": "Error inesperado al subir la prenda"
+    "error_unexpected_upload": "Error inesperado al subir la prenda",
+    "delete_item_title": "Eliminar prenda"
   },
   "form": {
     "password": "Contraseña",
@@ -109,7 +110,18 @@
   "graph": {
     "analysing_categories": "Analizando categorías...",
     "not_enought_clothing": "Aún no hay prendas suficientes.",
-    "clothing_distribution": "Distribución por Categoría"
+    "clothing_distribution": "Distribución por Categoría",
+    "error_loading_categories": "Error al cargar datos de categorías",
+    "loading_items": "Cargando gráfico de prendas...",
+    "items_history": "Prendas Registradas (Histórico)",
+    "items_per_day": "Prendas por Día",
+    "not_enought_items_data": "Sin datos de prendas suficientes.",
+    "error_loading_items": "Error al cargar datos de prendas",
+    "loading_logins": "Cargando gráfico de accesos...",
+    "user_traffic": "Tráfico de Usuarios (Logins)",
+    "daily_logins": "Logins Diarios",
+    "not_enought_logins_data": "Sin datos de logins suficientes.",
+    "error_loading_logins": "Error al cargar datos de logins"
   },
   "landing": {
     "hero": {
@@ -140,5 +152,54 @@
       "miguel": "Obsesionado con el trabajo, dentro y fuera del campo.",
       "lucia": "Sabe demasiado de todo, pero no lo dice, ¿falsa humilde?."
     }
+  },
+  "outfit": {
+    "name_required": "Por favor, introduce un nombre para el conjunto.",
+    "min_one_item": "Debes seleccionar al menos una prenda.",
+    "duplicate_name": "Ya tienes un conjunto llamado '{{name}}'. Elige otro nombre.",
+    "save_error": "Hubo un error al guardar el conjunto.",
+    "save_success": "¡Conjunto '{{name}}' guardado con éxito!",
+    "name_placeholder": "Nombre del conjunto",
+    "desc_placeholder": "Descripción del conjunto, ocasión, etc...",
+    "head": "Cabeza",
+    "top": "Parte Arriba",
+    "accessory": "Complemento",
+    "bottom": "Parte Abajo",
+    "shoes": "Calzado",
+    "upload_photo": "Sube foto de tu outfit",
+    "loading_outfits": "Cargando conjuntos...",
+    "delete_confirm": "¿Estás seguro de que deseas eliminar este conjunto?",
+    "delete_error": "Hubo un problema al eliminar el conjunto",
+    "delete_success": "Conjunto eliminado correctamente",
+    "no_outfits": "Aún no has creado ningún conjunto",
+    "delete_outfit_title": "Eliminar conjunto",
+    "mark_favorite_title": "Marcar conjunto como favorito"
+  },
+  "profile": {
+    "walking_man_alt": "Ilustración persona caminando"
+  },
+  "reset_password": {
+    "passwords_mismatch": "Las contraseñas no coinciden",
+    "update_error": "Error al actualizar: ",
+    "update_success": "¡Contraseña actualizada con éxito!",
+    "title": "Nueva Contraseña",
+    "new_password_label": "Escribe tu nueva clave",
+    "confirm_password_label": "Confirma tu nueva clave",
+    "changing": "Cambiando...",
+    "update_btn": "Actualizar contraseña"
+  },
+  "admin": {
+    "stats_title": "Panel de Estadísticas",
+    "stats_subtitle": "Analítica del uso de la aplicación en tiempo real.",
+    "users_title": "Lista de Usuarios",
+    "users_loading": "Cargando usuarios...",
+    "users_error_toast": "Vaya, no hemos podido cargar la lista de usuarios. Inténtalo de nuevo más tarde.",
+    "users_error_msg": "No se pudo cargar la información de los usuarios.",
+    "role": "Rol: ",
+    "default_role": "usuario",
+    "no_users": "No hay usuarios registrados.",
+    "avatar_alt": "Avatar",
+    "user_management_title": "Gestión de Usuarios",
+    "dashboard_title": "Panel de Control"
   }
 }
