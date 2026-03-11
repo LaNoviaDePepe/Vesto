@@ -6,6 +6,7 @@ import { SupabaseOutfitRepository } from "../../database/supabase/SupabaseOutfit
 import { useAuthStore } from "../../stores/authStore";
 import toast from "react-hot-toast";
 import type { PrendaProps } from "../clothing/Prenda";
+import { useTranslation } from "react-i18next";
 
 interface AddOutfitFormProps {
   outfit: Record<string, PrendaProps | null>;
@@ -22,7 +23,7 @@ const outfitRepo = new SupabaseOutfitRepository();
 
 export default function AddOutfitForm({ outfit, onResetOutfit }: AddOutfitFormProps) {
   const { sessionUser } = useAuthStore();
-
+  const { t } = useTranslation();
   // Estados locales del formulario
   const [nombreConjunto, setNombreConjunto] = useState("");
   const [descripcion, setDescripcion] = useState("");
@@ -52,8 +53,8 @@ export default function AddOutfitForm({ outfit, onResetOutfit }: AddOutfitFormPr
 
     // Validaciones
     const newErrors = {
-      nombre: !nombreConjunto.trim() ? "Por favor, introduce un nombre para el conjunto." : "",
-      outfit: prendasSeleccionadas.length === 0 ? "Debes seleccionar al menos una prenda." : "",
+      nombre: !nombreConjunto.trim() ? t('outfit.name_required') : "",
+      outfit: prendasSeleccionadas.length === 0 ? t('outfit.min_one_item') : "",
       imagen: ""
     };
 
@@ -78,12 +79,12 @@ export default function AddOutfitForm({ outfit, onResetOutfit }: AddOutfitFormPr
 
       if (error) {
         if (typeof error === 'object' && 'code' in error && error.code === '23505') {
-          toast.error(`Ya tienes un conjunto llamado '${nombreConjunto}'.`);
+          toast.error(t('outfit.duplicate_name', { name: nombreConjunto }));
         } else {
-          toast.error("Hubo un error al guardar el conjunto.");
+          toast.error(t('outfit.save_error'));
         }
       } else {
-        toast.success(`¡Conjunto '${nombreConjunto}' guardado con éxito!`);
+        toast.success(t('outfit.save_success', { name: nombreConjunto }));
         // Resetear formulario y selección del padre
         setNombreConjunto("");
         setDescripcion("");
@@ -99,7 +100,7 @@ export default function AddOutfitForm({ outfit, onResetOutfit }: AddOutfitFormPr
       <div className="flex flex-col gap-4 mb-10">
         <div className="flex gap-3 ">
           <Input
-            placeholder="Nombre del conjunto"
+            placeholder={t('outfit.name_placeholder')}
             value={nombreConjunto}
             disabled={loading}
             onChange={(e) => {
@@ -109,12 +110,12 @@ export default function AddOutfitForm({ outfit, onResetOutfit }: AddOutfitFormPr
             error={errors.nombre}
           />
           <Button variant="primary" type="submit" disabled={loading} className="min-w-30 self-center">
-            {loading ? "Guardando..." : "Guardar"}
+            {loading ? t('actions.saving') : t('actions.save')}
           </Button>
         </div>
 
         <textarea
-          placeholder="Descripción del conjunto..."
+          placeholder={t('outfit.desc_placeholder')}
           value={descripcion}
           disabled={loading}
           onChange={(e) => setDescripcion(e.target.value)}
@@ -127,13 +128,13 @@ export default function AddOutfitForm({ outfit, onResetOutfit }: AddOutfitFormPr
       {/* Grid de Slots */}
       <div className="flex flex-col gap-8 items-center">
         <div className="flex justify-center gap-6 w-full">
-          <OutfitSlot label="Cabeza" item={outfit.cabeza} />
-          <OutfitSlot label="Parte Arriba" item={outfit.parte_arriba} />
-          <OutfitSlot label="Complemento" item={outfit.complemento} />
+          <OutfitSlot label={t('outfit.head')} item={outfit.cabeza} />
+          <OutfitSlot label={t('outfit.top')} item={outfit.parte_arriba} />
+          <OutfitSlot label={t('outfit.accessory')} item={outfit.complemento} />
         </div>
         <div className="flex justify-center gap-6 w-full">
-          <OutfitSlot label="Parte Abajo" item={outfit.parte_abajo} />
-          <OutfitSlot label="Calzado" item={outfit.calzado} />
+          <OutfitSlot label={t('outfit.bottom')} item={outfit.parte_abajo} />
+          <OutfitSlot label={t('outfit.shoes')} item={outfit.calzado} />
         </div>
       </div>
 
@@ -149,7 +150,7 @@ export default function AddOutfitForm({ outfit, onResetOutfit }: AddOutfitFormPr
         </div>
         <div className="w-full aspect-square max-w-80 rounded-2xl overflow-auto border-2 border-dashed border-gray-300 bg-gray-50 flex items-center justify-center relative">
           {preview ? (
-            <img src={preview} alt="Vista previa" className="w-50 h-50 object-cover" />
+            <img src={preview} alt={t('clothing.preview')} className="w-50 h-50 object-cover" />
           ) : (
             <div className="text-center p-6">
               <div className="w-20 h-20 mx-auto mb-4 bg-linear-to-br from-auxiliary-300 to-auxiliary-700 rounded-lg flex items-center justify-center text-white opacity-50">
@@ -157,7 +158,7 @@ export default function AddOutfitForm({ outfit, onResetOutfit }: AddOutfitFormPr
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>
               </div>
-              <p className="text-gray-400 font-medium">Sube foto de tu outfit</p>
+              <p className="text-gray-400 font-medium">{t('outfit.upload_photo')}</p>
             </div>
           )}
         </div>

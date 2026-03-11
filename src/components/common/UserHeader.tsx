@@ -71,12 +71,12 @@ export default function UserHeader({ children }: UserHeaderProps) {
                         {/* Usamos la variable avatarImg en el src */}
                         <img
                             src={avatarImg}
-                            alt="Perfil de usuario"
+                            alt={t('form.user_profile')}
                             className="h-full w-full object-cover shadow-sm rounded-full"
                         />
                     </Link>
 
-                    <Button variant='icon' onClick={handleLogout} className='min-w-0' title="Cerrar sesión">
+                    <Button variant='icon' onClick={handleLogout} className='min-w-0' title="{t('actions.logout')}">
                         <LogOut size={20} strokeWidth={2.5} />
                     </Button> 
                     <LanguageSwitcher />                      

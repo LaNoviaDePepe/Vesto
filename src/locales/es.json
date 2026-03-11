@@ -9,7 +9,8 @@
     "save_changes": "Guardar cambios",
     "logout": "Cerrar sesión",
     "signing_up": "Registrando...",
-    "signup": "Dar de alta"
+    "signup": "Dar de alta",
+    "delete": "Eliminar"
   },
   "navbar": {
     "button": {
@@ -201,5 +202,11 @@
     "avatar_alt": "Avatar",
     "user_management_title": "Gestión de Usuarios",
     "dashboard_title": "Panel de Control"
+  },
+  "modal": {
+    "delete_item_title": "¿Eliminar prenda?",
+    "delete_item_msg": "Esta acción no se puede deshacer y la prenda desaparecerá de tu armario.",
+    "delete_outfit_title": "¿Borrar este conjunto?",
+    "delete_outfit_msg": "¿Estás seguro? Se eliminará la combinación, pero las prendas individuales seguirán en tu armario."
   }
 }
