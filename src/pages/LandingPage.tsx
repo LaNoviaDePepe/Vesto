@@ -9,6 +9,7 @@ import LuciaImg from "../img/Lucia.png";
 import MiguelImg from "../img/Miguel.png";
 import Orb from '../components/common/Orb';
 import Aurora from '../components/common/Aurora';
+import { useAuthStore } from '../stores/authStore';
 
 export default function LandingPage() {
     const { t } = useTranslation();
@@ -32,6 +33,9 @@ export default function LandingPage() {
             }
         }
     }, [hash]);
+
+    const { isAuthenticated } = useAuthStore();
+
 
     return (
 
@@ -68,10 +72,17 @@ export default function LandingPage() {
                             ¿Cansado de perder demasiado tiempo eligiendo qué ponerte cada día? Eligelo rápido con Vesto, la app que te ayuda a organizar tu armario y crear outfits personalizados en segundos.
                         </p>
 
-                        <div className="flex gap-4 mt-6 w-auto">
-                            <Link to="/login"><Button variant='primary'>Iniciar sesión</Button></Link>
-                            <Link to="/signup"><Button variant='auxiliar'>Registro</Button></Link>
-                        </div>
+                        {isAuthenticated ? (
+                            <Link to="/closet">
+                                <Button variant='primary'>Ir a mi armario</Button>
+                            </Link>
+                        ) : (
+                            <div className="flex gap-4 mt-6 w-auto">
+                                <Link to="/login"><Button variant='primary'>Iniciar sesión</Button></Link>
+                                <Link to="/signup"><Button variant='auxiliar'>Registro</Button></Link>
+                            </div>
+                        )}
+
                     </div>
 
                     <div className="flex justify-end items-center h-full">
