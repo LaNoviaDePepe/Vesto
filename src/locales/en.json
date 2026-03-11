@@ -62,5 +62,35 @@
     "write_new_password": "Enter new password",
     "remember_me": "Remember me",
     "name_surname": "Full name"
+  },
+    "landing": {
+    "hero": {
+      "description": "Tired of wasting too much time choosing what to wear every day? Choose it quickly with Vesto, the app that helps you organize your closet and create personalized outfits in seconds.",
+      "goToCloset": "Go to my closet",
+      "login": "Login",
+      "signup": "Sign up"
+    },
+    "howItWorks": {
+      "title": "How does Vesto work?",
+      "description": "We have an intuitive and easy-to-use design, with features like uploading photos of your clothes, creating personalized outfits, saving to favorites... Everything so that choosing your daily look is fast, fun, and hassle-free.",
+      "demoTitle": "Vesto Demo",
+      "demoSubtitle": "App video coming soon..."
+    },
+    "reviews": {
+      "title": "+50K satisfied users",
+      "angel": "A work of art, you can tell Manuel's touch is in this app. It has changed my life; now choosing what to wear is a pleasure and not a torture. Thanks Vesto!",
+      "jesus": "Since I've been using it I'm happier. Thanks to Vesto I've discovered clothing combinations I wouldn't have thought of, and now I feel more confident with my style. 100% recommended!",
+      "paco": "Your eyes are like two frying pans, when I see them my eggs fry. You're so hot I'd eat you clothes and all... even if I spent a month shitting rags.",
+      "elias": "I hadn't seen such a complete and functional app. Vesto has revolutionized how I choose my clothes! I love the feature to create custom outfits, it's like having a personal stylist in your pocket. Highly recommended!"
+    },
+    "team": {
+      "title": "Our team",
+      "subtitle": "The true creators of Vesto.",
+      "rodas": "Absolute GOAT, needs no introduction.",
+      "pepe": "Brings a lot of experience, older than a forest.",
+      "gloria": "Absolute diva, gives it the chic touch.",
+      "miguel": "Obsessed with work, on and off the field.",
+      "lucia": "Knows too much about everything, but doesn't say it. False modesty?"
+    }
   }
 }
