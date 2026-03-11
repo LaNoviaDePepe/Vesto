@@ -199,6 +199,15 @@ export class SupabaseUserRepository implements UserRepository {
         }
     }
 
+    async updateUser(userId: string, data: { nombre_apellidos: string }) {
+        const { error } = await supabase
+            .from('perfiles')
+            .update({ nombre_apellidos: data.nombre_apellidos })
+            .eq('id', userId);
+
+        return { error };
+    }
+
     async resetPasswordForEmail(email: string): Promise<{ error?: any }> {
         try {
             const { error } = await supabase.auth.resetPasswordForEmail(email, {
@@ -247,5 +256,15 @@ export class SupabaseUserRepository implements UserRepository {
             console.error("Error inesperado al cargar logins:", error);
             return { error };
         }
+    }
+
+    async deleteUser(userId: string) {
+        // Borramos el registro de la tabla pública 'perfiles'
+        const { error } = await supabase
+            .from('perfiles')
+            .delete()
+            .eq('id', userId);
+
+        return { error };
     }
 }
