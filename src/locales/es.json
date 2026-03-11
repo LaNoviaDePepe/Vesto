@@ -208,5 +208,52 @@
     "delete_item_msg": "Esta acción no se puede deshacer y la prenda desaparecerá de tu armario.",
     "delete_outfit_title": "¿Borrar este conjunto?",
     "delete_outfit_msg": "¿Estás seguro? Se eliminará la combinación, pero las prendas individuales seguirán en tu armario."
+  },
+  "constants": {
+    "categories": {
+      "head": "Cabeza",
+      "top": "Parte arriba",
+      "bottom": "Parte abajo",
+      "accessory": "Complemento",
+      "shoes": "Calzado"
+    },
+    "colors": {
+      "black": "Negro",
+      "white": "Blanco",
+      "gray": "Gris",
+      "red": "Rojo",
+      "blue": "Azul",
+      "yellow": "Amarillo",
+      "green": "Verde",
+      "orange": "Naranja",
+      "purple": "Morado",
+      "pink": "Rosa",
+      "brown": "Marrón",
+      "light_blue": "Celeste",
+      "turquoise": "Turquesa",
+      "beige": "Beige",
+      "gold": "Dorado",
+      "silver": "Plateado"
+    },
+    "seasons": {
+      "fall": "Otoño",
+      "winter": "Invierno",
+      "spring": "Primavera",
+      "summer": "Verano",
+      "all": "Todo"
+    }
+  },
+  "validation": {
+    "name_required": "El nombre es obligatorio",
+    "only_letters": "Solo se permiten letras y espacios",
+    "email_required": "El email es obligatorio",
+    "invalid_email": "Formato de email inválido",
+    "user_required": "El usuario es obligatorio",
+    "min_3_chars": "Mínimo 3 caracteres",
+    "password_required": "La contraseña es obligatoria",
+    "min_6_chars": "Mínimo 6 caracteres",
+    "confirm_password_required": "Debes confirmar la contraseña",
+    "passwords_mismatch": "Las contraseñas no coinciden",
+    "select_option": "Debes seleccionar una opción"
   }
 }

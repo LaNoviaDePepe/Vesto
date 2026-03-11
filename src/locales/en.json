@@ -208,5 +208,52 @@
     "delete_item_msg": "This action cannot be undone and the item will disappear from your closet.",
     "delete_outfit_title": "Delete this outfit?",
     "delete_outfit_msg": "Are you sure? The combination will be deleted, but the individual items will remain in your closet."
+  },
+  "constants": {
+    "categories": {
+      "head": "Head",
+      "top": "Top",
+      "bottom": "Bottom",
+      "accessory": "Accessory",
+      "shoes": "Shoes"
+    },
+    "colors": {
+      "black": "Black",
+      "white": "White",
+      "gray": "Gray",
+      "red": "Red",
+      "blue": "Blue",
+      "yellow": "Yellow",
+      "green": "Green",
+      "orange": "Orange",
+      "purple": "Purple",
+      "pink": "Pink",
+      "brown": "Brown",
+      "light_blue": "Light Blue",
+      "turquoise": "Turquoise",
+      "beige": "Beige",
+      "gold": "Gold",
+      "silver": "Silver"
+    },
+    "seasons": {
+      "fall": "Fall",
+      "winter": "Winter",
+      "spring": "Spring",
+      "summer": "Summer",
+      "all": "All"
+    }
+  },
+  "validation": {
+    "name_required": "Name is required",
+    "only_letters": "Only letters and spaces are allowed",
+    "email_required": "Email is required",
+    "invalid_email": "Invalid email format",
+    "user_required": "Username is required",
+    "min_3_chars": "Minimum 3 characters",
+    "password_required": "Password is required",
+    "min_6_chars": "Minimum 6 characters",
+    "confirm_password_required": "You must confirm your password",
+    "passwords_mismatch": "Passwords do not match",
+    "select_option": "You must select an option"
   }
 }
