@@ -126,9 +126,8 @@ export default function ClosetPage() {
     setPrendas(prevPrendas => prevPrendas.filter(p => p.id !== id));
 
     const { error } = await itemRepository.deletePrenda(id, url);
+    
     if (error) {
-      console.error("Error borrando prenda:", error);
-
       if (error && typeof error === 'object' && 'code' in error && error.code === '23503') {
           toast.error(t('clothing.delete_error_in_outfit'));
       } else {

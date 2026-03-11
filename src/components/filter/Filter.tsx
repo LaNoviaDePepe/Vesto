@@ -26,7 +26,7 @@ export default function Filter({ width, filters, onFilterChange }: FilterProps) 
     };
 
     return (
-        <div className="bg-primary-50 flex justify-evenly items-center py-4 fixed top-0 z-50 mt-20"
+        <div className="bg-primary-50 flex justify-evenly items-center py-4 fixed top-0 z-40 mt-20"
             style={{ width: `${width}%` }}>
 
             {/* Recibe FilterSelects que se han formado en FilterSelect.tsx, los cuales
