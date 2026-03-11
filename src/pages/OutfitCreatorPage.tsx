@@ -10,13 +10,6 @@ import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 
 
-interface ErrorsProps {
-  nombre: string;
-  outfit: string;
-  imagen: string;
-}
-
-const outfitRepo = new SupabaseOutfitRepository();
 const itemRepository = new SupabaseItemRepository();
 
 export default function OutfitCreatorPage() {
@@ -84,94 +77,6 @@ export default function OutfitCreatorPage() {
     return true;
   });
 
-
-  // LÓGICA DE SELECCIÓN Y GUARDADO 
-  const handleSelectPrenda = (prenda: PrendaProps) => {
-    setOutfit((estadoprevio) => {
-      // Si la prenda ya está seleccionada en su categoría, la quitamos
-      const isAlreadySelected = estadoprevio[prenda.categoria]?.id === prenda.id;
-      return {
-        ...estadoprevio,
-        [prenda.categoria]: isAlreadySelected ? null : prenda,
-      };
-    });
-    setErrors(estadoPrevio => ({ ...estadoPrevio, outfit: "" }));
-  };
-
-
-  // LÓGICA DE GUARDADO CONECTADA A SUPABASE
-  const handleSaveOutfit = async (e: React.SubmitEvent) => {
-    e.preventDefault(); // Manejo de form
-
-    const prendasSeleccionadas = Object.values(outfit).filter((p): p is PrendaProps => p !== null);
-
-    // Validaciones previas 
-    const newErrors = {
-      nombre: !nombreConjunto.trim() ? t('outfit.name_required') : "",
-      outfit: prendasSeleccionadas.length === 0 ? t('outfit.min_one_item') : "",
-      imagen: ""
-    };
-
-    setErrors(newErrors);
-    const hasErrors = Object.values(newErrors).some(err => err !== "");
-
-    if (!hasErrors) {
-      setLoading(true);
-
-      // Sólo llamamos al repositorio si existe un usuario logueado, lo cual garantiza que user.id no sea posiblemente null.
-      if (sessionUser) {
-        const { error } = await outfitRepo.createConjunto({
-          nombre: nombreConjunto,
-          descripcion: descripcion,
-          id_usuario: sessionUser.user.id,
-          favorito: false,
-          url_imagen: imagenConjunto ?? undefined,
-
-          // Como en PrendasProps el id es opcional (ya que si estamos creando una nueva prenda, 
-          // aún no tiene id), filtramos las que sí tienen ID y lo convertimos a number (que es lo que pide la BD)
-          prendasIds: prendasSeleccionadas
-            .filter(p => p.id !== undefined)
-            .map(p => Number(p.id)),
-        });
-
-        setLoading(false);
-
-        if (error) {
-          if (error && typeof error === 'object' && 'code' in error && error.code === '23505') {
-            // Código 23505: nombre de conjunto duplicado
-            toast.error(t('outfit.duplicate_name', { name: nombreConjunto }));
-          } else {
-            toast.error(t('outfit.save_error'));
-          }
-        } else {
-          toast.success(t('outfit.save_success', { name: nombreConjunto }));
-
-          // Reseteo de form
-          setNombreConjunto("");
-          setDescripcion("");
-          setPreview(null);
-          setImagen(null);
-          setOutfit({
-            cabeza: null,
-            parte_arriba: null,
-            parte_abajo: null,
-            complemento: null,
-            calzado: null,
-          });
-        }
-      }
-    }
-  };
-
-  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
-      setImagen(file);
-      setPreview(URL.createObjectURL(file));
-      setErrors(estadoPrevio => ({ ...estadoPrevio, imagen: "" }));
-    }
-  };
-
   // Función para actualizar favoritos
   const handleToggleFavorito = async (id: number, estadoActual: boolean) => {
     const nuevoEstado = !estadoActual;
@@ -203,14 +108,15 @@ export default function OutfitCreatorPage() {
                   <Prenda {...prenda} onToggleFavorito={handleToggleFavorito} />
                 </div>
               ))
-            ) : (
-              <div className="flex flex-col items-center justify-center h-64 text-gray-400 w-full">
-                <p className="text-lg">{t('filter.no_results')}</p>
-                <button onClick={handleResetFilters} className="text-primary-600 underline mt-4 hover:text-primary-800 transition-colors cursor-pointer">
-                  {t('filter.clear_filters')}
-                </button>
-              </div>
-            )}
+            // ) : (
+            //   <div className="flex flex-col items-center justify-center h-64 text-gray-400 w-full">
+            //     <p className="text-lg">{t('filter.no_results')}</p>
+            //     <button onClick={handleResetFilters} className="text-primary-600 underline mt-4 hover:text-primary-800 transition-colors cursor-pointer">
+            //       {t('filter.clear_filters')}
+            //     </button>
+            //   </div>
+            // )
+            }
 
           </div>
           
@@ -223,83 +129,10 @@ export default function OutfitCreatorPage() {
         </div>
       </div>
 
-      {/* COLUMNA DERECHA: CREADOR */}
-      <form onSubmit={handleSaveOutfit} className="w-full lg:w-125 xl:w-150 bg-auxiliary-50 flex flex-col p-8 h-svh overflow-y-auto">
-        <div className="flex flex-col gap-4 mb-10">
-          {/* Fila del Nombre y Botón */}
-          <div className="flex gap-3 ">
-            <Input
-              placeholder={t('outfit.name_placeholder')}
-              value={nombreConjunto}
-              disabled={loading}
-              onChange={(e) => {
-                setNombreConjunto(e.target.value);
-                setErrors(prev => ({ ...prev, nombre: "" }));
-              }}
-              error={errors.nombre}
-            />
-            <Button variant="primary" type="submit" disabled={loading}
-              className="min-w-30 self-center">
-              {loading ? t('actions.saving') : t('actions.save')}
-            </Button>
-          </div>
-
-          {/* Textarea para la descripción */}
-          <div className="flex flex-col gap-2 w-full">
-            <textarea
-              placeholder={t('outfit.desc_placeholder')}
-              value={descripcion}
-              disabled={loading}
-              onChange={(e) => setDescripcion(e.target.value)}
-              rows={2}
-              className="w-full rounded-md text-sm border border-gray-300 px-4 py-3 outline-none  bg-white transition-all font-body focus:border-auxiliary-700 focus:ring-1 focus:ring-auxiliary-700 placeholder:text-gray-300 shadow-sm resize-none disabled:bg-gray-50 disabled:cursor-not-allowed"
-            />
-          </div>
-        </div>
-
-        {/* Grid de Slots */}
-        <div className="flex flex-col gap-8 items-center">
-          <div className="flex justify-center gap-6 w-full">
-            <OutfitSlot label={t('outfit.head')} item={outfit.cabeza} />
-            <OutfitSlot label={t('outfit.top')} item={outfit.parte_arriba} />
-            <OutfitSlot label={t('outfit.accessory')} item={outfit.complemento} />
-          </div>
-          <div className="flex justify-center gap-6 w-full">
-            <OutfitSlot label={t('outfit.bottom')} item={outfit.parte_abajo} />
-            <OutfitSlot label={t('outfit.shoes')} item={outfit.calzado} />
-          </div>
-        </div>
-
-        <div className="flex flex-col items-center justify-center space-y-6 mt-10 pb-20 mb-10">
-          {/* Input File */}
-          <div className="w-full max-w-75">
-            <input
-              type="file"
-              name="imagen"
-              accept="image/*"
-              onChange={handleFileChange}
-              className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200 cursor-pointer border rounded-md"
-            />
-            {errors.imagen && <p className="mt-2 text-sm text-danger-600 font-medium">{errors.imagen}</p>}
-          </div>
-          <div className="w-full aspect-square max-w-80 rounded-2xl overflow-auto border-2 border-dashed border-gray-300 bg-gray-50 flex items-center justify-center relative">
-            {preview ? (
-              <img src={preview} alt="Vista previa" className="w-50 h-50 object-cover" />
-            ) : (
-              <div className="text-center p-6">
-                {/* Icono de "No image available" con gradiente naranja */}
-                <div className="w-20 h-20 mx-auto mb-4 bg-linear-to-br from-auxiliary-300 to-auxiliary-700 rounded-lg flex items-center justify-center text-white opacity-50">
-                  <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                  </svg>
-                </div>
-                <p className="text-gray-400 font-medium">{t('outfit.upload_photo')}</p>
-              </div>
-            )}
-          </div>
-
-        </div>
-      </form>
+       {/* COLUMNA DERECHA: FORMULARIO */}
+      <AddOutfitForm
+        outfit={outfit}
+        onResetOutfit={resetOutfit} />
     </div>
   );
 }

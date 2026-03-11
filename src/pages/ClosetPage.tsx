@@ -170,7 +170,7 @@ export default function ClosetPage() {
         </div>
 
       )}
-          // Si los filtros han dejado la lista vacía, mostramos esto:
+           {/* Si los filtros han dejado la lista vacía, mostramos esto: */}
           <div className="flex flex-col items-center justify-center h-64 text-gray-400">
             <p className="text-lg">No se encontraron prendas con estos filtros</p>
             <button
@@ -180,7 +180,7 @@ export default function ClosetPage() {
               Limpiar filtros
             </button>
           </div>
-        )}
+        
         
         {/* Modal para procesar la confirmación del borrado */}
         <Modal 
