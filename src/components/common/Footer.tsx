@@ -9,9 +9,9 @@ interface FooterProps {
 export default function Footer({ isUser = false }: FooterProps) {
 
     // Configuración de colores sincronizada
-    const bgColor = isUser ? "bg-[var(--color-primary-700)]" : "bg-[var(--color-auxiliary-700)]";
-    const textColor = isUser ? "text-white" : "text-black";
-    const logoSrc = isUser ? "/img/white-logo.png" : "/img/black-logo.png";
+    const bgColor = isUser ? "bg-[var(--color-auxiliary-700)]" : "bg-[var(--color-primary-700)]";
+    const textColor = isUser ? "text-black" : "text-white";
+    const logoSrc = isUser ? "/img/black-logo.png" : "/img/white-logo.png";
 
     return (
         <footer className={`${bgColor} ${textColor} px-12 py-10 flex flex-col md:flex-row justify-between items-center md:items-start gap-8 font-[var(--font-body)] transition-colors duration-300`}>
