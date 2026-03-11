@@ -129,7 +129,7 @@ export default function SignUpForm() {
             email: validateVestoField("email", formData.email) as string,
             password: validateVestoField("password", formData.password) as string,
             verifPassword: validateVestoField("verifPassword", formData.verifPassword, formData.password) as string,
-            acceptTerms: formData.acceptTerms ? "" : "Debes aceptar los términos y condiciones"
+            acceptTerms: formData.acceptTerms ? "" : t('form.accept_terms_error')
         };
         setErrors(newErrors);
 

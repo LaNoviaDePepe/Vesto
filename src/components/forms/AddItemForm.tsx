@@ -190,7 +190,7 @@ export default function AddItemForm() {
                     />
 
                     <div>
-                        <label className="block mb-2 text-sm font-normal text-gray-900">Tipo de Prenda</label>
+                        <label className="block mb-2 text-sm font-normal text-gray-900">{t('clothing.type')}</label>
                         <Select
                             name="tipoPrenda"
                             value={formData.tipoPrenda}
@@ -203,7 +203,7 @@ export default function AddItemForm() {
                     </div>
 
                     <div>
-                        <label className="block mb-2 text-sm font-normal text-gray-700">Color</label>
+                        <label className="block mb-2 text-sm font-normal text-gray-700">{t('clothing.color')}</label>
                         <Select
                             name="color"
                             value={formData.color}
@@ -216,7 +216,7 @@ export default function AddItemForm() {
                     </div>
 
                     <div>
-                        <label className="block mb-2 text-sm font-normal text-gray-700">Temporada</label>
+                        <label className="block mb-2 text-sm font-normal text-gray-700">{t('clothing.season')}</label>
                         <Select
                             name="temporada"
                             value={formData.temporada}
@@ -243,7 +243,7 @@ export default function AddItemForm() {
                 <div className="flex flex-col items-center justify-center space-y-6">
                     <div className="w-full aspect-square max-w-90 rounded-2xl overflow-hidden border-2 border-dashed border-gray-300 bg-gray-50 flex items-center justify-center relative">
                         {preview ? (
-                            <img src={preview} alt="Vista previa" className="w-full h-full object-cover" />
+                            <img src={preview} alt={t('clothing.preview')} className="w-full h-full object-cover" />
                         ) : (
                             <div className="text-center p-6">
                                 {/* Icono de "No image available" con gradiente naranja */}

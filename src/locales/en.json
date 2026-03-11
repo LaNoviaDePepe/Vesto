@@ -9,7 +9,8 @@
     "save_changes": "Save changes",
     "logout": "Log out",
     "signing_up": "Signing up...",
-    "signup": "Sign up"
+    "signup": "Sign up",
+    "delete": "Delete"
   },
   "navbar": {
     "button": {
@@ -201,5 +202,11 @@
     "avatar_alt": "Avatar",
     "user_management_title": "User Management",
     "dashboard_title": "Dashboard"
+  },
+  "modal": {
+    "delete_item_title": "Delete item?",
+    "delete_item_msg": "This action cannot be undone and the item will disappear from your closet.",
+    "delete_outfit_title": "Delete this outfit?",
+    "delete_outfit_msg": "Are you sure? The combination will be deleted, but the individual items will remain in your closet."
   }
 }

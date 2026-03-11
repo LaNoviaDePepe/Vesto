@@ -11,7 +11,7 @@ export default function OutfitsPage() {
   const [conjuntos, setConjuntos] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [outfitToDelete, setOutfitToDelete] = useState<{id: number, url: string} | null>(null);
+  const [outfitToDelete, setOutfitToDelete] = useState<{ id: number, url: string } | null>(null);
 
   const outfitRepository = new SupabaseOutfitRepository();
   const { sessionUser } = useAuthStore();
@@ -68,7 +68,7 @@ export default function OutfitsPage() {
   // Función para eliminar conjunto con borrado optimista (visualmente es automático, asumimos que será exitoso, pero podemos revertirlo) y toast
   const handleDeleteConjunto = async () => {
     if (!outfitToDelete) return;
-    
+
     const { id, url } = outfitToDelete;
     setIsModalOpen(false);
 
@@ -109,12 +109,12 @@ export default function OutfitsPage() {
       )}
 
       {/* Modal de confirmación de borrado de conjunto */}
-      <Modal 
+      <Modal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onConfirm={handleDeleteConjunto}
-        title="¿Borrar este conjunto?"
-        message="¿Estás seguro? Se eliminará la combinación, pero las prendas individuales seguirán en tu armario."
+        title={t('modal.delete_outfit_title')}
+        message={t('modal.delete_outfit_msg')}
       />
     </div>
   );

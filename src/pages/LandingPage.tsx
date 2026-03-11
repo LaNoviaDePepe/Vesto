@@ -74,12 +74,12 @@ export default function LandingPage() {
 
                         {isAuthenticated ? (
                             <Link to="/closet">
-                                <Button variant='primary'>Ir a mi armario</Button>
+                                <Button variant='primary'>{t('landing.hero.goToCloset')}</Button>
                             </Link>
                         ) : (
                             <div className="flex gap-4 mt-6 w-auto">
-                                <Link to="/login"><Button variant='primary'>Iniciar sesión</Button></Link>
-                                <Link to="/signup"><Button variant='auxiliar'>Registro</Button></Link>
+                                <Link to="/login"><Button variant='primary'>{t('landing.hero.login')}</Button></Link>
+                                <Link to="/signup"><Button variant='auxiliar'>{t('landing.hero.signup')}</Button></Link>
                             </div>
                         )}
 

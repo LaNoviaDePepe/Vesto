@@ -175,8 +175,8 @@ export default function ClosetPage() {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onConfirm={handleDeletePrenda}
-        title="¿Eliminar prenda?"
-        message="Esta acción no se puede deshacer y la prenda desaparecerá de tu armario."
+        title={t('modal.delete_item_title')}
+        message={t('modal.delete_item_msg')}
       />
 
     </>

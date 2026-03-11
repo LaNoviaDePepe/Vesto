@@ -160,7 +160,7 @@ export default function ProfileForm() {
         // Validaciones (Sin validación de email)
         const newErrors = {
             nombreApellidos: validateVestoField("nombreApellidos", cleanNombre),
-            currentPassword: (formData.newPassword && !formData.currentPassword) ? "Requerida" : "",
+            currentPassword: (formData.newPassword && !formData.currentPassword) ? t('form.required_to_change_password') : "",
             newPassword: formData.newPassword ? validateVestoField("password", formData.newPassword) : "",
             email: "",
             avatar: ""

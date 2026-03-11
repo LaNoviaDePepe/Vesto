@@ -175,7 +175,7 @@ export default function LoginForm() {
                     onChange={handleChange}
                     onBlur={handleBlur}
                     error={errors.email}
-                    placeholder="ejemplo@correo.com"
+                    placeholder={t('form.email_placeholder')}
                 />
 
                 <div className="flex flex-col">
