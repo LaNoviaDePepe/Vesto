@@ -6,15 +6,34 @@ import { useAuthStore } from '../../stores/authStore';
 import toast from 'react-hot-toast';
 import { LogOut } from 'lucide-react';
 
+import { motion } from 'framer-motion'; // 1. Importamos motion
+
 interface UserHeaderProps {
-    children?: React.ReactNode; // Para los dos botones adicionales del admin
+    children?: React.ReactNode;
 } 
 
 export default function UserHeader({ children }: UserHeaderProps) {
-        const sessionUser = useAuthStore((state) => state.sessionUser);
-        const clearSession = useAuthStore((state) => state.clearSession);
+    const sessionUser = useAuthStore((state) => state.sessionUser);
+    const clearSession = useAuthStore((state) => state.clearSession);
 
-    // Constante que almacena los links para los usuarios registrados
+    const userRepository = createUserRepository();
+    const navigate = useNavigate();
+
+    const handleLogout = async () => {
+        try {
+            const result = await userRepository.logout();
+            if (result.error) {
+                toast.error('Error al cerrar sesión');
+                return;
+            }
+            clearSession();
+            navigate('/');
+        } catch (error) {
+            toast.error('Ocurrió un error inesperado');
+            console.log(error);
+        }
+    }
+
     const userLinks = [
         { label: 'Mi armario', path: '/closet' },
         { label: 'Mis conjuntos', path: '/outfits' },
@@ -22,35 +41,10 @@ export default function UserHeader({ children }: UserHeaderProps) {
         { label: 'Crear conjunto', path: '/outfitCreator' },
     ];
 
-
-    const userRepository = createUserRepository();
-    const navigate = useNavigate();
-
-    const handleLogout = async () => {
-
-        try {
-            const result = await userRepository.logout();
-            if (result.error) {
-                toast.error('Error al cerrar sesión');
-
-                return;
-            }
-            // Limpiamos sesión usando la función del store y redirigimos a otra página
-            clearSession();
-            navigate('/');
-
-        } catch (error) {
-            toast.error('Ocurrió un error inesperado');
-            console.log(error);
-        }
-    }
-
-        // Determinamos qué imagen mostrar: la de Supabase o la de por defecto
     const avatarImg = sessionUser?.profile?.url_avatar ? sessionUser.profile.url_avatar : "/img/Default-Profile-Picture.jfif";
 
     return (
         <header className="bg-primary-700">
-
             <div className="logo">
                 <Link to="/">
                     <img src="/img/white-logo.png" alt="Logo de Vesto" className="h-15 w-auto" />
@@ -60,12 +54,8 @@ export default function UserHeader({ children }: UserHeaderProps) {
                 <Navbar links={userLinks} isUser />
 
                 <div className="flex items-center gap-3">
-                    {/* Aquí es donde inyectamos los "dos botones" del admin.
-                        Aparecerán a la izquierda de la foto de perfil.
-                    */}
                     {children}
                     <Link to="/profile" className="block h-15 w-15" title="Perfil de usuario">
-                        {/* Usamos la variable avatarImg en el src */}
                         <img
                             src={avatarImg}
                             alt="Perfil de usuario"
@@ -73,8 +63,24 @@ export default function UserHeader({ children }: UserHeaderProps) {
                         />
                     </Link>
 
-                    <Button variant='icon' onClick={handleLogout} className='min-w-0' title="Cerrar sesión">
-                        <LogOut size={20} strokeWidth={2.5} />
+                    {/* 2. Añadimos 'group' a la clase para que el hover del botón afecte al hijo */}
+                    <Button 
+                        variant='icon' 
+                        onClick={handleLogout} 
+                        className='min-w-0 group' 
+                        title="Cerrar sesión"
+                    >
+                        {/* 3. Envolvemos el icono de Lucide en un motion.div */}
+                        <motion.div
+                            variants={{
+                                initial: { x: 0 },
+                                animate: { x: [0, 3, 0] } // Pequeño rebote hacia la derecha
+                            }}
+                            whileHover="animate"
+                            transition={{ duration: 0.4, ease: "easeInOut" }}
+                        >
+                            <LogOut size={20} strokeWidth={2.5} />
+                        </motion.div>
                     </Button>                       
                 </div>
             </div>
