@@ -132,6 +132,6 @@
 
   /* Esta es la clase para el grid 2x2 en < 400px */
   .nav-links-guest-grid {
-    @apply max-[400px]: !grid max-[400px]: !grid-cols-2 max-[400px]:gap-4 max-[400px]:w-full max-[400px]:justify-items-center max-[400px]:text-center;
+    @apply max-[400px]:!grid max-[400px]:!grid-cols-2 max-[400px]:gap-4 max-[400px]:w-full max-[400px]:justify-items-center max-[400px]:text-center;
   }
 }
