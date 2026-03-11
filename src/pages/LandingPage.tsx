@@ -61,11 +61,8 @@ export default function LandingPage() {
 
                         {/* TEXTO */}
                         <div className="flex flex-col gap-3">
-                            <h1 className="font-(--font-display) text-3xl md:text-4xl lg:text-5xl font-bold text-black leading-tight">
-                                Viste mejor en segundos.
-                            </h1>
-                            <p className="font-(--font-display) text-base md:text-lg lg:text-xl text-black max-w-md">
-                                Organiza tu armario y crea outfits personalizados sin perder tiempo cada mañana.
+                            <p className="font-(--font-display) text-4xl text-black max-w-xl">
+                                {t('landing.hero.description')}
                             </p>
                         </div>
 
