@@ -3,13 +3,21 @@ import { useTranslation } from 'react-i18next';
 import { Languages, Check } from 'lucide-react';
 import Button from './Button';
 
+// Definimos los idiomas disponibles en un array para mapearlos más limpio
+const AVAILABLE_LANGUAGES = [
+  { code: 'es', label: 'Español' },
+  { code: 'en', label: 'English' },
+  { code: 'it', label: 'Italiano' },
+  { code: 'ja', label: '日本語' }
+];
+
 export const LanguageSwitcher = () => {
   const { i18n } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
 
   const changeLanguage = (lng: string) => {
     i18n.changeLanguage(lng); // Cambia el idioma en i18next
-    setIsOpen(false);          // Cierra el menú
+    setIsOpen(false);         // Cierra el menú
   };
 
   // Detecta si es el idioma actual para marcarlo en negrita/color
@@ -31,27 +39,19 @@ export const LanguageSwitcher = () => {
       {isOpen && (
         <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-100 py-1 z-50">
           
-          {/* Opción: Español */}
-          <button
-            onClick={() => changeLanguage('es')}
-            className={`w-full text-left px-4 py-2 text-sm flex items-center justify-between hover:bg-gray-50
-              ${currentLang === 'es' ? 'text-blue-600 font-medium' : 'text-gray-700'}
-            `}
-          >
-            <span>Español</span>
-            {currentLang === 'es' && <Check size={16} />}
-          </button>
-
-          {/* Opción: Inglés */}
-          <button
-            onClick={() => changeLanguage('en')}
-            className={`w-full text-left px-4 py-2 text-sm flex items-center justify-between hover:bg-gray-50
-              ${currentLang === 'en' ? 'text-blue-600 font-medium' : 'text-gray-700'}
-            `}
-          >
-            <span>English</span>
-            {currentLang === 'en' && <Check size={16} />}
-          </button>
+          {/* Mapeamos el array para generar las opciones automáticamente */}
+          {AVAILABLE_LANGUAGES.map((lang) => (
+            <button
+              key={lang.code}
+              onClick={() => changeLanguage(lang.code)}
+              className={`w-full text-left px-4 py-2 text-sm flex items-center justify-between hover:bg-gray-50
+                ${currentLang === lang.code ? 'text-blue-600 font-medium' : 'text-gray-700'}
+              `}
+            >
+              <span>{lang.label}</span>
+              {currentLang === lang.code && <Check size={16} />}
+            </button>
+          ))}
 
         </div>
       )}

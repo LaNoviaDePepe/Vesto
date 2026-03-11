@@ -1,0 +1,259 @@
+{
+    "welcome": "ようこそ {{user}} さん",
+    "actions": {
+        "save": "保存",
+        "cancel": "キャンセル",
+        "saving": "保存中...",
+        "access": "アクセス",
+        "loading": "読み込み中...",
+        "save_changes": "変更を保存",
+        "logout": "ログアウト",
+        "signing_up": "登録中...",
+        "signup": "登録",
+        "delete": "削除"
+    },
+    "navbar": {
+        "button": {
+            "login": "ログイン",
+            "signup": "登録"
+        },
+        "links": {
+            "home": "ホーム",
+            "behaviour": "使い方",
+            "reviews": "レビュー",
+            "team": "チーム",
+            "closet": "マイクローゼット",
+            "outfits": "マイコーディネート",
+            "upload_clothing": "服を登録",
+            "create_outfit": "コーデを作成"
+        }
+    },
+    "error": {
+        "random_error": "予期せぬエラーが発生しました",
+        "close_session": "ログアウトエラー",
+        "saving": "保存エラー",
+        "signup": "登録エラー",
+        "login": "ログインエラー",
+        "recovery_link": "リカバリーリンク送信エラー",
+        "category_loading_error": "カテゴリー読み込みエラー"
+    },
+    "message": {
+        "2MB": "画像は2MB以下にしてください",
+        "profile_updated": "プロフィールを更新しました",
+        "recovery_link_sent": "リンクを送信しました！メールを確認してください ({{email}})",
+        "welcome_login": "ようこそ！",
+        "user_registered": "ユーザー登録とログインが完了しました"
+    },
+    "footer": {
+        "feed": "",
+        "products": "製品",
+        "discover": "見つける",
+        "help": "ヘルプ",
+        "terms": "利用規約",
+        "copyright_policy": "著作権ポリシー",
+        "download": "ダウンロード"
+    },
+    "filter": {
+        "choose_category": "カテゴリーを選択",
+        "choose_season": "季節を選択",
+        "choose_color": "色を選択",
+        "remove": "クリア",
+        "no_results": "条件に一致する服が見つかりません",
+        "clear_filters": "フィルターをクリア",
+        "favorites": "お気に入り"
+    },
+    "clothing": {
+        "must_upload_img": "画像をアップロードしてください",
+        "must_login": "服を登録するにはログインが必要です",
+        "error_upload_clothing": "アップロードエラー:",
+        "ok_upload_clothing": "服が正常に登録されました",
+        "delete_confirm": "この服をクローゼットから削除してもよろしいですか？",
+        "delete_error_in_outfit": "この服はコーディネートに含まれているため削除できません。",
+        "delete_error": "服をクローゼットから削除できませんでした。",
+        "delete_success": "服をクローゼットから削除しました",
+        "add_edit_title": "服の登録 / 編集",
+        "name": "服の名前",
+        "type": "種類",
+        "select_type": "種類を選択...",
+        "color": "色",
+        "select_color": "色を選択...",
+        "season": "季節",
+        "select_season": "季節を選択...",
+        "preview": "プレビュー",
+        "no_image": "画像がありません",
+        "error_unexpected_upload": "服の登録中に予期せぬエラーが発生しました",
+        "delete_item_title": "服を削除"
+    },
+    "form": {
+        "password": "パスワード",
+        "current_password": "現在のパスワード",
+        "new_password": "新しいパスワード",
+        "required_to_change_password": "パスワード変更時に必要です",
+        "write_new_password": "新しいパスワードを入力",
+        "remember_me": "ログイン状態を保持",
+        "name_surname": "氏名",
+        "user_profile": "ユーザープロフィール",
+        "signup_title": "新規登録",
+        "login_title": "ログイン",
+        "email_taken": "このメールアドレスは既に登録されています",
+        "accept_terms_error": "利用規約に同意する必要があります",
+        "repeat_password": "パスワード（確認用）",
+        "accept_terms": "利用規約に同意します",
+        "already_have_account": "すでにアカウントをお持ちですか？ ログインは",
+        "here": "こちら",
+        "email_required_recovery": "アカウントを復元するための有効なメールアドレスを入力してください",
+        "email_required": "メールアドレスは必須です",
+        "email_not_registered": "メールアドレスが登録されていません",
+        "email_not_registered_short": "未登録のメールアドレス",
+        "email_placeholder": "example@email.com",
+        "forgot_password": "パスワードをお忘れですか？"
+    },
+    "graph": {
+        "analysing_categories": "カテゴリーを分析中...",
+        "not_enought_clothing": "十分な服がまだありません。",
+        "clothing_distribution": "カテゴリー別分布",
+        "error_loading_categories": "カテゴリーデータの読み込みエラー",
+        "loading_items": "服のグラフを読み込み中...",
+        "items_history": "登録された服（履歴）",
+        "items_per_day": "日別の服の数",
+        "not_enought_items_data": "服のデータが不十分です。",
+        "error_loading_items": "服のデータの読み込みエラー",
+        "loading_logins": "アクセスグラフを読み込み中...",
+        "user_traffic": "ユーザートラフィック（ログイン数）",
+        "daily_logins": "日別ログイン数",
+        "not_enought_logins_data": "ログインデータが不十分です。",
+        "error_loading_logins": "ログインデータの読み込みエラー"
+    },
+    "landing": {
+        "hero": {
+            "description": "毎日の服選びに時間をかけすぎていませんか？Vestoならすぐに決められます。クローゼットを整理し、数秒であなただけのコーディネートを作成できるアプリです。",
+            "goToCloset": "マイクローゼットへ",
+            "login": "ログイン",
+            "signup": "新規登録"
+        },
+        "howItWorks": {
+            "title": "Vestoの仕組みは？",
+            "description": "服の写真をアップロードしたり、オリジナルのコーディネートを作成したり、お気に入りに保存したり。直感的で使いやすいデザインで、毎日のコーデ選びが早く、楽しく、簡単になります。",
+            "demoTitle": "Vesto デモ",
+            "demoSubtitle": "アプリの動画は近日公開予定です..."
+        },
+        "reviews": {
+            "title": "5万人以上の満足したユーザー",
+            "angel": "まさに芸術作品。このアプリにはManuelのこだわりが感じられます。服を選ぶのが苦痛から喜びに変わりました。Vesto、ありがとう！",
+            "jesus": "使い始めてから毎日が楽しいです。Vestoのおかげで思いもよらなかった組み合わせを発見し、自分のスタイルに自信が持てるようになりました。100%おすすめです！",
+            "paco": "君の瞳はまるでフライパンみたいだ、見つめられると俺の卵が焼かれちゃうよ。君は最高に魅力的だから、服ごと食べちゃいたい...たとえ1ヶ月間布のフンをすることになってもね。",
+            "elias": "これほど機能的で充実したアプリは見たことがありません。Vestoは私の服の選び方に革命を起こしました！コーディネートを作成する機能が大好きで、まるでポケットの中に専属スタイリストがいるようです。絶対おすすめ！"
+        },
+        "team": {
+            "title": "私たちのチーム",
+            "subtitle": "Vestoの真のクリエイターたち。",
+            "rodas": "絶対的エース（GOAT）。説明不要。",
+            "pepe": "豊富な経験をもたらす、森よりも年長者。",
+            "gloria": "絶対的歌姫。シックなタッチを加えます。",
+            "miguel": "フィールドの内外で仕事に取り憑かれています。",
+            "lucia": "すべてについて知りすぎているが、口には出さない。偽りの謙虚さ？"
+        }
+    },
+    "outfit": {
+        "name_required": "コーディネートの名前を入力してください。",
+        "min_one_item": "少なくとも1つのアイテムを選択する必要があります。",
+        "duplicate_name": "「{{name}}」という名前のコーディネートはすでに存在します。別の名前を選択してください。",
+        "save_error": "コーディネートの保存中にエラーが発生しました。",
+        "save_success": "コーディネート「{{name}}」を保存しました！",
+        "name_placeholder": "コーディネート名",
+        "desc_placeholder": "コーディネートの説明、シーンなど...",
+        "head": "頭",
+        "top": "トップス",
+        "accessory": "アクセサリー",
+        "bottom": "ボトムス",
+        "shoes": "靴",
+        "upload_photo": "コーディネートの写真をアップロード",
+        "loading_outfits": "コーディネートを読み込み中...",
+        "delete_confirm": "このコーディネートを削除してもよろしいですか？",
+        "delete_error": "コーディネートの削除中に問題が発生しました",
+        "delete_success": "コーディネートを正常に削除しました",
+        "no_outfits": "まだコーディネートを作成していません",
+        "delete_outfit_title": "コーディネートを削除",
+        "mark_favorite_title": "お気に入りに登録"
+    },
+    "profile": {
+        "walking_man_alt": "歩く人のイラスト"
+    },
+    "reset_password": {
+        "passwords_mismatch": "パスワードが一致しません",
+        "update_error": "更新エラー: ",
+        "update_success": "パスワードが正常に更新されました！",
+        "title": "新しいパスワード",
+        "new_password_label": "新しいパスワードを入力",
+        "confirm_password_label": "新しいパスワードを確認",
+        "changing": "変更中...",
+        "update_btn": "パスワードを更新"
+    },
+    "admin": {
+        "stats_title": "統計ダッシュボード",
+        "stats_subtitle": "リアルタイムのアプリケーション使用状況分析。",
+        "users_title": "ユーザーリスト",
+        "users_loading": "ユーザーを読み込み中...",
+        "users_error_toast": "エラーが発生しました。ユーザーリストを読み込めませんでした。後でもう一度お試しください。",
+        "users_error_msg": "ユーザー情報を読み込めませんでした。",
+        "role": "権限: ",
+        "default_role": "ユーザー",
+        "no_users": "登録されているユーザーはいません。",
+        "avatar_alt": "アバター",
+        "user_management_title": "ユーザー管理",
+        "dashboard_title": "ダッシュボード"
+    },
+    "modal": {
+        "delete_item_title": "服を削除しますか？",
+        "delete_item_msg": "この操作は元に戻せません。服はクローゼットから消去されます。",
+        "delete_outfit_title": "このコーディネートを削除しますか？",
+        "delete_outfit_msg": "本当によろしいですか？組み合わせは削除されますが、個々の服はクローゼットに残ります。"
+    },
+    "constants": {
+        "categories": {
+            "head": "頭",
+            "top": "トップス",
+            "bottom": "ボトムス",
+            "accessory": "アクセサリー",
+            "shoes": "靴"
+        },
+        "colors": {
+            "black": "黒",
+            "white": "白",
+            "gray": "グレー",
+            "red": "赤",
+            "blue": "青",
+            "yellow": "黄",
+            "green": "緑",
+            "orange": "オレンジ",
+            "purple": "紫",
+            "pink": "ピンク",
+            "brown": "茶色",
+            "light_blue": "水色",
+            "turquoise": "ターコイズ",
+            "beige": "ベージュ",
+            "gold": "ゴールド",
+            "silver": "シルバー"
+        },
+        "seasons": {
+            "fall": "秋",
+            "winter": "冬",
+            "spring": "春",
+            "summer": "夏",
+            "all": "すべて"
+        }
+    },
+    "validation": {
+        "name_required": "名前は必須です",
+        "only_letters": "文字とスペースのみ使用可能です",
+        "email_required": "メールアドレスは必須です",
+        "invalid_email": "無効なメール形式です",
+        "user_required": "ユーザー名は必須です",
+        "min_3_chars": "最小3文字",
+        "password_required": "パスワードは必須です",
+        "min_6_chars": "最小6文字",
+        "confirm_password_required": "パスワードを確認する必要があります",
+        "passwords_mismatch": "パスワードが一致しません",
+        "select_option": "オプションを選択する必要があります"
+    }
+}

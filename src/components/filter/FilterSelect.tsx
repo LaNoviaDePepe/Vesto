@@ -44,7 +44,7 @@ export default function FilterSelect({ name, options, placeholder, disabled, val
 
                 {options.map((option) => (
                     <option key={option.value} value={option.value} className="bg-primary-50 text-black">
-                        {option.label}
+                        {t(option.label as any)}
                     </option>
                 ))}
 
