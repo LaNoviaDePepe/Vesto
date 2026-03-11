@@ -30,7 +30,7 @@
     "saving": "Error al guardar",
     "category_loading_error": "Error al cargar datos de categorías"
   },
-  "message":{
+  "message": {
     "2MB": "La imagen debe pesar menos de 2MB",
     "profile_updated": "Perfil actualizado"
   },
@@ -64,9 +64,39 @@
     "remember_me": "Recuérdame",
     "name_surname": "Nombre y Apellidos"
   },
-  "graph":{
+  "graph": {
     "analysing_categories": "Analizando categorías...",
     "not_enought_clothing": "Aún no hay prendas suficientes.",
     "clothing_distribution": "Distribución por Categoría"
+  },
+  "landing": {
+    "hero": {
+      "description": "¿Cansado de perder demasiado tiempo eligiendo qué ponerte cada día? Eligelo rápido con Vesto, la app que te ayuda a organizar tu armario y crear outfits personalizados en segundos.",
+      "goToCloset": "Ir a mi armario",
+      "login": "Iniciar sesión",
+      "signup": "Registro"
+    },
+    "howItWorks": {
+      "title": "¿Cómo funciona Vesto?",
+      "description": "Tenemos un diseño intuitivo y fácil de usar, con funciones como subir fotos de tu ropa, crear outfits personalizados, guardar en favoritos... Todo para que elegir tu look diario sea rápido, divertido y sin complicaciones.",
+      "demoTitle": "Demo de Vesto",
+      "demoSubtitle": "Próximamente en el video de la App..."
+    },
+    "reviews": {
+      "title": "+50K usuarios satisfechos",
+      "angel": "Obra de arte se nota la mano de Manuel en esta app, me ha cambiado la vida, ahora elegir qué ponerme es un placer y no una tortura. ¡Gracias Vesto!",
+      "jesus": "Desde que la uso soy más feliz, gracias a Vesto he descubierto combinaciones de ropa que no se me habrían ocurrido, y ahora me siento más seguro con mi estilo. ¡Recomendada al 100%!",
+      "paco": "Tus ojos son como dos sartenes, cuando los veo se me fri­en los huevos. Estás tan buena que te comí­a con ropa y todo... aunque pasara un mes cagando trapos.",
+      "elias": "No había visto una app tan completa y funcional. ¡Vesto ha revolucionado mi forma de elegir la ropa! Me encanta la función de crear outfits personalizados, es como tener un estilista personal en el bolsillo. ¡Muy recomendable!"
+    },
+    "team": {
+      "title": "Nuestro equipo",
+      "subtitle": "Los verdaderos creadores de Vesto.",
+      "rodas": "Cabra absoluta, no necesita presentación.",
+      "pepe": "Aporta mucha veteranía, tiene más años que un bosque.",
+      "gloria": "Diva absoluta, le da el toque chick.",
+      "miguel": "Obsesionado con el trabajo, dentro y fuera del campo.",
+      "lucia": "Sabe demasiado de todo, pero no lo dice, ¿falsa humilde?."
+    }
   }
 }
