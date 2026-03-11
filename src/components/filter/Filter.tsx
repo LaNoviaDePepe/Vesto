@@ -1,5 +1,5 @@
 import FilterSelect from "./FilterSelect";
-import * as CONSTANTES from '../../utils/constants'; // Ajusta la ruta según tu estructura
+import * as CONSTANTES from '../../utils/constants';
 import { useTranslation } from "react-i18next";
 
 export interface FilterState {
