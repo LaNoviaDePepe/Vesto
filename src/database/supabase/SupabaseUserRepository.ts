@@ -24,13 +24,14 @@ export class SupabaseUserRepository implements UserRepository {
             if (authError) return { error: authError };
             if (!authData.user) return { error: { message: "No se creó el usuario en Auth" } };
 
+            const userId = authData.user.id;
+
             // Insertar en tu tabla 'perfiles' 
             const { data: profileData, error: profileError } = await supabase
                 .from('perfiles')
                 .insert({
                     id: authData.user.id, // El ID viene de Auth
                     nombre_apellidos: data.nombre_apellidos,
-                    rol: 'user',
                 })
                 .select()
                 .single();
@@ -40,6 +41,17 @@ export class SupabaseUserRepository implements UserRepository {
                 // para no dejar datos corruptos, o al menos loguearlo.
                 console.error("Error creando perfil:", profileError);
                 return { error: profileError };
+            }
+
+            const { error: roleError } = await supabase
+                .from('user_roles')
+                .insert({
+                    user_id: userId,
+                    role: 'user' // Aquí es donde debe ir
+                });
+
+            if (roleError) {
+                console.error("Error asignando rol:", roleError);
             }
 
             const sessionUser: SessionUser = {
