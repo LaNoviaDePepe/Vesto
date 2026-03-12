@@ -50,7 +50,7 @@
     "discover": "Descubrir",
     "help": "Ayuda",
     "terms": "Términos",
-    "copyright_policy": "Políticade copyright",
+    "copyright_policy": "Política de copyright",
     "download": "Descargar"
   },
   "filter": {
@@ -71,7 +71,7 @@
     "delete_error_in_outfit": "Esta prenda está en un conjunto y no puede eliminarse.",
     "delete_error": "No se pudo eliminar la prenda del armario.",
     "delete_success": "Prenda eliminada de tu armario",
-    "add_edit_title": "Subir prenda/Modificar prenda",
+    "add_edit_title": "Subir prenda / Modificar prenda",
     "name": "Nombre de la prenda",
     "type": "Tipo de Prenda",
     "select_type": "Selecciona tipo...",
@@ -126,7 +126,8 @@
   },
   "landing": {
     "hero": {
-      "description": "¿Cansado de perder demasiado tiempo eligiendo qué ponerte cada día? Eligelo rápido con Vesto, la app que te ayuda a organizar tu armario y crear outfits personalizados en segundos.",
+      "title":"Viste mejor en segundos",
+      "description": "Organiza tu armario y crea outfits personalizados sin perder tiempo cada mañana.",
       "goToCloset": "Ir a mi armario",
       "login": "Iniciar sesión",
       "signup": "Registro"

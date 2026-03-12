@@ -90,10 +90,10 @@ export default function OutfitCreatorPage() {
   };
 
   return (
-    <div className="flex flex-col lg:flex-row h-[calc(100vh-80px)] overflow-hidden bg-primary-300 ">
+    <div className="flex flex-col lg:flex-row min-h-[calc(100vh-80px)] bg-primary-300">
 
       {/* COLUMNA IZQUIERDA: ARMARIO */}
-      <div className="relative flex-1 flex flex-col overflow-hidden border-r border-gray-100">
+      <div className="lg:w-1/2 flex flex-col overflow-hidden border-b border-gray-100 lg:border-b-0 lg:border-r lg:h-full">
         <Filter
           width={100}
           filters={filters}
@@ -138,10 +138,12 @@ export default function OutfitCreatorPage() {
         </div>
       </div>
 
-       {/* COLUMNA DERECHA: FORMULARIO */}
-      <AddOutfitForm
-        outfit={outfit}
-        onResetOutfit={resetOutfit} />
+      {/* COLUMNA DERECHA: FORMULARIO */}
+      <div className="lg:w-1/2 flex-1 overflow-y-auto p-4 lg:p-6">
+        <AddOutfitForm
+          outfit={outfit}
+          onResetOutfit={resetOutfit} />
+      </div>
     </div>
   );
 }

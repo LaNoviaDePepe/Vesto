@@ -26,8 +26,9 @@ export default function Filter({ width, filters, onFilterChange }: FilterProps) 
     };
 
     return (
-        <div className="bg-primary-50 flex justify-evenly items-center py-4 fixed top-0 z-40 mt-20"
-            style={{ width: `${width}%` }}>
+        <div className="bg-primary-50 fixed top-20 left-0 right-0 z-40 px-2 py-3 sm:px-4"
+            style={{ width: width ? `${width}%` : '100%', maxWidth: '100%' }}>
+            <div className="mx-auto flex flex-wrap items-center justify-center gap-2 sm:justify-evenly sm:flex-nowrap" style={{ maxWidth: `${width}%` }}>
 
             {/* Recibe FilterSelects que se han formado en FilterSelect.tsx, los cuales
             inlcuyen eventos para saber qué filtros se han seleccionado  */}
@@ -71,6 +72,7 @@ export default function Filter({ width, filters, onFilterChange }: FilterProps) 
                 >
                     {t('filter.favorites')}
                 </label>
+            </div>
             </div>
         </div>
     )

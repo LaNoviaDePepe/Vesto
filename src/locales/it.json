@@ -71,7 +71,7 @@
         "delete_error_in_outfit": "Questo capo fa parte di un outfit e non può essere eliminato.",
         "delete_error": "Impossibile eliminare il capo dall'armadio.",
         "delete_success": "Capo eliminato dal tuo armadio",
-        "add_edit_title": "Carica capo/Modifica capo",
+        "add_edit_title": "Carica capo / Modifica capo",
         "name": "Nome del capo",
         "type": "Tipo di capo",
         "select_type": "Seleziona tipo...",
@@ -126,7 +126,8 @@
     },
     "landing": {
         "hero": {
-            "description": "Stanco di perdere troppo tempo a scegliere cosa indossare ogni giorno? Scegli velocemente con Vesto, l'app che ti aiuta a organizzare il tuo armadio e creare outfit personalizzati in pochi secondi.",
+            "title": "Vestiti meglio in pochi secondi",
+            "description": "Organizza il tuo guardaroba e crea outfit personalizzati senza perdere tempo ogni mattina.",
             "goToCloset": "Vai al mio armadio",
             "login": "Accedi",
             "signup": "Registrati"
