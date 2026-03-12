@@ -100,6 +100,7 @@
         "repeat_password": "パスワード（確認用）",
         "accept_terms": "利用規約に同意します",
         "already_have_account": "すでにアカウントをお持ちですか？ ログインは",
+        "does_not_have_account": "まだ会員ではありませんか？アカウントを作成",
         "here": "こちら",
         "email_required_recovery": "アカウントを復元するための有効なメールアドレスを入力してください",
         "email_required": "メールアドレスは必須です",

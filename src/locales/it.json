@@ -100,6 +100,7 @@
         "repeat_password": "Ripeti la password",
         "accept_terms": "Accetto i termini e le condizioni",
         "already_have_account": "Hai già un account? Accedi",
+        "does_not_have_account": "Non sei ancora un membro? Crea un account",
         "here": "qui",
         "email_required_recovery": "Inserisci un'email valida per recuperare il tuo account",
         "email_required": "Email richiesta",
