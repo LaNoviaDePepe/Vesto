@@ -126,7 +126,8 @@
   },
   "landing": {
     "hero": {
-      "description": "¿Cansado de perder demasiado tiempo eligiendo qué ponerte cada día? Eligelo rápido con Vesto, la app que te ayuda a organizar tu armario y crear outfits personalizados en segundos.",
+      "title":"Viste mejor en segundos",
+      "description": "Organiza tu armario y crea outfits personalizados sin perder tiempo cada mañana.",
       "goToCloset": "Ir a mi armario",
       "login": "Iniciar sesión",
       "signup": "Registro"

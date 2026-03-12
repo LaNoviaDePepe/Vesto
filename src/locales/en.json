@@ -126,7 +126,8 @@
   },
   "landing": {
     "hero": {
-      "description": "Tired of wasting too much time choosing what to wear every day? Choose it quickly with Vesto, the app that helps you organize your closet and create personalized outfits in seconds.",
+      "title": "Dress better in seconds",
+      "description": "Organize your wardrobe and create personalized outfits without wasting time every morning.",
       "goToCloset": "Go to my closet",
       "login": "Login",
       "signup": "Sign up"
