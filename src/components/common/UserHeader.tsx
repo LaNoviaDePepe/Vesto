@@ -98,7 +98,7 @@ export default function UserHeader({ children }: UserHeaderProps) {
 
             {/* Botón de menú hamburguesa (solo visible en móvil) */}
             <button 
-                className="hamburger-btn text-white" 
+                className="hamburger-btn md:hidden text-white" 
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
                 aria-label="Alternar menú"
             >
@@ -113,6 +113,13 @@ export default function UserHeader({ children }: UserHeaderProps) {
 
             {/* Contenedor colapsable del menú y acciones */}
             <div className={`nav-menu bg-primary-700 ${isMenuOpen ? 'is-open' : ''}`}>
+                <button
+                    className="absolute top-4 left-4 text-white p-2 rounded-full hover:bg-white/20 focus:outline-none md:hidden"
+                    onClick={() => setIsMenuOpen(false)}
+                    aria-label="Cerrar menú"
+                >
+                    <X size={24} />
+                </button>
                 <div onClick={() => setIsMenuOpen(false)}>
                     <Navbar links={userLinks} isUser />
                 </div>
