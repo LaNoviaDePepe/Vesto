@@ -8,7 +8,9 @@ import { LogOut, Menu, X } from 'lucide-react';
 import { LanguageSwitcher } from './LanguageSwitcher';
 import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
+import { motion } from 'framer-motion';
 
+const MotionLogOut = motion(LogOut);
 /**
  * Propiedades esperadas para el componente UserHeader.
  *
@@ -136,9 +138,24 @@ export default function UserHeader({ children }: UserHeaderProps) {
                             className="h-full w-full object-cover shadow-sm rounded-full"
                         />
                     </Link>
-
-                    <Button variant='icon' onClick={handleLogout} className='min-w-0' title="{t('actions.logout')}">
-                        <LogOut size={20} strokeWidth={2.5} />
+                    <Button 
+                        variant='icon' 
+                        onClick={handleLogout} 
+                        className='min-w-0 group' 
+                        title={t('actions.logout')}
+                    >
+                        <MotionLogOut 
+                            size={20} 
+                            strokeWidth={2.5}
+                            initial={{ x: 0 }}
+                            variants={{
+                                animate: { 
+                                    x: [0, 3, 0], 
+                                    transition: { duration: 0.4 } 
+                                }
+                            }}
+                            whileHover="animate" 
+                        />
                     </Button> 
                     <LanguageSwitcher />                      
                 </div>
