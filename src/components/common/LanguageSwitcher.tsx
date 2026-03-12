@@ -57,10 +57,9 @@ export const LanguageSwitcher = () => {
         </div>
       )}
 
-      {/* (Opcional) Fondo transparente para cerrar al hacer clic fuera */}
       {isOpen && (
         <div
-          className="fixed inset-0 z-40"
+          className="fixed inset-0 z-40 bg-black/20 backdrop-blur-sm"
           onClick={() => setIsOpen(false)}
         />
       )}
