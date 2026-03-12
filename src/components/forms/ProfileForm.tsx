@@ -206,10 +206,36 @@ export default function ProfileForm() {
     };
 
     return (
-        <div className="py-8 px-8 max-w-5xl mx-auto bg-white border-2 border-auxiliary-700 rounded-2xl shadow-xl">
+        <div className="mb-10 py-8 px-8 max-w-5xl lg:mx-auto mx-5 bg-white border-2 border-auxiliary-700 rounded-2xl shadow-xl">
             <h3 className="text-3xl text-center mb-10 font-medium text-gray-800">{t('form.user_profile')}</h3>
 
             <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-12 gap-8">
+
+                <div className="md:col-span-5 flex flex-col items-center pt-4">
+                    <div className="w-64 h-64 rounded-full overflow-hidden border-4 border-white shadow-lg bg-gray-100 mb-6 relative group">
+                        {preview ? (
+                            <img src={preview} alt="Avatar" className="w-full h-full object-cover" />
+                        ) : (
+                            <div className="w-full h-full bg-[#2B526A] flex items-end justify-center">
+                                <svg className="w-48 h-48 text-[#EABF9F]" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+                                </svg>
+                            </div>
+                        )}
+                    </div>
+
+                    <div className="w-full max-w-xs">
+                        <input
+                            type="file"
+                            name="avatar"
+                            accept="image/*"
+                            onChange={handleFileChange}
+                            className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-2 file:border-gray-300 file:text-sm file:font-semibold file:bg-white file:text-gray-700 hover:file:bg-gray-50 cursor-pointer"
+                        />
+                        {errors.avatar && <p className="mt-2 text-sm text-red-600">{errors.avatar}</p>}
+                    </div>
+                </div>
+
                 <div className="md:col-span-7 space-y-6">
                     <Input
                         label={t('form.name_surname')}
@@ -260,7 +286,7 @@ export default function ProfileForm() {
                         </div>
                     </div>
 
-                    <div className="flex gap-4 pt-4 mt-8">
+                    <div className="flex flex-col md:flex-row gap-4 pt-4 mt-8">
                         <Button type="submit" variant="primary" disabled={loading}>
                             {loading ? t('actions.saving') : t('actions.save_changes')}
                         </Button>
@@ -274,30 +300,7 @@ export default function ProfileForm() {
                     </div>
                 </div>
 
-                <div className="md:col-span-5 flex flex-col items-center pt-4">
-                    <div className="w-64 h-64 rounded-full overflow-hidden border-4 border-white shadow-lg bg-gray-100 mb-6 relative group">
-                        {preview ? (
-                            <img src={preview} alt="Avatar" className="w-full h-full object-cover" />
-                        ) : (
-                            <div className="w-full h-full bg-[#2B526A] flex items-end justify-center">
-                                <svg className="w-48 h-48 text-[#EABF9F]" fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
-                                </svg>
-                            </div>
-                        )}
-                    </div>
-
-                    <div className="w-full max-w-xs">
-                        <input
-                            type="file"
-                            name="avatar"
-                            accept="image/*"
-                            onChange={handleFileChange}
-                            className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-2 file:border-gray-300 file:text-sm file:font-semibold file:bg-white file:text-gray-700 hover:file:bg-gray-50 cursor-pointer"
-                        />
-                        {errors.avatar && <p className="mt-2 text-sm text-red-600">{errors.avatar}</p>}
-                    </div>
-                </div>
+                
             </form>
         </div>
     );
