@@ -1,4 +1,5 @@
 import type { ChangeEvent, FocusEvent } from "react";
+import { useTranslation } from "react-i18next";
 
 type FilterOption = {
     value: string;
@@ -27,6 +28,7 @@ export default function Select({
     onBlur      
 }: SelectProps) {
 
+    const { t } = useTranslation();
     const baseClasses = 'w-full rounded-md border px-4 py-3 outline-none transition-colors appearance-none bg-white';
 
     const borderClasses = error
@@ -53,7 +55,7 @@ export default function Select({
                     </option>
                     {options.map((option) => (
                         <option key={option.value} value={option.value} className="text-gray-900">
-                            {option.label}
+                            {t(option.label as any)}
                         </option>
                     ))}
                 </select>

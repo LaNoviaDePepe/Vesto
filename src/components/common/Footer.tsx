@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
 // 1. Define la interfaz para las propiedades
@@ -8,10 +9,11 @@ interface FooterProps {
 // 2. Asigna la interfaz al componente
 export default function Footer({ isUser = false }: FooterProps) {
 
+    const { t } = useTranslation();
     // Configuración de colores sincronizada
-    const bgColor = isUser ? "bg-[var(--color-primary-700)]" : "bg-[var(--color-auxiliary-700)]";
-    const textColor = isUser ? "text-white" : "text-black";
-    const logoSrc = isUser ? "/img/white-logo.png" : "/img/black-logo.png";
+    const bgColor = isUser ? "bg-[var(--color-auxiliary-700)]" : "bg-[var(--color-primary-700)]";
+    const textColor = isUser ? "text-black" : "text-white";
+    const logoSrc = isUser ? "/img/black-logo.png" : "/img/white-logo.png";
 
     return (
         <footer className={`${bgColor} ${textColor} px-12 py-10 flex flex-col md:flex-row justify-between items-center md:items-start gap-8 font-[var(--font-body)] transition-colors duration-300`}>
@@ -29,21 +31,21 @@ export default function Footer({ isUser = false }: FooterProps) {
             {/* Links centrales basados en el diseño */}
             <div className="flex flex-1 justify-center gap-16 md:gap-24">
                 <ul className="flex flex-col gap-1 text-inherit">
-                    <li><Link to="/feed" className="hover:opacity-70 text-sm font-medium">Feed</Link></li>
-                    <li><Link to="/products" className="hover:opacity-70 text-sm font-medium">Products</Link></li>
-                    <li><Link to="/seccion1" className="hover:opacity-70 text-sm font-medium">Discover</Link></li>
+                    <li><Link to="/feed" className="hover:opacity-70 text-sm font-medium">{t('footer.feed')}</Link></li>
+                    <li><Link to="/products" className="hover:opacity-70 text-sm font-medium">{t('footer.products')}</Link></li>
+                    <li><Link to="/seccion1" className="hover:opacity-70 text-sm font-medium">{t('footer.discover')}</Link></li>
                 </ul>
 
                 <ul className="flex flex-col gap-1 text-inherit">
-                    <li><Link to="/help" className="hover:opacity-70 text-sm font-medium">Help</Link></li>
-                    <li><Link to="/terms" className="hover:opacity-70 text-sm font-medium">Terms</Link></li>
-                    <li><Link to="/copyright" className="hover:opacity-70 text-sm font-medium">Copyright Policy</Link></li>
+                    <li><Link to="/help" className="hover:opacity-70 text-sm font-medium">{t('footer.help')}</Link></li>
+                    <li><Link to="/terms" className="hover:opacity-70 text-sm font-medium">{t('footer.terms')}</Link></li>
+                    <li><Link to="/copyright" className="hover:opacity-70 text-sm font-medium">{t('footer.copyright_policy')}</Link></li>
                 </ul>
             </div>
 
             {/* Alineación a la derecha para "Download" */}
             <div className="flex flex-col items-center md:items-end gap-5 md:ml-auto pr-4">
-                <span className="text-sm font-bold tracking-wide">Download</span>
+                <span className="text-sm font-bold tracking-wide">{t('footer.download')}</span>
 
                 <div className="flex items-center gap-6">
                     {/* ICONO APPLE (SVG) */}

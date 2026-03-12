@@ -7,6 +7,7 @@ import { SupabaseItemRepository } from "../../database/supabase/SupabaseItemRepo
 import { useAuthStore } from "../../stores/authStore";
 import * as CONSTANTES from '../../utils/constants';
 import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 
 /**
  * Interfaz que define la estructura de los datos del formulario de prendas.
@@ -43,6 +44,8 @@ interface ErrorsProps {
  * * @returns {JSX.Element} El componente del formulario de prendas renderizado.
  */
 export default function AddItemForm() {
+
+    const { t } = useTranslation();
 
     // Instanciar el repo y obtener el usuario
     const itemRepository = new SupabaseItemRepository();
@@ -118,10 +121,10 @@ export default function AddItemForm() {
         // Necesitamos volver a declarar las validaciones aquí para calcular la variable
         const newErrors = {
             nombre: validateVestoField("nombre", formData.nombre) as string,
-            tipoPrenda: formData.tipoPrenda ? "" : "Selecciona una prenda",
-            color: formData.color ? "" : "Selecciona un color",
-            temporada: formData.temporada ? "" : "Selecciona una temporada",
-            imagen: formData.imagen ? "" : "Debes subir una imagen"
+            tipoPrenda: formData.tipoPrenda ? "" : t('filter.choose_category'),
+            color: formData.color ? "" : t('filter.choose_color'),
+            temporada: formData.temporada ? "" : t('filter.choose_season'),
+            imagen: formData.imagen ? "" : t('clothing.must_upload_img')
         };
 
         setErrors(newErrors);
@@ -132,7 +135,7 @@ export default function AddItemForm() {
         if (!hasErrors) {
             // Verificamos sesión
             if (!sessionUser) {
-                toast.error("Debes iniciar sesión para subir prendas");
+                toast.error(t('clothing.must_login'));
                 return;
             }
 
@@ -153,14 +156,14 @@ export default function AddItemForm() {
 
                 if (result.error) {
                     const errorMsg = (result.error as any).message || "Error desconocido";
-                    toast.error("Error al subir la prenda: " + errorMsg);
+                    toast.error(`${t('clothing.error_upload_clothing')} ${errorMsg}`);
                 } else {
-                    toast.success("Prenda creada correctamente");
+                    toast.success(t('clothing.ok_upload_clothing'));
                     setFormData({ nombre: "", tipoPrenda: "", color: "", temporada: "", imagen: null });
                     setPreview(null);
                 }
             } catch (err) {
-                toast.error("Error inesperado al subir la prenda");
+                toast.error(t('clothing.error_unexpected_upload'));
             } finally {
                 setLoading(false);
             }
@@ -169,14 +172,14 @@ export default function AddItemForm() {
 
     return (
         <div className="py-5 px-7.5 max-w-4xl mx-auto bg-white border-2 border-auxiliary-700 rounded-2xl shadow-xl">
-            <h3 className="text-center mb-8">Subir prenda/Modificar prenda</h3>
+            <h3 className="text-center mb-8">{t('clothing.add_edit_title')}</h3>
 
             <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-8">
 
                 {/* COLUMNA IZQUIERDA: Formulario */}
                 <div className="flex flex-col space-y-6">
                     <Input
-                        label="Nombre de la prenda"
+                        label={t('clothing.name')}
                         name="nombre"
                         type="text"
                         value={formData.nombre}
@@ -187,7 +190,7 @@ export default function AddItemForm() {
                     />
 
                     <div>
-                        <label className="block mb-2 text-sm font-normal text-gray-900">Tipo de Prenda</label>
+                        <label className="block mb-2 text-sm font-normal text-gray-900">{t('clothing.type')}</label>
                         <Select
                             name="tipoPrenda"
                             value={formData.tipoPrenda}
@@ -195,12 +198,12 @@ export default function AddItemForm() {
                             onChange={handleChange}
                             onBlur={handleBlur}
                             error={errors.tipoPrenda}
-                            placeholder="Selecciona tipo..."
+                            placeholder={t('clothing.select_type')}
                         />
                     </div>
 
                     <div>
-                        <label className="block mb-2 text-sm font-normal text-gray-700">Color</label>
+                        <label className="block mb-2 text-sm font-normal text-gray-700">{t('clothing.color')}</label>
                         <Select
                             name="color"
                             value={formData.color}
@@ -208,12 +211,12 @@ export default function AddItemForm() {
                             onChange={handleChange}
                             onBlur={handleBlur}
                             error={errors.color}
-                            placeholder="Selecciona color..."
+                            placeholder={t('clothing.select_color')}
                         />
                     </div>
 
                     <div>
-                        <label className="block mb-2 text-sm font-normal text-gray-700">Temporada</label>
+                        <label className="block mb-2 text-sm font-normal text-gray-700">{t('clothing.season')}</label>
                         <Select
                             name="temporada"
                             value={formData.temporada}
@@ -221,17 +224,17 @@ export default function AddItemForm() {
                             onChange={handleChange}
                             onBlur={handleBlur}
                             error={errors.temporada}
-                            placeholder="Selecciona temporada..."
+                            placeholder={t('clothing.select_season')}
                         />
                     </div>
 
                     {/* Botones de acción */}
                     <div className="flex gap-4 pt-4">
                         <Button type="submit" disabled={loading} className="btn btn-primary">
-                            {loading ? "Guardando..." : "Guardar"}
+                            {loading ? t('actions.saving') : t('actions.save')}
                         </Button>
                         <Button type="button" className="btn btn-secondary">
-                            Cancelar
+                            {t("actions.cancel")}
                         </Button>
                     </div>
                 </div>
@@ -240,7 +243,7 @@ export default function AddItemForm() {
                 <div className="flex flex-col items-center justify-center space-y-6">
                     <div className="w-full aspect-square max-w-90 rounded-2xl overflow-hidden border-2 border-dashed border-gray-300 bg-gray-50 flex items-center justify-center relative">
                         {preview ? (
-                            <img src={preview} alt="Vista previa" className="w-full h-full object-cover" />
+                            <img src={preview} alt={t('clothing.preview')} className="w-full h-full object-cover" />
                         ) : (
                             <div className="text-center p-6">
                                 {/* Icono de "No image available" con gradiente naranja */}
@@ -249,7 +252,7 @@ export default function AddItemForm() {
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                     </svg>
                                 </div>
-                                <p className="text-gray-400 font-medium">No Image Available</p>
+                                <p className="text-gray-400 font-medium">{t('clothing.no_image')}</p>
                             </div>
                         )}
                     </div>

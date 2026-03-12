@@ -67,4 +67,71 @@
     /* Gira 360 grados y escala a 1.1 (10% más grande) */
     transform: rotate(360deg) scale(1.1);
   }
+
+  .animate-fadeUp {
+    animation: fade-up 0.7s ease-out forwards;
+  }
+
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(60px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Estado inicial antes de animar */
+  .card-hidden {
+    opacity: 0;
+    transform: translateY(60px);
+  }
+
+
+  .header-container {
+    @apply flex justify-between items-center px-4 py-2 sticky top-0 w-full z-50 shadow-md;
+  }
+
+  .hamburger-btn {
+    /* Visible en pantallas pequeñas, oculto a partir de 720px */
+    @apply block min-[720px]:hidden p-2 cursor-pointer transition-transform duration-200;
+  }
+
+  .nav-menu {
+    /* Estilos por defecto */
+    @apply flex gap-3 items-center;
+    /* Estilos para móvil (< 720px) */
+    @apply max-[720px]:absolute max-[720px]:top-full max-[720px]:left-0 max-[720px]:w-full;
+    @apply max-[720px]:flex-col max-[720px]:p-5 max-[720px]:shadow-lg max-[720px]:hidden;
+  }
+
+  /* Clase que añadiremos desde React cuando el menú esté abierto */
+  .nav-menu.is-open {
+    @apply max-[720px]:flex;
+  }
+
+  .nav-actions {
+    /* Contenedor de los botones/perfil */
+    @apply flex items-center gap-3;
+    @apply max-[720px]:flex-col max-[720px]:w-full max-[720px]:mt-4 max-[720px]:justify-center;
+  }
+
+  .nav-btn-mobile {
+    /* Para que los botones ocupen el 100% del ancho en móvil */
+    @apply max-[720px]:w-full;
+  }
+
+  .nav-links-container {
+    @apply flex gap-3 items-center;
+    /* Al abrir hamburguesa (< 720px), en columna */
+    @apply max-[720px]:flex-col max-[720px]:w-full;
+  }
+
+  /* Esta es la clase para el grid 2x2 en < 400px */
+  .nav-links-guest-grid {
+    @apply max-[400px]:!grid max-[400px]:!grid-cols-2 max-[400px]:gap-4 max-[400px]:w-full max-[400px]:justify-items-center max-[400px]:text-center;
+  }
 }
