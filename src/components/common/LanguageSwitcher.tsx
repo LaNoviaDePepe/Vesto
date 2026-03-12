@@ -21,7 +21,7 @@ export const LanguageSwitcher = () => {
   };
 
   // Detecta si es el idioma actual para marcarlo en negrita/color
-  const currentLang = i18n.language; 
+  const currentLang = i18n.language;
 
   return (
     <div className="relative">
@@ -37,8 +37,9 @@ export const LanguageSwitcher = () => {
 
       {/* MENÚ DESPLEGABLE */}
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-100 py-1 z-50">
-          
+        <div className="fixed left-1/2 top-1/2 w-56 bg-white rounded-lg shadow-lg border border-gray-100 py-1 z-50 language-dropdown"
+          style={{ transform: 'translate(-50%, -50%)' }}>
+
           {/* Mapeamos el array para generar las opciones automáticamente */}
           {AVAILABLE_LANGUAGES.map((lang) => (
             <button
@@ -55,12 +56,12 @@ export const LanguageSwitcher = () => {
 
         </div>
       )}
-      
+
       {/* (Opcional) Fondo transparente para cerrar al hacer clic fuera */}
       {isOpen && (
-        <div 
-          className="fixed inset-0 z-40" 
-          onClick={() => setIsOpen(false)} 
+        <div
+          className="fixed inset-0 z-40"
+          onClick={() => setIsOpen(false)}
         />
       )}
     </div>

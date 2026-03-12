@@ -52,7 +52,8 @@ export default function GuestHeader() {
 
     return (
         <header className="bg-auxiliary-700 header-container">
-            <div className="logo">
+            {/* Hidden en general, pero block en lg para que aparezca solo en escritorio */}
+            <div className="logo hidden lg:block">
                 <Link to="/#hero" onClick={() => handleScrollToSection('hero')}>
                     <img src="/img/black-logo.png" alt="Logo de Vesto" className="h-15 w-auto" />
                 </Link>
@@ -75,6 +76,13 @@ export default function GuestHeader() {
 
             {/* Contenedor colapsable del menú y acciones */}
             <div className={`nav-menu bg-auxiliary-700 ${isMenuOpen ? 'is-open' : ''}`}>
+                <button
+                    className="absolute top-4 left-4 text-black p-2 rounded-full hover:bg-gray-200 focus:outline-none"
+                    onClick={() => setIsMenuOpen(false)}
+                    aria-label="Cerrar menú"
+                >
+                    <X size={24} />
+                </button>
                 <Navbar links={guestLinks} onLinkClick={handleScrollToSection} />
 
                 <div className="nav-actions">
