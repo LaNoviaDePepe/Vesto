@@ -58,6 +58,13 @@ export interface UserRepository {
     updateAvatar(userId: string, file: File): Promise<{ data?: string; error?: any }>;
 
     /**
+     * Actualiza perfil y credenciales.
+     * @param userId - El ID (uuid) del usuario.
+     * @param data - Datos a actualizar.
+     */
+    updateUser(userId: string, data: { nombre_apellidos?: string }): Promise<{ error: any }>;
+
+    /**
      * Envía un correo de recuperación al usuario.
      */
     resetPasswordForEmail(email: string): Promise<{ error?: any }>;
@@ -72,5 +79,11 @@ export interface UserRepository {
      * Obtiene el histórico de logins diarios de la tabla 'daily_logins'.
      */
     getDailyLogins(): Promise<{ data?: any[]; error?: any }>;
+
+    /**
+     * Elimina un usuario por completo.
+     * @param userId - El ID (uuid) del usuario.
+     */
+    deleteUser(userId: string): Promise<{ error: any }>;
 
 }

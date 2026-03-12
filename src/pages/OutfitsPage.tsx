@@ -3,11 +3,16 @@ import Conjunto from "../components/clothing/Conjunto";
 import { SupabaseOutfitRepository } from "../database/supabase/SupabaseOutfitRepository";
 import { useAuthStore } from "../stores/authStore";
 import toast from "react-hot-toast";
+import Modal from "../components/common/Modal";
+import { useTranslation } from "react-i18next";
 
 export default function OutfitsPage() {
-
+  const { t } = useTranslation();
   const [conjuntos, setConjuntos] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [outfitToDelete, setOutfitToDelete] = useState<{ id: number, url: string } | null>(null);
+
   const outfitRepository = new SupabaseOutfitRepository();
   const { sessionUser } = useAuthStore();
 
@@ -32,7 +37,7 @@ export default function OutfitsPage() {
 
 
 
-  if (loading) return <div>Loading outfits...</div>;
+  if (loading) return <div>{t('outfit.loading_outfits')}</div>;
 
   const handleToggleFavorito = async (id: number, estadoActual: boolean) => {
     const nuevoEstado = !estadoActual;
@@ -54,9 +59,18 @@ export default function OutfitsPage() {
     }
   };
 
+  // Función para controlar la apertura del modal de confirmación de borrado
+  const openDeleteModal = (id: number, url: string) => {
+    setOutfitToDelete({ id, url });
+    setIsModalOpen(true);
+  };
+
   // Función para eliminar conjunto con borrado optimista (visualmente es automático, asumimos que será exitoso, pero podemos revertirlo) y toast
-  const handleDeleteConjunto = async (id: number, url_imagen: string) => {
-    if (!window.confirm("¿Estás seguro de que deseas eliminar este conjunto?")) return;
+  const handleDeleteConjunto = async () => {
+    if (!outfitToDelete) return;
+
+    const { id, url } = outfitToDelete;
+    setIsModalOpen(false);
 
     // Guardamos una copia por si la BBDD falla y tenemos que revertir
     const conjuntosAnteriores = [...conjuntos];
@@ -64,16 +78,17 @@ export default function OutfitsPage() {
     // Actualización visual inmediata 
     setConjuntos(prevConjuntos => prevConjuntos.filter(c => c.id !== id));
 
-    const { error } = await outfitRepository.deleteConjunto(id, url_imagen);
+    const { error } = await outfitRepository.deleteConjunto(id, url);
 
     if (error) {
       console.error("Error borrando conjunto:", error);
-      toast.error("Hubo un problema al eliminar el conjunto");
+      toast.error(t('outfit.delete_error'));
       // Si falla, devolvemos el conjunto a la pantalla
       setConjuntos(conjuntosAnteriores);
     } else {
-      toast.success("Conjunto eliminado correctamente");
+      toast.success(t('outfit.delete_success'));
     }
+    setOutfitToDelete(null);
   };
 
   return (
@@ -84,14 +99,23 @@ export default function OutfitsPage() {
             key={conjunto.id}
             {...conjunto}
             toggleFavorito={handleToggleFavorito}
-            onDelete={handleDeleteConjunto}
+            onDelete={openDeleteModal}
           />
         ))
       ) : (
         <div className="flex flex-col items-center justify-center h-64 text-gray-400">
-          <p className="text-lg">Aún no has creado ningún conjunto</p>
+          <p className="text-lg">{t('outfit.no_outfits')}</p>
         </div>
       )}
+
+      {/* Modal de confirmación de borrado de conjunto */}
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onConfirm={handleDeleteConjunto}
+        title={t('modal.delete_outfit_title')}
+        message={t('modal.delete_outfit_msg')}
+      />
     </div>
   );
 }

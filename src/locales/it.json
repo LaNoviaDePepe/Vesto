@@ -1,0 +1,260 @@
+{
+    "welcome": "Benvenuto {{user}}",
+    "actions": {
+        "save": "Salva",
+        "cancel": "Annulla",
+        "saving": "Salvataggio in corso...",
+        "access": "Accedi",
+        "loading": "Caricamento...",
+        "save_changes": "Salva le modifiche",
+        "logout": "Esci",
+        "signing_up": "Registrazione in corso...",
+        "signup": "Registrati",
+        "delete": "Elimina"
+    },
+    "navbar": {
+        "button": {
+            "login": "Accedi",
+            "signup": "Registrati"
+        },
+        "links": {
+            "home": "Home",
+            "behaviour": "Come funziona",
+            "reviews": "Recensioni",
+            "team": "Team",
+            "closet": "Il mio armadio",
+            "outfits": "I miei outfit",
+            "upload_clothing": "Aggiungi capo",
+            "create_outfit": "Crea outfit"
+        }
+    },
+    "error": {
+        "random_error": "Si è verificato un errore imprevisto",
+        "close_session": "Errore durante la disconnessione",
+        "saving": "Errore durante il salvataggio",
+        "signup": "Errore di registrazione",
+        "login": "Errore di accesso",
+        "recovery_link": "Errore nell'invio del link di recupero",
+        "category_loading_error": "Errore nel caricamento delle categorie"
+    },
+    "message": {
+        "2MB": "L'immagine deve pesare meno di 2MB",
+        "profile_updated": "Profilo aggiornato",
+        "recovery_link_sent": "Link inviato! Controlla la tua email ({{email}})",
+        "welcome_login": "Benvenuto!",
+        "user_registered": "Utente registrato e connesso"
+    },
+    "footer": {
+        "feed": "",
+        "products": "Prodotti",
+        "discover": "Scopri",
+        "help": "Aiuto",
+        "terms": "Termini",
+        "copyright_policy": "Politica di copyright",
+        "download": "Scarica"
+    },
+    "filter": {
+        "choose_category": "Scegli una categoria",
+        "choose_season": "Scegli una stagione",
+        "choose_color": "Scegli un colore",
+        "remove": "Rimuovi",
+        "no_results": "Nessun capo trovato con questi filtri",
+        "clear_filters": "Cancella filtri",
+        "favorites": "Preferiti"
+    },
+    "clothing": {
+        "must_upload_img": "Devi caricare un'immagine",
+        "must_login": "Devi accedere per caricare capi",
+        "error_upload_clothing": "Errore durante il caricamento del capo:",
+        "ok_upload_clothing": "Capo creato con successo",
+        "delete_confirm": "Sei sicuro di voler eliminare questo capo dal tuo armadio?",
+        "delete_error_in_outfit": "Questo capo fa parte di un outfit e non può essere eliminato.",
+        "delete_error": "Impossibile eliminare il capo dall'armadio.",
+        "delete_success": "Capo eliminato dal tuo armadio",
+        "add_edit_title": "Carica capo / Modifica capo",
+        "name": "Nome del capo",
+        "type": "Tipo di capo",
+        "select_type": "Seleziona tipo...",
+        "color": "Colore",
+        "select_color": "Seleziona colore...",
+        "season": "Stagione",
+        "select_season": "Seleziona stagione...",
+        "preview": "Anteprima",
+        "no_image": "Nessuna immagine disponibile",
+        "error_unexpected_upload": "Errore imprevisto durante il caricamento del capo",
+        "delete_item_title": "Elimina capo"
+    },
+    "form": {
+        "password": "Password",
+        "current_password": "Password attuale",
+        "new_password": "Nuova password",
+        "required_to_change_password": "Richiesta per cambiare la password",
+        "write_new_password": "Scrivi la nuova password",
+        "remember_me": "Ricordami",
+        "name_surname": "Nome e Cognome",
+        "user_profile": "Profilo Utente",
+        "signup_title": "Registrazione",
+        "login_title": "Accedi",
+        "email_taken": "Questa email è già registrata",
+        "accept_terms_error": "Devi accettare i termini e le condizioni",
+        "repeat_password": "Ripeti la password",
+        "accept_terms": "Accetto i termini e le condizioni",
+        "already_have_account": "Hai già un account? Accedi",
+        "here": "qui",
+        "email_required_recovery": "Inserisci un'email valida per recuperare il tuo account",
+        "email_required": "Email richiesta",
+        "email_not_registered": "L'email non è registrata",
+        "email_not_registered_short": "Email non registrata",
+        "email_placeholder": "esempio@email.com",
+        "forgot_password": "Hai dimenticato la password?"
+    },
+    "graph": {
+        "analysing_categories": "Analisi delle categorie in corso...",
+        "not_enought_clothing": "Non ci sono ancora abbastanza capi.",
+        "clothing_distribution": "Distribuzione per Categoria",
+        "error_loading_categories": "Errore nel caricamento dei dati delle categorie",
+        "loading_items": "Caricamento grafico dei capi...",
+        "items_history": "Capi Registrati (Cronologia)",
+        "items_per_day": "Capi per Giorno",
+        "not_enought_items_data": "Dati dei capi insufficienti.",
+        "error_loading_items": "Errore nel caricamento dei dati dei capi",
+        "loading_logins": "Caricamento grafico degli accessi...",
+        "user_traffic": "Traffico Utenti (Accessi)",
+        "daily_logins": "Accessi Giornalieri",
+        "not_enought_logins_data": "Dati di accesso insufficienti.",
+        "error_loading_logins": "Errore nel caricamento dei dati di accesso"
+    },
+    "landing": {
+        "hero": {
+            "title": "Vestiti meglio in pochi secondi",
+            "description": "Organizza il tuo guardaroba e crea outfit personalizzati senza perdere tempo ogni mattina.",
+            "goToCloset": "Vai al mio armadio",
+            "login": "Accedi",
+            "signup": "Registrati"
+        },
+        "howItWorks": {
+            "title": "Come funziona Vesto?",
+            "description": "Abbiamo un design intuitivo e facile da usare, con funzioni come caricare foto dei tuoi vestiti, creare outfit personalizzati, salvare nei preferiti... Tutto affinché scegliere il tuo look quotidiano sia veloce, divertente e senza complicazioni.",
+            "demoTitle": "Demo di Vesto",
+            "demoSubtitle": "Prossimamente nel video dell'App..."
+        },
+        "reviews": {
+            "title": "+50K utenti soddisfatti",
+            "angel": "Un'opera d'arte, si nota il tocco di Manuel in questa app, mi ha cambiato la vita, ora scegliere cosa indossare è un piacere e non una tortura. Grazie Vesto!",
+            "jesus": "Da quando la uso sono più felice, grazie a Vesto ho scoperto abbinamenti di vestiti a cui non avrei mai pensato, e ora mi sento più sicuro del mio stile. Consigliata al 100%!",
+            "paco": "I tuoi occhi sono come due padelle, quando li vedo mi si friggono le uova. Sei così bella che ti mangerei con i vestiti e tutto... anche se passassi un mese a cagare stracci.",
+            "elias": "Non avevo mai visto un'app così completa e funzionale. Vesto ha rivoluzionato il mio modo di scegliere i vestiti! Adoro la funzione per creare outfit personalizzati, è come avere un personal stylist in tasca. Altamente consigliata!"
+        },
+        "team": {
+            "title": "Il nostro team",
+            "subtitle": "I veri creatori di Vesto.",
+            "rodas": "Capra assoluta (GOAT), non ha bisogno di presentazioni.",
+            "pepe": "Porta molta esperienza, ha più anni di un bosco.",
+            "gloria": "Diva assoluta, dà il tocco chic.",
+            "miguel": "Ossessionato dal lavoro, dentro e fuori dal campo.",
+            "lucia": "Sa troppo di tutto, ma non lo dice. Falsa umiltà?"
+        }
+    },
+    "outfit": {
+        "name_required": "Per favore, inserisci un nome per l'outfit.",
+        "min_one_item": "Devi selezionare almeno un capo.",
+        "duplicate_name": "Hai già un outfit chiamato '{{name}}'. Scegli un altro nome.",
+        "save_error": "Si è verificato un errore durante il salvataggio dell'outfit.",
+        "save_success": "Outfit '{{name}}' salvato con successo!",
+        "name_placeholder": "Nome dell'outfit",
+        "desc_placeholder": "Descrizione dell'outfit, occasione, ecc...",
+        "head": "Testa",
+        "top": "Parte Superiore",
+        "accessory": "Accessorio",
+        "bottom": "Parte Inferiore",
+        "shoes": "Scarpe",
+        "upload_photo": "Carica foto del tuo outfit",
+        "loading_outfits": "Caricamento outfit...",
+        "delete_confirm": "Sei sicuro di voler eliminare questo outfit?",
+        "delete_error": "Si è verificato un problema durante l'eliminazione dell'outfit",
+        "delete_success": "Outfit eliminato correttamente",
+        "no_outfits": "Non hai ancora creato nessun outfit",
+        "delete_outfit_title": "Elimina outfit",
+        "mark_favorite_title": "Segna outfit come preferito"
+    },
+    "profile": {
+        "walking_man_alt": "Illustrazione persona che cammina"
+    },
+    "reset_password": {
+        "passwords_mismatch": "Le password non corrispondono",
+        "update_error": "Errore durante l'aggiornamento: ",
+        "update_success": "Password aggiornata con successo!",
+        "title": "Nuova Password",
+        "new_password_label": "Scrivi la tua nuova password",
+        "confirm_password_label": "Conferma la tua nuova password",
+        "changing": "Modifica in corso...",
+        "update_btn": "Aggiorna password"
+    },
+    "admin": {
+        "stats_title": "Pannello Statistiche",
+        "stats_subtitle": "Analisi dell'uso dell'applicazione in tempo reale.",
+        "users_title": "Lista Utenti",
+        "users_loading": "Caricamento utenti...",
+        "users_error_toast": "Ops, non siamo riusciti a caricare la lista degli utenti. Riprova più tardi.",
+        "users_error_msg": "Impossibile caricare le informazioni degli utenti.",
+        "role": "Ruolo: ",
+        "default_role": "utente",
+        "no_users": "Nessun utente registrato.",
+        "avatar_alt": "Avatar",
+        "user_management_title": "Gestione Utenti",
+        "dashboard_title": "Pannello di Controllo"
+    },
+    "modal": {
+        "delete_item_title": "Eliminare capo?",
+        "delete_item_msg": "Questa azione non può essere annullata e il capo scomparirà dal tuo armadio.",
+        "delete_outfit_title": "Eliminare questo outfit?",
+        "delete_outfit_msg": "Sei sicuro? La combinazione verrà eliminata, ma i singoli capi rimarranno nel tuo armadio."
+    },
+    "constants": {
+        "categories": {
+            "head": "Testa",
+            "top": "Parte superiore",
+            "bottom": "Parte inferiore",
+            "accessory": "Accessorio",
+            "shoes": "Scarpe"
+        },
+        "colors": {
+            "black": "Nero",
+            "white": "Bianco",
+            "gray": "Grigio",
+            "red": "Rosso",
+            "blue": "Blu",
+            "yellow": "Giallo",
+            "green": "Verde",
+            "orange": "Arancione",
+            "purple": "Viola",
+            "pink": "Rosa",
+            "brown": "Marrone",
+            "light_blue": "Azzurro",
+            "turquoise": "Turchese",
+            "beige": "Beige",
+            "gold": "Dorato",
+            "silver": "Argentato"
+        },
+        "seasons": {
+            "fall": "Autunno",
+            "winter": "Inverno",
+            "spring": "Primavera",
+            "summer": "Estate",
+            "all": "Tutte"
+        }
+    },
+    "validation": {
+        "name_required": "Il nome è obbligatorio",
+        "only_letters": "Sono consentiti solo lettere e spazi",
+        "email_required": "L'email è obbligatoria",
+        "invalid_email": "Formato email non valido",
+        "user_required": "L'utente è obbligatorio",
+        "min_3_chars": "Minimo 3 caratteri",
+        "password_required": "La password è obbligatoria",
+        "min_6_chars": "Minimo 6 caratteri",
+        "confirm_password_required": "Devi confermare la password",
+        "passwords_mismatch": "Le password non corrispondono",
+        "select_option": "Devi selezionare un'opzione"
+    }
+}
