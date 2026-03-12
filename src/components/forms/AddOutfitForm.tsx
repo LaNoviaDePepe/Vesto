@@ -96,8 +96,8 @@ export default function AddOutfitForm({ outfit, onResetOutfit }: AddOutfitFormPr
   };
 
   return (
-    <form onSubmit={handleSaveOutfit} className="w-full lg:w-125 xl:w-150 bg-auxiliary-50 flex flex-col p-8 h-svh overflow-y-auto">
-      <div className="flex flex-col gap-4 mb-10">
+    <form onSubmit={handleSaveOutfit} className="w-full bg-auxiliary-50 flex flex-col p-5 md:p-6 h-auto max-h-[calc(100vh-120px)] overflow-y-auto rounded-2xl">
+      <div className="flex flex-col gap-4 mb-6">
         <div className="flex gap-3 ">
           <Input
             placeholder={t('outfit.name_placeholder')}
@@ -126,16 +126,12 @@ export default function AddOutfitForm({ outfit, onResetOutfit }: AddOutfitFormPr
       </div>
 
       {/* Grid de Slots */}
-      <div className="flex flex-col gap-8 items-center">
-        <div className="flex justify-center gap-6 w-full">
-          <OutfitSlot label={t('outfit.head')} item={outfit.cabeza} />
-          <OutfitSlot label={t('outfit.top')} item={outfit.parte_arriba} />
-          <OutfitSlot label={t('outfit.accessory')} item={outfit.complemento} />
-        </div>
-        <div className="flex justify-center gap-6 w-full">
-          <OutfitSlot label={t('outfit.bottom')} item={outfit.parte_abajo} />
-          <OutfitSlot label={t('outfit.shoes')} item={outfit.calzado} />
-        </div>
+      <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-5 gap-3 mb-4">
+        <OutfitSlot label={t('outfit.head')} item={outfit.cabeza} />
+        <OutfitSlot label={t('outfit.top')} item={outfit.parte_arriba} />
+        <OutfitSlot label={t('outfit.accessory')} item={outfit.complemento} />
+        <OutfitSlot label={t('outfit.bottom')} item={outfit.parte_abajo} />
+        <OutfitSlot label={t('outfit.shoes')} item={outfit.calzado} />
       </div>
 
       {/* Foto del Outfit */}

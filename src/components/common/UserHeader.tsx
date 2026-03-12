@@ -92,13 +92,13 @@ export default function UserHeader({ children }: UserHeaderProps) {
 
             <div className="logo">
                 <Link to="/">
-                    <img src="/img/white-logo.png" alt="Logo de Vesto" className="h-15 w-auto" />
+                    <img src="/img/white-logo.png" alt="Logo de Vesto" className="lg:h-15 h-10 pr-2  w-auto" />
                 </Link>
             </div>
 
             {/* Botón de menú hamburguesa (solo visible en móvil) */}
             <button 
-                className="hamburger-btn md:hidden text-white" 
+                className="hamburger-btn lg:hidden text-white" 
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
                 aria-label="Alternar menú"
             >
