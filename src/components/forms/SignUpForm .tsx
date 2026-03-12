@@ -167,7 +167,7 @@ export default function SignUpForm() {
     };
 
     return (
-        <div className="py-5 px-7.5 max-w-md mx-auto bg-white border-2 border-auxiliary-700 rounded-2xl shadow-xl">
+        <div className="mx-4 max-w-[360px] sm:mx-auto sm:max-w-md py-5 px-4 sm:px-6 md:px-8 bg-white border-2 border-auxiliary-700 rounded-2xl shadow-xl">
             <h3 className="text-center mb-8">{t('form.signup_title')}</h3>
 
             {/* Mostrar errores de Supabase */}

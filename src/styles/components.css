@@ -100,13 +100,14 @@
     @apply block p-2 cursor-pointer transition-transform duration-200;
     
     /* Sustituimos el breakpoint arbitrario por @media */
-    @media (min-width: 720px) {
+    @media (min-width: 721px) {
       display: none;
     }
   }
 
   .nav-menu {
     @apply flex gap-3 items-center;
+    display: none;
 
     /* Estilos para móvil (< 720px) */
     @media (max-width: 720px) {
@@ -122,6 +123,20 @@
       box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); /* equivalente a shadow-lg */
       display: none; /* hidden por defecto en móvil */
       z-index: 40;
+    }
+  }
+
+  @media (min-width: 721px) {
+    .nav-menu {
+      display: flex;
+      position: static;
+      inset: auto;
+      height: auto;
+      flex-direction: row;
+      padding: 0;
+      background-color: transparent;
+      box-shadow: none;
+      z-index: auto;
     }
   }
 
@@ -168,16 +183,6 @@
       align-items: center;
       justify-content: center;
     }
-  }
-
-  /* Clase para el menú de guest: siempre uno por fila */
-  .nav-links-guest-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    width: 100%;
-    align-items: stretch;
-    text-align: center;
   }
 
   

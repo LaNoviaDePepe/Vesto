@@ -61,7 +61,7 @@ export default function GuestHeader() {
 
             {/* Botón de menú hamburguesa (solo visible en móvil) */}
             <button
-                className="hamburger-btn text-black"
+                className="hamburger-btn md:hidden text-black"
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
                 aria-label="Alternar menú"
             >
@@ -77,7 +77,7 @@ export default function GuestHeader() {
             {/* Contenedor colapsable del menú y acciones */}
             <div className={`nav-menu bg-auxiliary-700 ${isMenuOpen ? 'is-open' : ''}`}>
                 <button
-                    className="absolute top-4 left-4 text-black p-2 rounded-full hover:bg-gray-200 focus:outline-none"
+                    className="absolute top-4 left-4 text-black p-2 rounded-full hover:bg-gray-200 focus:outline-none md:hidden"
                     onClick={() => setIsMenuOpen(false)}
                     aria-label="Cerrar menú"
                 >
