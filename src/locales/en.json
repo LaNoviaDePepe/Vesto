@@ -71,7 +71,7 @@
     "delete_error_in_outfit": "This item is part of an outfit and cannot be deleted.",
     "delete_error": "Could not delete the item from the closet.",
     "delete_success": "Item deleted from your closet",
-    "add_edit_title": "Upload item/Edit item",
+    "add_edit_title": "Upload item / Edit item",
     "name": "Item name",
     "type": "Clothing type",
     "select_type": "Select type...",

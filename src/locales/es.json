@@ -71,7 +71,7 @@
     "delete_error_in_outfit": "Esta prenda está en un conjunto y no puede eliminarse.",
     "delete_error": "No se pudo eliminar la prenda del armario.",
     "delete_success": "Prenda eliminada de tu armario",
-    "add_edit_title": "Subir prenda/Modificar prenda",
+    "add_edit_title": "Subir prenda / Modificar prenda",
     "name": "Nombre de la prenda",
     "type": "Tipo de Prenda",
     "select_type": "Selecciona tipo...",

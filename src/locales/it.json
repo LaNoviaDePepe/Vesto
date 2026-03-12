@@ -71,7 +71,7 @@
         "delete_error_in_outfit": "Questo capo fa parte di un outfit e non può essere eliminato.",
         "delete_error": "Impossibile eliminare il capo dall'armadio.",
         "delete_success": "Capo eliminato dal tuo armadio",
-        "add_edit_title": "Carica capo/Modifica capo",
+        "add_edit_title": "Carica capo / Modifica capo",
         "name": "Nome del capo",
         "type": "Tipo di capo",
         "select_type": "Seleziona tipo...",
