@@ -29,14 +29,14 @@ export default function Footer({ isUser = false }: FooterProps) {
             </div>
 
             {/* Links centrales basados en el diseño */}
-            <div className="flex flex-1 justify-center gap-16 md:gap-24">
-                <ul className="flex flex-col gap-1 text-inherit">
+            <div className="flex flex-col items-center justify-center flex-1 gap-8 md:flex-row md:gap-24">
+                <ul className="flex flex-col items-center gap-1 text-inherit">
                     <li><Link to="/feed" className="hover:opacity-70 text-sm font-medium">{t('footer.feed')}</Link></li>
                     <li><Link to="/products" className="hover:opacity-70 text-sm font-medium">{t('footer.products')}</Link></li>
                     <li><Link to="/seccion1" className="hover:opacity-70 text-sm font-medium">{t('footer.discover')}</Link></li>
                 </ul>
 
-                <ul className="flex flex-col gap-1 text-inherit">
+                <ul className="flex flex-col items-center gap-1 text-inherit">
                     <li><Link to="/help" className="hover:opacity-70 text-sm font-medium">{t('footer.help')}</Link></li>
                     <li><Link to="/terms" className="hover:opacity-70 text-sm font-medium">{t('footer.terms')}</Link></li>
                     <li><Link to="/copyright" className="hover:opacity-70 text-sm font-medium">{t('footer.copyright_policy')}</Link></li>

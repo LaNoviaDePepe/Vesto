@@ -172,35 +172,13 @@
 
   /* Clase para el menú de guest: siempre uno por fila */
   .nav-links-guest-grid {
-    display: flex !important;
+    display: flex;
     flex-direction: column;
     gap: 0.75rem;
     width: 100%;
     align-items: stretch;
-    text-align: left;
-
-    @media (max-width: 720px) {
-      /* misma regla para móvil, sin excepción */
-    }
+    text-align: center;
   }
 
-  .language-dropdown {
-    @apply z-50;
-  }
-
-  @media (max-width: 720px) {
-    .language-dropdown {
-      position: fixed;
-      top: 1rem;
-      right: 1rem;
-      width: calc(100% - 2rem);
-      max-width: 18rem;
-      z-index: 60;
-    }
-  }
-
-  /* Fallback para modos donde aparece cortado por el padre */
-  .language-dropdown.fixed {
-    position: fixed !important;
-  }
+  
 }
