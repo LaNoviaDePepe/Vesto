@@ -5,75 +5,158 @@ import ThemeToggle from './ThemeToggle';
 import { createUserRepository } from '../../database/repositories';
 import { useAuthStore } from '../../stores/authStore';
 import toast from 'react-hot-toast';
-import { LogOut } from 'lucide-react';
+import { LogOut, Menu, X } from 'lucide-react';
+import { LanguageSwitcher } from './LanguageSwitcher';
+import { useTranslation } from 'react-i18next';
+import { useState } from 'react';
+import { motion } from 'framer-motion';
 
-export default function UserHeader() {
+const MotionLogOut = motion(LogOut);
+/**
+ * Propiedades esperadas para el componente UserHeader.
+ *
+ * @interface UserHeaderProps
+ * @property {React.ReactNode} [children] - Elementos adicionales opcionales a renderizar
+ * dentro de la barra de acciones (por ejemplo, botones exclusivos de administrador).
+ */
+interface UserHeaderProps {
+    children?: React.ReactNode; 
+}
+
+/**
+ * Componente que renderiza la cabecera principal para usuarios autenticados.
+ * Proporciona acceso a las herramientas del usuario, avatar de perfil, menú responsive
+ * y lógica de cierre de sesión. Permite inyectar contenido adicional mediante 'children'.
+ *
+ * @param {UserHeaderProps} props - Propiedades del componente.
+ * @returns {JSX.Element} La estructura de la cabecera privada.
+ */
+export default function UserHeader({ children }: UserHeaderProps) {
+    /**
+     * Estado que controla la visibilidad del menú desplegable en dispositivos móviles.
+     */
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+    // Extracción de datos y funciones del gestor de estado global (Zustand)
     const sessionUser = useAuthStore((state) => state.sessionUser);
+    const clearSession = useAuthStore((state) => state.clearSession);
 
+    /**
+     * Lista de enlaces privados correspondientes a las herramientas de la aplicación.
+     * @type {Array<{label: string, path: string}>}
+     */
+    const { t } = useTranslation();
     const userLinks = [
-        { label: 'Mi armario', path: '/closet' },
-        { label: 'Mis conjuntos', path: '/outfits' },
-        { label: 'Subir prenda', path: '/clothing' },
-        { label: 'Crear conjunto', path: '/outfitCreator' },
+        { label: t('navbar.links.closet'), path: '/closet' },
+        { label: t('navbar.links.outfits'), path: '/outfits' },
+        { label: t('navbar.links.upload_clothing'), path: '/clothing' },
+        { label: t('navbar.links.create_outfit'), path: '/outfitCreator' },
     ];
 
-    const state = useAuthStore();
+
     const userRepository = createUserRepository();
     const navigate = useNavigate();
 
+    /**
+     * Gestiona el proceso asíncrono de cierre de sesión.
+     * Invoca la base de datos para invalidar la sesión actual, limpia el estado global
+     * y redirige al usuario a la página de inicio. Maneja notificaciones en caso de error.
+     *
+     * @async
+     * @returns {Promise<void>} Una promesa que se resuelve al terminar la secuencia de logout.
+     */
     const handleLogout = async () => {
         try {
             const result = await userRepository.logout();
             if (result.error) {
-                toast.error('Error al cerrar sesión');
+                toast.error(t('error.close_session'));
+
                 return;
             }
-            state.clearSession();
+            // Limpiamos sesión usando la función del store y redirigimos a otra página
+            clearSession();
             navigate('/');
         } catch (error) {
-            toast.error('Ocurrió un error inesperado');
+            toast.error(t('error.random_error'));
             console.log(error);
         }
     }
 
+    /**
+     * URL de la imagen de perfil a mostrar. Usa un avatar por defecto si el usuario no tiene uno definido.
+     * @type {string}
+     */
     const avatarImg = sessionUser?.profile?.url_avatar ? sessionUser.profile.url_avatar : "/img/Default-Profile-Picture.jfif";
 
     return (
-        /* 1. Fondo principal: de azul primario a gris casi negro */
-        <header className="flex justify-between items-center px-6 py-2 bg-primary-700 dark:bg-slate-950 border-b border-primary-600 dark:border-slate-800 transition-colors duration-300">
-            
+        <header className="bg-primary-700 header-container">
+
             <div className="logo">
                 <Link to="/">
-                    {/* Si tienes un logo para modo oscuro, podrías alternarlo aquí */}
-                    <img src="/img/white-logo.png" alt="Logo de Vesto" className="h-12 w-auto" />
+                    <img src="/img/white-logo.png" alt="Logo de Vesto" className="lg:h-15 h-10 pr-2  w-auto" />
                 </Link>
             </div>
-            
-            <div className='flex gap-6 items-center'>
-                {/* 2. El Navbar: Asegúrate de que dentro de <Navbar /> uses dark:text-gray-300 o similar */}
-                <Navbar links={userLinks} isUser className="text-white dark:text-slate-300" />
 
-                <div className="flex items-center gap-4">
-                    {/* Foto de Perfil con un anillo que cambia de color */}
-                    <Link to="/profile" className="block h-10 w-10">
+            {/* Botón de menú hamburguesa (solo visible en móvil) */}
+            <button 
+                className="hamburger-btn lg:hidden text-white" 
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                aria-label="Alternar menú"
+            >
+                {/* Renderizado Condicional (Operador Ternario):
+                Pregunta: ¿isMenuOpen es true (está abierto)?
+                - Si SÍ: Muestra el icono <X /> (para poder cerrarlo).
+                - Si NO: Muestra el icono <Menu /> (las 3 rayitas, para poder abrirlo).
+                Ambos iconos tendrán un tamaño de 28 píxeles.
+                */}
+                {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
+            </button>
+
+            {/* Contenedor colapsable del menú y acciones */}
+            <div className={`nav-menu bg-primary-700 ${isMenuOpen ? 'is-open' : ''}`}>
+                <button
+                    className="absolute top-4 left-4 text-white p-2 rounded-full hover:bg-white/20 focus:outline-none md:hidden"
+                    onClick={() => setIsMenuOpen(false)}
+                    aria-label="Cerrar menú"
+                >
+                    <X size={24} />
+                </button>
+                <div onClick={() => setIsMenuOpen(false)}>
+                    <Navbar links={userLinks} isUser />
+                </div>
+
+                <div className="nav-actions">
+                    {/* Aquí es donde inyectamos los "dos botones" del admin.
+                        Aparecerán a la izquierda de la foto de perfil.
+                    */}
+                    {children}
+                    <Link to="/profile" className="block h-15 w-15" title="Perfil de usuario">
                         <img
                             src={avatarImg}
-                            alt="Imagen de Perfil"
-                            className="h-full w-full object-cover rounded-full border-2 border-transparent hover:border-white dark:hover:border-primary-400 transition-all"
+                            alt={t('form.user_profile')}
+                            className="h-full w-full object-cover shadow-sm rounded-full"
                         />
                     </Link>
-
-                    {/* Botón de Modo Oscuro */}
-                    <ThemeToggle />
-
-                    {/* 3. Botón Logout: Cambia el estilo del borde/fondo en modo oscuro */}
                     <Button 
-                        variant='out' 
+                        variant='icon' 
                         onClick={handleLogout} 
-                        className='rounded-full min-w-0 p-2 text-white border-white hover:bg-white/10 dark:text-slate-400 dark:border-slate-700 dark:hover:bg-slate-800'
+                        className='min-w-0 group' 
+                        title={t('actions.logout')}
                     >
-                        <LogOut size={20} strokeWidth={2.5} />
-                    </Button>                       
+                        <MotionLogOut 
+                            size={20} 
+                            strokeWidth={2.5}
+                            initial={{ x: 0 }}
+                            variants={{
+                                animate: { 
+                                    x: [0, 3, 0], 
+                                    transition: { duration: 0.4 } 
+                                }
+                            }}
+                            whileHover="animate" 
+                        />
+                    </Button> 
+                    <LanguageSwitcher />                      
                 </div>
             </div>
         </header>

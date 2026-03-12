@@ -1,4 +1,5 @@
-import { Heart } from "lucide-react";
+import { Heart, Trash2 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 export interface PrendaProps {
     id?: number;
@@ -13,15 +14,32 @@ export interface PrendaProps {
     onToggleFavorito?: (id: number, estadoActual: boolean) => void;
     //Propiedad que nos permite eliminar el corazón de la vista OutfitsPage
     hideHeart?: boolean;
+    // Función para eliminar la prenda
+    onDelete?: (id: number, url: string) => void;
+    // Propiedad para ocultar el botón de borrar en vista OutfitsPage
+    hideDelete?: boolean;
 }
 
-export default function Prenda({ id, name, url, color, temporada, categoria, favorito, onToggleFavorito, hideHeart }: PrendaProps) {
+export default function Prenda({ 
+    id, name, url, color, temporada, categoria, 
+    favorito, onToggleFavorito, hideHeart, 
+    onDelete, hideDelete }: PrendaProps) {
+
+    const { t } = useTranslation();
 
     // función para manejar el click en el corazón
     const handleHeartClick = (e: React.MouseEvent) => {
         e.stopPropagation(); // evita que se haga click en la tarjeta entera, solo se hace click en el corazón
         if (onToggleFavorito && id !== undefined) {
             onToggleFavorito(id, favorito);
+        }
+    };
+
+    // función para manejar el click en la papelera
+    const handleDeleteClick = (e: React.MouseEvent) => {
+        e.stopPropagation(); 
+        if (onDelete && id !== undefined) {
+            onDelete(id, url);
         }
     };
 
@@ -40,6 +58,18 @@ export default function Prenda({ id, name, url, color, temporada, categoria, fav
                     />
                 </button>
             )}
+
+            {/* Renderiza la papelera solo si pasamos la función onDelete y no está oculto */}
+            {!hideDelete && onDelete && (
+                <button
+                    onClick={handleDeleteClick}
+                    className="absolute top-4 left-4 z-10 bg-white/70 p-1.5 rounded-full shadow-sm hover:scale-110 hover:bg-red-50 transition-all cursor-pointer text-red-500"
+                    title={t('clothing.delete_item_title')}
+                >
+                    <Trash2 size={22} />
+                </button>
+            )}
+
             <img
                 src={url}
                 alt={name}

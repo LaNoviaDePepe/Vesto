@@ -6,7 +6,8 @@ import toast from "react-hot-toast";
 import { useAuthStore } from "../../stores/authStore";
 import { useNavigate } from "react-router-dom";
 import { SupabaseUserRepository } from "../../database/supabase/SupabaseUserRepository";
-
+import { useTranslation } from "react-i18next";
+    
 /**
  * Interfaz que define los datos editables del perfil de usuario.
  */
@@ -39,6 +40,8 @@ interface ErrorsProps {
  * * @returns {JSX.Element} Componente renderizado para la gestión del perfil.
  */
 export default function ProfileForm() {
+
+    const { t } = useTranslation();
 
     const state = useAuthStore();
     const userRepository = new SupabaseUserRepository();
@@ -88,7 +91,7 @@ export default function ProfileForm() {
     const handleLogout = async () => {
         setLoading(true);
         const result = await userRepository.logout();
-        if (result.error) toast.error('Error al cerrar sesión');
+        if (result.error) toast.error(t('error.close_session'));
         state.clearSession();
         setLoading(false);
         navigate('/');
@@ -134,7 +137,7 @@ export default function ProfileForm() {
         if (e.target.files && e.target.files[0]) {
             const file = e.target.files[0];
             if (file.size > 2 * 1024 * 1024) {
-                setErrors(prev => ({ ...prev, avatar: "La imagen debe pesar menos de 2MB" }));
+                setErrors(prev => ({ ...prev, avatar: t('message.2MB') }));
                 return;
             }
             setFormData((prev) => ({ ...prev, avatar: file }));
@@ -157,7 +160,7 @@ export default function ProfileForm() {
         // Validaciones (Sin validación de email)
         const newErrors = {
             nombreApellidos: validateVestoField("nombreApellidos", cleanNombre),
-            currentPassword: (formData.newPassword && !formData.currentPassword) ? "Requerida" : "",
+            currentPassword: (formData.newPassword && !formData.currentPassword) ? t('form.required_to_change_password') : "",
             newPassword: formData.newPassword ? validateVestoField("password", formData.newPassword) : "",
             email: "",
             avatar: ""
@@ -192,84 +195,21 @@ export default function ProfileForm() {
                 state.updateSessionProfile(profileRes.data);
             }
 
-            toast.success("Perfil actualizado");
+            toast.success(t('message.profile_updated'));
             setFormData(prev => ({ ...prev, currentPassword: "", newPassword: "" }));
 
         } catch (error: any) {
-            toast.error(error.message || "Error al guardar");
+            toast.error(error.message || t('error.saving'));
         } finally {
             setLoading(false);
         }
     };
 
     return (
-        <div className="py-8 px-8 max-w-5xl mx-auto bg-white border-2 border-auxiliary-700 rounded-2xl shadow-xl">
-            <h3 className="text-3xl text-center mb-10 font-medium text-gray-800">Perfil de Usuario</h3>
+        <div className="mb-10 py-8 px-8 max-w-5xl lg:mx-auto mx-5 bg-white border-2 border-auxiliary-700 rounded-2xl shadow-xl">
+            <h3 className="text-3xl text-center mb-10 font-medium text-gray-800">{t('form.user_profile')}</h3>
 
             <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-12 gap-8">
-                <div className="md:col-span-7 space-y-6">
-                    <Input
-                        label="Nombre y Apellidos"
-                        name="nombreApellidos"
-                        type="text"
-                        value={formData.nombreApellidos}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        error={errors.nombreApellidos}
-                    />
-
-                    <Input
-                        label="Email"
-                        name="email"
-                        type="email"
-                        autoComplete="off"
-                        value={formData.email}
-                        disabled={true}
-                    />
-
-                    {/* SECCIÓN DE SEGURIDAD VISUALMENTE SEPARADA */}
-                    <div className="pt-4 border-t border-gray-200">
-
-                        <div className="space-y-6">
-                            <Input
-                                label="Contraseña Actual"
-                                name="currentPassword"
-                                type="password"
-                                value={formData.currentPassword}
-                                placeholder="Requerida para cambiar la contraseña"
-                                autoComplete="current-password"
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                error={errors.currentPassword}
-                            />
-
-                            <Input
-                                label="Nueva contraseña"
-                                name="newPassword"
-                                type="password"
-                                value={formData.newPassword}
-                                placeholder="Escribe nueva contraseña"
-                                autoComplete="new-password"
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                error={errors.newPassword}
-                            />
-                        </div>
-                    </div>
-
-                    <div className="flex gap-4 pt-4 mt-8">
-                        <Button type="submit" variant="primary" disabled={loading}>
-                            {loading ? "Guardando..." : "Guardar cambios"}
-                        </Button>
-                        <Button
-                            type="button" variant="auxiliar"
-                            onClick={handleLogout}
-                            disabled={loading}
-                        >
-                            Cerrar sesión
-                        </Button>
-                    </div>
-                </div>
 
                 <div className="md:col-span-5 flex flex-col items-center pt-4">
                     <div className="w-64 h-64 rounded-full overflow-hidden border-4 border-white shadow-lg bg-gray-100 mb-6 relative group">
@@ -295,6 +235,72 @@ export default function ProfileForm() {
                         {errors.avatar && <p className="mt-2 text-sm text-red-600">{errors.avatar}</p>}
                     </div>
                 </div>
+
+                <div className="md:col-span-7 space-y-6">
+                    <Input
+                        label={t('form.name_surname')}
+                        name="nombreApellidos"
+                        type="text"
+                        value={formData.nombreApellidos}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        error={errors.nombreApellidos}
+                    />
+
+                    <Input
+                        label="Email"
+                        name="email"
+                        type="email"
+                        autoComplete="off"
+                        value={formData.email}
+                        disabled={true}
+                    />
+
+                    {/* SECCIÓN DE SEGURIDAD VISUALMENTE SEPARADA */}
+                    <div className="pt-4 border-t border-gray-200">
+
+                        <div className="space-y-6">
+                            <Input
+                                label={t('form.current_password')}
+                                name="currentPassword"
+                                type="password"
+                                value={formData.currentPassword}
+                                placeholder={t('form.required_to_change_password')}
+                                autoComplete="current-password"
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                error={errors.currentPassword}
+                            />
+
+                            <Input
+                                label={t('form.new_password')}
+                                name="newPassword"
+                                type="password"
+                                value={formData.newPassword}
+                                placeholder={t('form.write_new_password')}
+                                autoComplete="new-password"
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                error={errors.newPassword}
+                            />
+                        </div>
+                    </div>
+
+                    <div className="flex flex-col md:flex-row gap-4 pt-4 mt-8">
+                        <Button type="submit" variant="primary" disabled={loading}>
+                            {loading ? t('actions.saving') : t('actions.save_changes')}
+                        </Button>
+                        <Button
+                            type="button" variant="auxiliar"
+                            onClick={handleLogout}
+                            disabled={loading}
+                        >
+                            {t('actions.logout')}
+                        </Button>
+                    </div>
+                </div>
+
+                
             </form>
         </div>
     );

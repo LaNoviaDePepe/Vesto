@@ -1,17 +1,17 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useAuthStore } from "../stores/authStore";
 
-
 function PublicRoute() {
-	// Obtenemos el valor de isAuthenticated 
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const isAdmin = useAuthStore((state) => state.isAdmin);
 
   if (isAuthenticated) {
-    // Si está autenticado, redirige al armario
+    if(isAdmin) {
+      // Si está autenticado y es admin, redirige al panel de control
+      return <Navigate to="/admin/dashboard" replace />;
+    }
     return <Navigate to="/closet" replace />;
   }
-
-  // Si está autenticado, renderiza el contenido protegido
   return <Outlet />;
 }
 
