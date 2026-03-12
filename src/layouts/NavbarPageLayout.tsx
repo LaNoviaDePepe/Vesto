@@ -7,8 +7,7 @@ export default function NavbarPageLayout() {
 
             <Header />
 
-            <main className="flex-1 bg-auxiliary-50 pt-12">
-                <Outlet />
+            <main className="flex-1 bg-auxiliary-50 dark:bg-gray-950 pt-12 transition-colors duration-300">                <Outlet />
             </main>
 
         </div>
