@@ -1,4 +1,3 @@
-import toast from "react-hot-toast";
 import type { OutfitRepository } from "../repositories/OutfitRepository";
 import { supabase } from "./Client";
 

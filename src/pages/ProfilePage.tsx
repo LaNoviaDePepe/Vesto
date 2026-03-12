@@ -1,8 +1,8 @@
-import { useTranslation } from "react-i18next";
+//import { useTranslation } from "react-i18next";
 import ProfileForm from "../components/forms/ProfileForm";
 
 export default function ProfilePage() {
-    const { t } = useTranslation();
+    //const { t } = useTranslation();
 
   return (
     <div>

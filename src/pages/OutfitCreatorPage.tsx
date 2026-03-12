@@ -6,7 +6,6 @@ import AddOutfitForm from "../components/forms/AddOutfitForm";
 import { SupabaseItemRepository } from "../database/supabase/SupabaseItemRepository";
 import { CircleChevronUp } from "lucide-react";
 import { useAuthStore } from "../stores/authStore";
-import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 
 
