@@ -19,7 +19,7 @@ const MotionLogOut = motion(LogOut);
  * dentro de la barra de acciones (por ejemplo, botones exclusivos de administrador).
  */
 interface UserHeaderProps {
-    children?: React.ReactNode; 
+    children?: (closeMenu: () => void) => React.ReactNode;
 }
 
 /**
@@ -126,8 +126,8 @@ export default function UserHeader({ children }: UserHeaderProps) {
                     {/* Aquí es donde inyectamos los "dos botones" del admin.
                         Aparecerán a la izquierda de la foto de perfil.
                     */}
-                    {children}
-                    <Link to="/profile" className="block h-15 w-15" title="Perfil de usuario">
+                    {children?.(() => setIsMenuOpen(false))}
+                    <Link to="/profile" className="block h-15 w-15" title="Perfil de usuario" onClick={() => setIsMenuOpen(false)}>
                         <img
                             src={avatarImg}
                             alt={t('form.user_profile')}
