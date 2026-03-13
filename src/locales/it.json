@@ -96,9 +96,9 @@
         "signup_title": "Registrazione",
         "login_title": "Accedi",
         "email_taken": "Questa email è già registrata",
-        "accept_terms_error": "Devi accettare i termini e le condizioni",
+        "accept_terms_error": "Devi accettare i ",
         "repeat_password": "Ripeti la password",
-        "accept_terms": "Accetto i termini e le condizioni",
+        "accept_terms": "Accetto i",
         "already_have_account": "Hai già un account? Accedi",
         "does_not_have_account": "Non sei ancora un membro? Crea un account",
         "here": "qui",
@@ -109,6 +109,15 @@
         "email_placeholder": "esempio@email.com",
         "forgot_password": "Hai dimenticato la password?"
     },
+    "terms": {
+    "title": "Termini e Condizioni",
+    "accept": "Capito",
+    "intro": "Utilizzando Vesto per gestire il tuo guardaroba, accetti le seguenti condizioni:",
+    "point_1": "Archiviazione: Le tue foto e i tuoi dati sono archiviati in modo sicuro su Supabase.",
+    "point_2": "Privacy: Vesto non condivide né vende le tue informazioni a terze parti.",
+    "point_3": "Utilizzo: L'app è destinata alla gestione personale di capi e outfit.",
+    "point_4": "Responsabilità: Sei responsabile della sicurezza delle tue credenziali di accesso."
+  },
     "graph": {
         "analysing_categories": "Analisi delle categorie in corso...",
         "not_enought_clothing": "Non ci sono ancora abbastanza capi.",

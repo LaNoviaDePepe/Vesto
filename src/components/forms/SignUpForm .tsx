@@ -9,6 +9,7 @@ import { SupabaseUserRepository } from "../../database/supabase/SupabaseUserRepo
 import { useAuthStore } from "../../stores/authStore";
 import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
+import TermsModal from "../common/Modal/TermsModal";
 
 /**
  * Interfaz que define los campos requeridos para el registro de usuario.
@@ -49,6 +50,7 @@ export default function SignUpForm() {
     // Estados locales para la UI
     const [loading, setLoading] = useState(false);
     const [authError, setAuthError] = useState<string | null>(null);
+    const [isTermsOpen, setIsTermsOpen] = useState(false);
 
     const [formData, setFormData] = useState<SignUpFormProps>({
         nombreApellidos: "",
@@ -167,7 +169,7 @@ export default function SignUpForm() {
     };
 
     return (
-        <div className="mx-4 max-w-[360px] sm:mx-auto sm:max-w-md py-5 px-4 sm:px-6 md:px-8 bg-white border-2 border-auxiliary-700 rounded-2xl shadow-xl">
+        <div className="mx-4 max-w-90 sm:mx-auto sm:max-w-md py-5 px-4 sm:px-6 md:px-8 bg-white border-2 border-auxiliary-700 rounded-2xl shadow-xl">
             <h3 className="text-center mb-8">{t('form.signup_title')}</h3>
 
             {/* Mostrar errores de Supabase */}
@@ -219,8 +221,20 @@ export default function SignUpForm() {
                     onBlur={handleBlur}
                     error={errors.verifPassword}
                 />
+                
                 <Input
-                    label={t('form.accept_terms')}
+                    label={
+                        <span className="text-sm inline">
+                            {t('form.accept_terms')}
+                            <button 
+                                type="button"
+                                onClick={() => setIsTermsOpen(true)}
+                                className="px-0 text-primary-500 text-sm hover:underline hover:text-primary-700 hover:font-semibold hover:shadow-none hover:translate-0 duration-100 inline"
+                            >
+                                {t('terms.title')}
+                            </button>
+                        </span>
+                    }
                     name="acceptTerms"
                     type="checkbox"
                     checked={formData.acceptTerms}
@@ -238,6 +252,17 @@ export default function SignUpForm() {
                     </Link>
                 </p>
             </form>
+
+            {/* Modal de términos y condiciones */}
+            <TermsModal 
+                isOpen={isTermsOpen}
+                onClose={() => setIsTermsOpen(false)}
+                showCancel={true}
+                onConfirm={() => {
+                    setFormData(prev => ({ ...prev, acceptTerms: true }));
+                    setIsTermsOpen(false);
+                }}
+            />
         </div >
     );
 }

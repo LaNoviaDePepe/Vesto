@@ -5,7 +5,7 @@ import { SupabaseItemRepository } from "../database/supabase/SupabaseItemReposit
 import { useAuthStore } from "../stores/authStore";
 import toast from "react-hot-toast";
 import type { PrendaProps } from "../components/clothing/Prenda";
-import Modal from "../components/common/Modal";
+import Modal from "../components/common/Modal/Modal";
 import { useTranslation } from "react-i18next";
 
 // Sacamos la instancia fuera del componente para que solo se cree una vez al cargar la app,

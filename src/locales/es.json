@@ -98,7 +98,7 @@
     "email_taken": "Este correo electrónico ya está registrado",
     "accept_terms_error": "Debes aceptar los términos y condiciones",
     "repeat_password": "Repite contraseña",
-    "accept_terms": "Acepto los términos y condiciones",
+    "accept_terms": "Acepto los ",
     "already_have_account": "¿Ya tienes una cuenta? Ingresa",
     "does_not_have_account": "¿Aún no eres miembro? Crea una cuenta",
     "here": "aquí",
@@ -108,6 +108,15 @@
     "email_not_registered_short": "Correo no registrado",
     "email_placeholder": "ejemplo@correo.com",
     "forgot_password": "¿Has olvidado tu contraseña?"
+  },
+  "terms": {
+    "title": "Términos y Condiciones",
+    "accept": "Entendido",
+    "intro": "Al utilizar Vesto para gestionar tu armario, aceptas las siguientes condiciones:",
+    "point_1": "Almacenamiento: Tus fotos y datos se guardan de forma segura en Supabase.",
+    "point_2": "Privacidad: Vesto no comparte ni vende tu información a terceros.",
+    "point_3": "Uso: La aplicación es para gestión personal de prendas y conjuntos.",
+    "point_4": "Responsabilidad: Eres responsable de la seguridad de tus credenciales de acceso."
   },
   "graph": {
     "analysing_categories": "Analizando categorías...",

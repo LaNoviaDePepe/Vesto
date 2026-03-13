@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import { createUserRepository } from '../database/repositories';
 import toast from 'react-hot-toast';
 import { Settings, XCircle } from 'lucide-react';
-import Modal from '../components/common/Modal';
-import ModalModificar from '../components/common/ModalModificar';
+import Modal from '../components/common/Modal/Modal';
+import ModalModificar from '../components/common/Modal/ModalModificar';
 import { useTranslation } from 'react-i18next';
 
 export const UserPage = () => {

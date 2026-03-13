@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
     // Cambiamos string por React.ReactNode para permitir Spans y Links
-    label?: string;
+    label?: React.ReactNode;
     error?: string;
 }
 
