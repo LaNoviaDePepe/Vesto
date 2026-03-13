@@ -9,6 +9,10 @@
   .btn-primary {
     @apply bg-primary-700;
     @apply hover:text-primary-700 hover:border-primary-700;
+
+    @variant dark{
+      @apply hover:bg-primary-500 hover:text-white hover:border-white
+    }
   }
 
   .btn-secondary {
@@ -19,6 +23,10 @@
   .btn-auxiliar {
     @apply bg-transparent text-black border-2 border-black;
     @apply hover:bg-black hover:text-white hover:border-transparent;
+    @variant dark{
+      @apply text-white border-white;
+      @apply hover:bg-white hover:text-black hover:border-transparent;
+    }
   }
 
   .btn-icon {
