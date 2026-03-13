@@ -8,44 +8,36 @@ import { CircleChevronUp } from "lucide-react";
 import { useAuthStore } from "../stores/authStore";
 import { useTranslation } from "react-i18next";
 
-
 const itemRepository = new SupabaseItemRepository();
 
+/**
+ * Componente `OutfitCreatorPage`.
+ * * Interfaz principal para la creación de conjuntos.
+ * Divide la pantalla en dos columnas (Armario y Formulario). 
+ * Permite seleccionar prendas y enviarlas al formulario para guardar un nuevo "Outfit".
+ * Soporte completo de Modo Oscuro en fondos, paneles y textos.
+ * @returns {JSX.Element} Vista del creador de outfits.
+ */
 export default function OutfitCreatorPage() {
   const { t } = useTranslation();
   const { sessionUser } = useAuthStore();
 
   const [prendas, setPrendas] = useState<PrendaProps[]>([]);
   const [filters, setFilters] = useState<FilterState>({
-    categoria: "",
-    temporada: "",
-    color: "",
-    favorito: false,
+    categoria: "", temporada: "", color: "", favorito: false,
   });
 
-  // El estado del outfit se queda aquí (en lugar de pasar a AddOutfitForm) porque se alimenta del click en las prendas (izquierda)
   const [outfit, setOutfit] = useState<Record<string, PrendaProps | null>>({
-    cabeza: null,
-    parte_arriba: null,
-    parte_abajo: null,
-    complemento: null,
-    calzado: null,
+    cabeza: null, parte_arriba: null, parte_abajo: null, complemento: null, calzado: null,
   });
 
   useEffect(() => {
     if (!sessionUser) return;
-    // CARGA DE PRENDAS
     const loadPrendas = async () => {
       const { data } = await itemRepository.getPrendas(sessionUser.user.id);
       const prendasAdaptadas: PrendaProps[] = (data || []).map((p: any) => ({
-        id: p.id,
-        id_usuario: sessionUser.user.id,
-        name: p.name,
-        url: p.url,
-        categoria: p.categoria,
-        color: p.color,
-        temporada: p.temporada,
-        favorito: p.favorito
+        id: p.id, id_usuario: sessionUser.user.id, name: p.name, url: p.url,
+        categoria: p.categoria, color: p.color, temporada: p.temporada, favorito: p.favorito
       }));
       setPrendas(prendasAdaptadas);
     };
@@ -76,11 +68,9 @@ export default function OutfitCreatorPage() {
     if (filters.temporada && p.temporada !== filters.temporada) return false;
     if (filters.color && p.color !== filters.color) return false;
     if (filters.favorito && !p.favorito) return false;
-
     return true;
   });
 
-  // Función para actualizar favoritos
   const handleToggleFavorito = async (id: number, estadoActual: boolean) => {
     const nuevoEstado = !estadoActual;
     setPrendas(prev => prev.map(p => p.id === id ? { ...p, favorito: nuevoEstado } : p));
@@ -89,16 +79,12 @@ export default function OutfitCreatorPage() {
   };
 
   return (
-    <div className="flex flex-col lg:flex-row min-h-[calc(100vh-80px)] bg-primary-300">
-
+    <div className="flex flex-col lg:flex-row min-h-[calc(100vh-80px)] bg-primary-300 dark:bg-gray-950 transition-colors duration-300">
       {/* COLUMNA IZQUIERDA: ARMARIO */}
-      <div className="lg:w-1/2 flex flex-col overflow-hidden border-b border-gray-100 lg:border-b-0 lg:border-r lg:h-full">
-        <Filter
-          width={100}
-          filters={filters}
-          onFilterChange={handleFilterChange}
-        />
-        <div className="flex-1 overflow-y-auto p-6 bg-gray-50/50" id="closet-container">
+      <div className="lg:w-1/2 flex flex-col overflow-hidden border-b border-gray-100 dark:border-gray-800 lg:border-b-0 lg:border-r lg:h-full transition-colors duration-300">
+        <Filter width={100} filters={filters} onFilterChange={handleFilterChange} />
+        
+        <div className="flex-1 overflow-y-auto p-6 bg-gray-50/50 dark:bg-gray-900/50 transition-colors duration-300" id="closet-container">
           <div className="flex flex-wrap gap-6 justify-center">
             {prendasFiltradas.length > 0 ? (
               prendasFiltradas.map((prenda) => (
@@ -107,7 +93,7 @@ export default function OutfitCreatorPage() {
                   onClick={() => handleSelectPrenda(prenda)}
                   className={`cursor-pointer transition-all duration-200 rounded-xl ${
                     outfit[prenda.categoria]?.id === prenda.id 
-                    ? 'ring-4 ring-primary-700 shadow-lg scale-105' 
+                    ? 'ring-4 ring-primary-700 dark:ring-primary-500 shadow-lg scale-105' 
                     : 'hover:opacity-80'
                   }`}
                 >
@@ -115,20 +101,15 @@ export default function OutfitCreatorPage() {
                 </div>
               ))
             ) : (
-              <div className="flex flex-col items-center justify-center h-64 text-gray-400 w-full">
+              <div className="flex flex-col items-center justify-center h-64 text-gray-400 dark:text-gray-500 w-full transition-colors duration-300">
                 <p className="text-lg">{t('filter.no_results')}</p>
-                <button 
-                  onClick={handleResetFilters} 
-                  className="text-primary-600 underline mt-4 hover:text-primary-800 transition-colors cursor-pointer"
-                >
+                <button onClick={handleResetFilters} className="text-primary-600 dark:text-primary-400 underline mt-4 hover:text-primary-800 dark:hover:text-primary-300 transition-colors cursor-pointer">
                   {t('filter.clear_filters')}
                 </button>
               </div>
             )}
-
           </div>
           
-          {/* Botón de subida del contenedor de prendas */}
           <div className="absolute bottom-6 right-6 z-20">
             <Button variant="icon" onClick={() => document.getElementById("closet-container")?.scrollTo({ top: 0, behavior: 'smooth' })}>
               <CircleChevronUp size={28} className="text-white bg-auxiliary-700 rounded-full hover:bg-primary-700" />
@@ -138,10 +119,8 @@ export default function OutfitCreatorPage() {
       </div>
 
       {/* COLUMNA DERECHA: FORMULARIO */}
-      <div className="lg:w-1/2 flex-1 overflow-y-auto p-4 lg:p-6">
-        <AddOutfitForm
-          outfit={outfit}
-          onResetOutfit={resetOutfit} />
+      <div className="lg:w-1/2 flex-1 overflow-y-auto p-4 lg:p-6 text-gray-900 dark:text-white transition-colors duration-300">
+        <AddOutfitForm outfit={outfit} onResetOutfit={resetOutfit} />
       </div>
     </div>
   );

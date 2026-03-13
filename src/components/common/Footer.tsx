@@ -3,53 +3,63 @@ import { Link } from 'react-router-dom';
 import TermsModal from './Modal/TermsModal';
 import { useState } from 'react';
 
-// 1. Define la interfaz para las propiedades
 interface FooterProps {
     isUser?: boolean;
 }
 
-// 2. Asigna la interfaz al componente
 export default function Footer({ isUser = false }: FooterProps) {
 
     const { t } = useTranslation();
 
     const [isTermsOpen, setIsTermsOpen] = useState(false);
-    // Configuración de colores sincronizada
-    const bgColor = isUser ? "bg-[var(--color-auxiliary-700)]" : "bg-[var(--color-primary-700)]";
-    const textColor = isUser ? "text-black" : "text-white";
+    
+    // Configuración adaptada para modo claro y oscuro
+    const bgColor = isUser 
+        ? "bg-[var(--color-auxiliary-700)] dark:bg-gray-950" 
+        : "bg-[var(--color-primary-700)] dark:bg-gray-950";
+        
+    const textColor = isUser 
+        ? "text-black dark:text-gray-200" 
+        : "text-white dark:text-gray-200";
+        
     const logoSrc = isUser ? "/img/black-logo.png" : "/img/white-logo.png";
 
     return (
-        <footer className={`${bgColor} ${textColor} px-12 py-10 flex flex-col md:flex-row justify-between items-center md:items-start gap-8 font-[var(--font-body)] transition-colors duration-300`}>
+        <footer className={`${bgColor} ${textColor} px-12 py-10 flex flex-col md:flex-row justify-between items-center md:items-start gap-8 font-[var(--font-body)] transition-colors duration-500`}>
 
             <div className="shrink-0">
                 <Link to="/">
                     <img
                         src={logoSrc}
                         alt="Vesto Logo"
-                        className="h-14 w-auto object-contain"
+                        // Invertimos el logo solo si es el negro (isUser)
+                        className={`h-14 w-auto object-contain transition-all duration-300 ${isUser ? 'dark:invert' : ''}`}
                     />
                 </Link>
             </div>
 
-            {/* Links centrales basados en el diseño */}
             <div className="flex flex-col items-center justify-center flex-1 gap-8 md:flex-row md:gap-24">
                 <ul className="flex flex-col items-center gap-1 text-inherit">
-                    <li><Link to="/feed" className="hover:opacity-70 text-sm font-medium">{t('footer.feed')}</Link></li>
-                    <li><Link to="/products" className="hover:opacity-70 text-sm font-medium">{t('footer.products')}</Link></li>
-                    <li><Link to="/seccion1" className="hover:opacity-70 text-sm font-medium">{t('footer.discover')}</Link></li>
+                    <li><Link to="/feed" className="hover:text-primary-400 dark:hover:text-primary-400 transition-colors text-sm font-medium">{t('footer.feed')}</Link></li>
+                    <li><Link to="/products" className="hover:text-primary-400 dark:hover:text-primary-400 transition-colors text-sm font-medium">{t('footer.products')}</Link></li>
+                    <li><Link to="/seccion1" className="hover:text-primary-400 dark:hover:text-primary-400 transition-colors text-sm font-medium">{t('footer.discover')}</Link></li>
                 </ul>
 
                 <ul className="flex flex-col items-center gap-1 text-inherit">
-                    <li><Link to="/help" className="hover:opacity-70 text-sm font-medium">{t('footer.help')}</Link></li>
-                    {/* Términos y condiciones */}
-                    <li><button
-                        type="button"
-                        onClick={() => setIsTermsOpen(true)}
-                        className="hover:opacity-70 text-sm font-medium hover:shadow-none hover:translate-0">{t('footer.terms')}
-                    </button></li>
+                    <li><Link to="/help" className="hover:text-primary-400 dark:hover:text-primary-400 transition-colors text-sm font-medium">{t('footer.help')}</Link></li>
+                    
+                    {/* Términos y condiciones (Con modal y soporte a modo oscuro) */}
+                    <li>
+                        <button
+                            type="button"
+                            onClick={() => setIsTermsOpen(true)}
+                            className="hover:text-primary-400 dark:hover:text-primary-400 transition-colors text-sm font-medium hover:shadow-none hover:translate-y-0"
+                        >
+                            {t('footer.terms')}
+                        </button>
+                    </li>
 
-                    <li><Link to="/copyright" className="hover:opacity-70 text-sm font-medium">{t('footer.copyright_policy')}</Link></li>
+                    <li><Link to="/copyright" className="hover:text-primary-400 dark:hover:text-primary-400 transition-colors text-sm font-medium">{t('footer.copyright_policy')}</Link></li>
                 </ul>
             </div>
 

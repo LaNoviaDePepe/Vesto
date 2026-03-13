@@ -37,23 +37,21 @@ export const LanguageSwitcher = () => {
 
       {/* MENÚ DESPLEGABLE */}
       {isOpen && (
-        <div className="fixed left-1/2 top-1/2 w-56 bg-white rounded-lg shadow-lg border border-gray-100 py-1 z-50 language-dropdown"
+        <div className="fixed left-1/2 top-1/2 w-56 bg-white dark:bg-gray-900 rounded-lg shadow-lg border border-gray-100 dark:border-gray-700 py-1 z-50 language-dropdown transition-colors duration-300"
           style={{ transform: 'translate(-50%, -50%)' }}>
 
-          {/* Mapeamos el array para generar las opciones automáticamente */}
           {AVAILABLE_LANGUAGES.map((lang) => (
             <button
               key={lang.code}
               onClick={() => changeLanguage(lang.code)}
-              className={`w-full text-left px-4 py-2 text-sm flex items-center justify-between hover:bg-gray-50
-                ${currentLang === lang.code ? 'text-blue-600 font-medium' : 'text-gray-700'}
+              className={`w-full text-left px-4 py-2 text-sm flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-300
+                ${currentLang === lang.code ? 'text-blue-600 dark:text-blue-400 font-medium' : 'text-gray-700 dark:text-gray-300'}
               `}
             >
               <span>{lang.label}</span>
               {currentLang === lang.code && <Check size={16} />}
             </button>
           ))}
-
         </div>
       )}
 

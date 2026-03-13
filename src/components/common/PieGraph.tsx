@@ -26,8 +26,8 @@ const COLORS = ['#8b5cf6', '#10b981', '#f59e0b', '#ef4444', '#3b82f6', '#ec4899'
  */
 export default function PieGraph({ title, data, nameKey, dataKey }: PieGraphProps) {
     return (
-        <div className="p-4 bg-white rounded-xl shadow-md h-full flex flex-col">
-            <h2 className="text-lg font-semibold mb-2">{title}</h2>
+        <div className="p-4 bg-white dark:bg-gray-900 rounded-xl shadow-md h-full flex flex-col transition-colors duration-300">
+            <h2 className="text-lg font-semibold mb-2 text-gray-900 dark:text-white transition-colors duration-300">{title}</h2>
 
             <div className="flex-1 w-full min-h-72">
                 <ResponsiveContainer width="100%" height="100%">
@@ -46,7 +46,7 @@ export default function PieGraph({ title, data, nameKey, dataKey }: PieGraphProp
                                 <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                             ))}
                         </Pie>
-                        <Tooltip 
+                        <Tooltip
                             contentStyle={{ borderRadius: '10px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
                         />
                         <Legend verticalAlign="bottom" iconType="circle" />
