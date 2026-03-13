@@ -50,7 +50,7 @@ export default function AdminHeader() {
                     <Button
                         variant="icon"
                         onClick={() => {
-                            navigate('/admin/users');
+                            navigate('/admin/dashboard');
                             closeMenu();
                         }}
                         className="min-w-15 min-h-15"
