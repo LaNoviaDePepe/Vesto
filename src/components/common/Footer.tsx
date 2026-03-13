@@ -27,7 +27,7 @@ export default function Footer({ isUser = false }: FooterProps) {
     const logoSrc = isUser ? "/img/black-logo.png" : "/img/white-logo.png";
 
     return (
-        <footer className={`${bgColor} ${textColor} px-12 py-10 flex flex-col md:flex-row justify-between items-center md:items-start gap-8 font-[var(--font-body)] transition-colors duration-500`}>
+        <footer className={`${bgColor} ${textColor} px-12 py-10 flex flex-col md:flex-row justify-between items-center md:items-start gap-8 font-body transition-colors duration-500`}>
 
             <div className="shrink-0">
                 <Link to="/">

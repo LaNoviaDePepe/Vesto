@@ -44,7 +44,8 @@ export default function Prenda({
     };
 
     return (
-        <div className="relative w-59.5 h-70 p-1.75 m-2.5 rounded-[10px] bg-white flex flex-col items-center">
+        <div className="relative w-59.5 h-70 p-1.75 m-2.5 rounded-[10px] bg-white flex flex-col items-center
+        dark:text-white dark:bg-gray-900 dark:border-1 dark:border-gray-700">
 
             {/* Solo renderiza el corazón si nos interesa */}
             {!hideHeart && (
