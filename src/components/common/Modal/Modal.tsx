@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import Button from "../Button"; // Ajusta la ruta si es necesario
+import Button from "../Button"; 
 
 interface ModalProps {
   isOpen: boolean;

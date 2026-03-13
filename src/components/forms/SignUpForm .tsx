@@ -126,7 +126,24 @@ export default function SignUpForm() {
                 <Input label="Email" name="email" type="email" value={formData.email} autoComplete="off" onChange={handleChange} onBlur={handleEmailBlur} error={errors.email} />
                 <Input label={t('form.password')} name="password" type="password" value={formData.password} autoComplete="off" onChange={handleChange} onBlur={handleBlur} error={errors.password} />
                 <Input label={t('form.repeat_password')} name="verifPassword" type="password" value={formData.verifPassword} autoComplete="off" onChange={handleChange} onBlur={handleBlur} error={errors.verifPassword} />
-                <Input label={t('form.accept_terms')} name="acceptTerms" type="checkbox" checked={formData.acceptTerms} onChange={handleChange} error={errors.acceptTerms} />
+                <Input
+                    label={
+                        <span className="text-sm inline">
+                            {t('form.accept_terms')}
+                            <button
+                                type="button"
+                                onClick={() => setIsTermsOpen(true)}
+                                className="px-0 text-primary-500 text-sm hover:underline hover:text-primary-700 dark:hover:text-primary-300 hover:font-semibold hover:shadow-none hover:translate-0 duration-100 inline"
+                            >
+                                {t('terms.title')}
+                            </button>
+                        </span>
+                    }
+                    name="acceptTerms"
+                    type="checkbox"
+                    checked={formData.acceptTerms}
+                    onChange={handleChange}
+                    error={errors.acceptTerms} />
 
                 <Button type="submit" disabled={loading} className="btn btn-primary w-full">
                     {loading ? t('actions.signing_up') : t('actions.signup')}
