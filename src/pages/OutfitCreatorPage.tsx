@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react";
 import Filter, { type FilterState } from "../components/filter/Filter";
 import Prenda, { type PrendaProps } from "../components/clothing/Prenda";
-import Button from "../components/common/Button";
 import AddOutfitForm from "../components/forms/AddOutfitForm";
 import { SupabaseItemRepository } from "../database/supabase/SupabaseItemRepository";
-import { CircleChevronUp } from "lucide-react";
 import { useAuthStore } from "../stores/authStore";
 import { useTranslation } from "react-i18next";
 
@@ -108,19 +106,16 @@ export default function OutfitCreatorPage() {
                 </button>
               </div>
             )}
-          </div>
-          
-          <div className="absolute bottom-6 right-6 z-20">
-            <Button variant="icon" onClick={() => document.getElementById("closet-container")?.scrollTo({ top: 0, behavior: 'smooth' })}>
-              <CircleChevronUp size={28} className="text-white bg-auxiliary-700 rounded-full hover:bg-primary-700" />
-            </Button>
-          </div>
+
+          </div>        
         </div>
       </div>
 
       {/* COLUMNA DERECHA: FORMULARIO */}
-      <div className="lg:w-1/2 flex-1 overflow-y-auto p-4 lg:p-6 text-gray-900 dark:text-white transition-colors duration-300">
-        <AddOutfitForm outfit={outfit} onResetOutfit={resetOutfit} />
+      <div className="lg:w-1/2 lg:fixed lg:right-0 flex-1 overflow-y-auto p-4 lg:p-6  text-gray-900 dark:text-white transition-colors duration-300">
+        <AddOutfitForm
+          outfit={outfit}
+          onResetOutfit={resetOutfit} />
       </div>
     </div>
   );
