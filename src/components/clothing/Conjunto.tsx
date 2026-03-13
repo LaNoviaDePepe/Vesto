@@ -40,7 +40,7 @@ export default function Conjunto({ id, nombre, url_imagen, descripcion, prendas,
     };
 
     return (
-        <div className="relative flex flex-col md:flex-row w-full gap-6 bg-primary-50 pt-14 p-6 md:p-10 rounded-3xl">
+        <div className="relative flex flex-col md:flex-row w-full gap-6 bg-primary-50 dark:bg-gray-900 pt-14 p-6 md:p-10 rounded-3xl">
 
             {/* Contenedor de Acciones (Agrupa botones a la derecha) */}
             <div className="absolute top-4 right-4 z-10 flex gap-3">
@@ -86,7 +86,7 @@ export default function Conjunto({ id, nombre, url_imagen, descripcion, prendas,
             </div>
 
             {/* Columna Derecha: grid de prendas */}
-            <div className="w-full md:w-[70%] flex flex-col gap-6 justify-center bg-white/30 rounded-2xl p-6 border border-white/50">
+            <div className="w-full md:w-[70%] flex flex-col gap-6 justify-center bg-white/30 dark:bg-grey-950 rounded-2xl p-6 border border-white/50">
 
                 {/* Fila Superior: Cabeza, Parte Arriba, Complemento (móvil: columna única) */}
                 <div className="flex flex-col md:flex-row justify-center gap-4 lg:gap-8 w-full">
