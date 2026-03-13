@@ -1,12 +1,9 @@
 import { useEffect, useState } from "react";
 import Filter, { type FilterState } from "../components/filter/Filter";
 import Prenda, { type PrendaProps } from "../components/clothing/Prenda";
-import Button from "../components/common/Button";
 import AddOutfitForm from "../components/forms/AddOutfitForm";
 import { SupabaseItemRepository } from "../database/supabase/SupabaseItemRepository";
-import { CircleChevronUp } from "lucide-react";
 import { useAuthStore } from "../stores/authStore";
-import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 
 
