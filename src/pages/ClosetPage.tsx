@@ -77,13 +77,13 @@ export default function ClosetPage() {
     setIsModalOpen(false);
     const prendasAnteriores = [...prendas];
     setPrendas(prevPrendas => prevPrendas.filter(p => p.id !== id));
-    
+
     const { error } = await itemRepository.deletePrenda(id, url);
     if (error) {
       if (typeof error === 'object' && 'code' in error && error.code === '23503') {
-          toast.error(t('clothing.delete_error_in_outfit'));
+        toast.error(t('clothing.delete_error_in_outfit'));
       } else {
-          toast.error(t('clothing.delete_error'));
+        toast.error(t('clothing.delete_error'));
       }
       setPrendas(prendasAnteriores);
     } else {
@@ -97,8 +97,8 @@ export default function ClosetPage() {
       <Filter width={100} filters={filters} onFilterChange={handleFilterChange} />
 
       {prendasFiltradas.length > 0 ? (
-          <PrendasLayout prendas={prendasFiltradas} onToggleFavorito={handleToggleFavorito} onDelete={openDeleteModal} />
-        ) : (
+        <PrendasLayout prendas={prendasFiltradas} onToggleFavorito={handleToggleFavorito} onDelete={openDeleteModal} />
+      ) : (
         <div className="flex flex-col items-center justify-center h-64 text-gray-400 dark:text-gray-500 transition-colors duration-300">
           <p className="text-lg">{t('filter.no_results')}</p>
           <button onClick={handleResetFilters} className="text-primary-600 dark:text-primary-400 underline mt-4 hover:text-primary-800 dark:hover:text-primary-300 transition-colors cursor-pointer">
@@ -106,7 +106,7 @@ export default function ClosetPage() {
           </button>
         </div>
       )}
-        
+
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onConfirm={handleDeletePrenda} title={t('modal.delete_item_title')} message={t('modal.delete_item_msg')} />
     </>
   );
