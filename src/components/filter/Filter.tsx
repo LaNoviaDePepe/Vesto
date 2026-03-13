@@ -24,12 +24,12 @@ export default function Filter({ width, filters, onFilterChange }: FilterProps) 
 
     return (
         <div 
-            className="bg-primary-50 fixed top-20 left-1/2 -translate-x-1/2 z-40 px-4 py-3 shadow-sm border-b border-primary-100"
+            className="bg-primary-50 dark:bg-gray-950 fixed top-20 left-1/2 -translate-x-1/2 z-40 px-4 py-3 shadow-sm border-b border-primary-100 dark:border-primary-500"
             style={{ width: width ? `${width}%` : '100%', maxWidth: '100%' }}
         >
             <div className="mx-auto flex flex-wrap items-center justify-center gap-4 sm:justify-evenly sm:flex-nowrap">
 
-                <div className="flex-1 min-w-[140px]">
+                <div className="flex-1 min-w-35">
                     <FilterSelect
                         name="categoria"
                         placeholder={t('filter.choose_category')}
@@ -39,7 +39,7 @@ export default function Filter({ width, filters, onFilterChange }: FilterProps) 
                     />
                 </div>
 
-                <div className="flex-1 min-w-[140px]">
+                <div className="flex-1 min-w-35">
                     <FilterSelect
                         name="temporada"
                         placeholder={t('filter.choose_season')}
@@ -49,7 +49,7 @@ export default function Filter({ width, filters, onFilterChange }: FilterProps) 
                     />
                 </div>
 
-                <div className="flex-1 min-w-[140px]">
+                <div className="flex-1 min-w-35">
                     <FilterSelect
                         name="color"
                         placeholder={t('filter.choose_color')}
