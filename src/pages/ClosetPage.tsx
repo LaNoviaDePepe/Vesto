@@ -58,7 +58,7 @@ export default function ClosetPage() {
       );
 
       if (error) {
-        console.error(error);
+        toast.error(t('error.random_error'));
         return;
       }
 
@@ -100,7 +100,7 @@ export default function ClosetPage() {
 
     // Si hay fallo, revertimos el color del corazón
     if (error) {
-      console.error("Error guardando favorito:", error);
+      toast.error(t('error.saving'));
       setPrendas(prevPrendas =>
         prevPrendas.map(p => p.id === id ? { ...p, favorito: estadoActual } : p)
       );

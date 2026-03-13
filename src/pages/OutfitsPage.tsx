@@ -25,7 +25,7 @@ export default function OutfitsPage() {
       const { data, error } = await outfitRepository.getConjuntos(sessionUser.user.id);
 
       if (error) {
-        console.error(error);
+        toast.error(t('error.random_error'));
       } else {
         setConjuntos(data);
       }
@@ -52,7 +52,7 @@ export default function OutfitsPage() {
 
     // Si hay fallo, revertimos el color del corazón
     if (error) {
-      console.error("Error guardando favorito:", error);
+      toast.error(t('error.saving'));
       setConjuntos(prevConjuntos =>
         prevConjuntos.map(c => c.id === id ? { ...c, favorito: estadoActual } : c)
       );
@@ -81,7 +81,6 @@ export default function OutfitsPage() {
     const { error } = await outfitRepository.deleteConjunto(id, url);
 
     if (error) {
-      console.error("Error borrando conjunto:", error);
       toast.error(t('outfit.delete_error'));
       // Si falla, devolvemos el conjunto a la pantalla
       setConjuntos(conjuntosAnteriores);

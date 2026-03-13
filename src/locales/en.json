@@ -10,7 +10,8 @@
     "logout": "Log out",
     "signing_up": "Signing up...",
     "signup": "Sign up",
-    "delete": "Delete"
+    "delete": "Delete",
+    "modify": "Modify"
   },
   "navbar": {
     "button": {
@@ -35,7 +36,8 @@
     "signup": "Registration error",
     "login": "Login error",
     "recovery_link": "Error sending recovery link",
-    "category_loading_error": "Error loading categories"
+    "category_loading_error": "Error loading categories",
+    "checking_email": "Error checking email"
   },
   "message": {
     "2MB": "The image must be smaller than 2MB",
@@ -202,7 +204,13 @@
     "no_users": "No registered users.",
     "avatar_alt": "Avatar",
     "user_management_title": "User Management",
-    "dashboard_title": "Dashboard"
+    "dashboard_title": "Dashboard",
+    "user_updated_success": "Name updated successfully",
+    "user_updated_error": "Error updating: {{error}}",
+    "user_deleted_success": "Profile deleted successfully",
+    "user_deleted_error": "Could not delete profile: {{error}}",
+    "delete_user_title": "Delete User",
+    "delete_user_msg": "Are you sure you want to delete {{name}}? This action will permanently delete their account and all their data."
   },
   "modal": {
     "delete_item_title": "Delete item?",

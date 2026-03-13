@@ -46,7 +46,6 @@ export class SupabaseItemRepository implements ItemRepository {
                 .upload(filePath, data.imagen);
 
             if (uploadError) {
-                console.error("Error subiendo imagen:", uploadError);
                 return { error: uploadError };
             }
 
@@ -60,9 +59,9 @@ export class SupabaseItemRepository implements ItemRepository {
             const { data: newPrenda, error: dbError } = await supabase
                 .from('prendas')
                 .insert({
-                    id_usuario: data.userId, 
+                    id_usuario: data.userId,
                     nombre: data.nombre,
-                    categoria: data.tipoPrenda, 
+                    categoria: data.tipoPrenda,
                     color: data.color,
                     temporada: data.temporada,
                     url_imagen: publicUrl, // Guardamos la URL que nos dio el Storage
@@ -72,14 +71,12 @@ export class SupabaseItemRepository implements ItemRepository {
                 .single();
 
             if (dbError) {
-                console.error("Error guardando en BBDD:", dbError);
                 return { error: dbError };
             }
 
             return { data: newPrenda };
 
         } catch (error) {
-            console.error("Error inesperado:", error);
             return { error };
         }
     }
@@ -93,7 +90,6 @@ export class SupabaseItemRepository implements ItemRepository {
                 .eq('id', id_prenda);
 
             if (delError) {
-                console.error("Error al borrar prenda de la BBDD:", delError);
                 return { error: delError };
             }
 
@@ -101,47 +97,32 @@ export class SupabaseItemRepository implements ItemRepository {
             if (imageUrl) {
                 const basePath = '/object/public/prendas/';
                 const urlParts = imageUrl.split(basePath);
-                
+
                 if (urlParts.length > 1) {
-                    const filePath = decodeURIComponent(urlParts[1]); 
+                    const filePath = decodeURIComponent(urlParts[1]);
                     // urlParts[1] almacena nombreDeFoto.extension. Decodificamos para conservar espacios y caracteres especiales.
 
                     if (filePath) {
-                        const { error: storageError } = await supabase.storage
+                        await supabase.storage
                             .from('prendas')
                             .remove([filePath]);
-                        
-                        if (storageError) {
-                            console.error("Prenda borrada, pero error al borrar imagen del Storage:", storageError);
-                            // No retornamos este error porque a nivel de usuario la prenda ya se borró de su armario
-                        }
                     }
                 }
             }
-
-            console.log(`Prenda ${id_prenda} eliminada correctamente`);
             return {};
 
         } catch (error) {
-            console.error("Error inesperado al borrar prenda:", error);
             return { error };
         }
     }
 
     async toggleFavorito(id_prenda: number, nuevoEstado: boolean) {
-        console.log(`Intentando guardar prenda ${id_prenda} como favorito: ${nuevoEstado}`);
 
         const { data, error } = await supabase
             .from('prendas')
             .update({ favorito: nuevoEstado })
             .eq('id', id_prenda)
             .select();
-
-        if (error) {
-            console.error("❌ Error en Supabase al guardar favorito:", error.message);
-        } else {
-            console.log("✅ Guardado en Supabase con éxito", data);
-        }
 
         return { data, error };
     }
@@ -184,7 +165,6 @@ export class SupabaseItemRepository implements ItemRepository {
             return { data: finalFormat };
 
         } catch (error) {
-            console.error("Error:", error);
             return { error };
         }
     }
@@ -225,7 +205,6 @@ export class SupabaseItemRepository implements ItemRepository {
             return { data: finalFormat };
 
         } catch (error) {
-            console.error("Error agrupando categorías:", error);
             return { error };
         }
     }

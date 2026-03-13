@@ -10,7 +10,8 @@
         "logout": "ログアウト",
         "signing_up": "登録中...",
         "signup": "登録",
-        "delete": "削除"
+        "delete": "削除",
+        "modify": "変更する"
     },
     "navbar": {
         "button": {
@@ -35,7 +36,8 @@
         "signup": "登録エラー",
         "login": "ログインエラー",
         "recovery_link": "リカバリーリンク送信エラー",
-        "category_loading_error": "カテゴリー読み込みエラー"
+        "category_loading_error": "カテゴリー読み込みエラー",
+        "checking_email": "メールの確認中にエラーが発生しました"
     },
     "message": {
         "2MB": "画像は2MB以下にしてください",
@@ -202,7 +204,13 @@
         "no_users": "登録されているユーザーはいません。",
         "avatar_alt": "アバター",
         "user_management_title": "ユーザー管理",
-        "dashboard_title": "ダッシュボード"
+        "dashboard_title": "ダッシュボード",
+        "user_updated_success": "名前が更新されました",
+        "user_updated_error": "更新エラー：{{error}}",
+        "user_deleted_success": "プロファイルが正常に削除されました",
+        "user_deleted_error": "プロファイルを削除できませんでした：{{error}}",
+        "delete_user_title": "ユーザーを削除",
+        "delete_user_msg": "{{name}}を削除してもよろしいですか？この操作により、アカウントとすべてのデータが完全に削除されます。"
     },
     "modal": {
         "delete_item_title": "服を削除しますか？",

@@ -39,20 +39,15 @@ export class SupabaseUserRepository implements UserRepository {
             if (profileError) {
                 // Si falla la creación del perfil, borramos el usuario de Auth
                 // para no dejar datos corruptos, o al menos loguearlo.
-                console.error("Error creando perfil:", profileError);
                 return { error: profileError };
             }
 
-            const { error: roleError } = await supabase
+            await supabase
                 .from('user_roles')
                 .insert({
                     user_id: userId,
                     role: 'user' // Aquí es donde debe ir
                 });
-
-            if (roleError) {
-                console.error("Error asignando rol:", roleError);
-            }
 
             const sessionUser: SessionUser = {
                 user: authData.user,
@@ -120,9 +115,6 @@ export class SupabaseUserRepository implements UserRepository {
     async logout(): Promise<{ error?: any }> {
         const { error } = await supabase.auth.signOut();
 
-        if (error) {
-            console.error("Error al cerrar sesión:", error);
-        }
         return { error };
     }
 
@@ -240,13 +232,11 @@ export class SupabaseUserRepository implements UserRepository {
                 .select('id, nombre_apellidos, url_avatar, user_roles (role)'); // Se cambia si necesitamos otras cosas.
 
             if (error) {
-                console.error("Error al obtener la lista de usuarios:", error);
                 return { error };
             }
 
             return { data };
         } catch (error) {
-            console.error("Error inesperado:", error);
             return { error };
         }
     }
@@ -259,13 +249,11 @@ export class SupabaseUserRepository implements UserRepository {
                 .order('day', { ascending: true });
 
             if (error) {
-                console.error("Error al obtener logins diarios:", error);
                 return { error };
             }
 
             return { data };
         } catch (error) {
-            console.error("Error inesperado al cargar logins:", error);
             return { error };
         }
     }

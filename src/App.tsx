@@ -14,7 +14,7 @@ import ClothingPage from "./pages/ClothingPage";
 import OutfitsPage from "./pages/OutfitsPage";
 import OutfitCreatorPage from "./pages/OutfitCreatorPage";
 import ProfilePage from "./pages/ProfilePage";
-import ResetPasswordPage from "./pages/ResetPasswordPage"; // <--- Importa la nueva página
+import ResetPasswordPage from "./pages/ResetPasswordPage"; 
 import PublicRoute from "./router/PublicRoute";
 import ProtectedRoute from "./router/ProtectedRoute";
 import GlobalLayout from "./layouts/GlobalLayout";
@@ -22,8 +22,6 @@ import { Toaster } from "react-hot-toast";
 import AdminProtectedRoute from "./router/AdminProtectedRoute";
 import { StatsPage } from "./pages/StatsPage";
 import { UserPage } from "./pages/UserPage";
-// import AdminProtectedRoute from "./router/AdminProtectedRoute";
-
 
 const router = createBrowserRouter([
   {

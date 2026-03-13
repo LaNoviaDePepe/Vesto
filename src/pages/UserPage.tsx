@@ -42,9 +42,9 @@ export const UserPage = () => {
         const { error } = await userRepository.updateUser(selectedUser.id, data);
 
         if (error) {
-            toast.error('Error al actualizar: ' + error.message);
+            toast.error(t('admin.user_updated_error', { error: error.message }));
         } else {
-            toast.success('Nombre actualizado');
+            toast.success(t('admin.user_updated_success'));
             setUsers(users.map(u => u.id === selectedUser.id ? { ...u, nombre_apellidos: data.nombre_apellidos } : u));
             setIsEditModalOpen(false);
         }
@@ -57,9 +57,9 @@ export const UserPage = () => {
         const { error } = await userRepository.deleteUser(selectedUser.id);
 
         if (error) {
-            toast.error('No se pudo eliminar el perfil: ' + error.message);
+            toast.error(t('admin.user_deleted_error', { error: error.message }));
         } else {
-            toast.success('Perfil eliminado correctamente');
+            toast.success(t('admin.user_deleted_success'));
             // Actualizamos la lista local eliminando al usuario
             setUsers(users.filter(u => u.id !== selectedUser.id));
             setIsDeleteModalOpen(false);
@@ -95,7 +95,7 @@ export const UserPage = () => {
                                     setIsEditModalOpen(true);
                                 }}
                                 className="p-2 text-blue-600 hover:bg-blue-50 rounded-full"
-                                title="Modificar"
+                                title={t('actions.modify')}
                             >
                                 <Settings size={20} />
                             </button>
@@ -105,7 +105,7 @@ export const UserPage = () => {
                                     setIsDeleteModalOpen(true);
                                 }}
                                 className="p-2 text-red-600 hover:bg-red-50 rounded-full"
-                                title="Eliminar"
+                                title={t('actions.delete')}
                             >
                                 <XCircle size={20} />
                             </button>
@@ -119,8 +119,8 @@ export const UserPage = () => {
                 isOpen={isDeleteModalOpen}
                 onClose={() => setIsDeleteModalOpen(false)}
                 onConfirm={handleDeleteConfirm}
-                title="Eliminar Usuario"
-                message={`¿Estás seguro de que deseas eliminar a ${selectedUser?.nombre_apellidos}? Esta acción borrará permanentemente su cuenta y todos sus datos.`}
+                title={t('admin.delete_user_title')}
+                message={t('admin.delete_user_msg', { name: selectedUser?.nombre_apellidos })}
             />
 
             {/* Nuevo Modal específico para Modificar */}
@@ -130,7 +130,7 @@ export const UserPage = () => {
                 onConfirm={handleUpdateConfirm}
                 user={selectedUser}
             />
-            {users.length === 0 && <p>No hay usuarios registrados.</p>}
+            {users.length === 0 && <p>{t('admin.no_users')}</p>}
         </div >
     );
 };

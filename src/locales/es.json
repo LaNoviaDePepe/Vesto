@@ -10,7 +10,8 @@
     "logout": "Cerrar sesión",
     "signing_up": "Registrando...",
     "signup": "Dar de alta",
-    "delete": "Eliminar"
+    "delete": "Eliminar",
+    "modify": "Modificar"
   },
   "navbar": {
     "button": {
@@ -35,7 +36,8 @@
     "signup": "Error al registrar",
     "login": "Error al iniciar sesión",
     "recovery_link": "Error al enviar el enlace de recuperación",
-    "category_loading_error": "Error al cargar las categorías"
+    "category_loading_error": "Error al cargar las categorías",
+    "checking_email": "Error al comprobar el email"
   },
   "message": {
     "2MB": "La imagen debe pesar menos de 2MB",
@@ -202,7 +204,13 @@
     "no_users": "No hay usuarios registrados.",
     "avatar_alt": "Avatar",
     "user_management_title": "Gestión de Usuarios",
-    "dashboard_title": "Panel de Control"
+    "dashboard_title": "Panel de Control",
+    "user_updated_success": "Nombre actualizado",
+    "user_updated_error": "Error al actualizar: {{error}}",
+    "user_deleted_success": "Perfil eliminado correctamente",
+    "user_deleted_error": "No se pudo eliminar el perfil: {{error}}",
+    "delete_user_title": "Eliminar Usuario",
+    "delete_user_msg": "¿Estás seguro de que deseas eliminar a {{name}}? Esta acción borrará permanentemente su cuenta y todos sus datos."
   },
   "modal": {
     "delete_item_title": "¿Eliminar prenda?",

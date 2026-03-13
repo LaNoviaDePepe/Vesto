@@ -70,7 +70,6 @@ export default function UserHeader({ children }: UserHeaderProps) {
             const result = await userRepository.logout();
             if (result.error) {
                 toast.error(t('error.close_session'));
-
                 return;
             }
             // Limpiamos sesión usando la función del store y redirigimos a otra página
@@ -79,7 +78,6 @@ export default function UserHeader({ children }: UserHeaderProps) {
 
         } catch (error) {
             toast.error(t('error.random_error'));
-            console.log(error);
         }
     }
 

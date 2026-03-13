@@ -10,7 +10,8 @@
         "logout": "Esci",
         "signing_up": "Registrazione in corso...",
         "signup": "Registrati",
-        "delete": "Elimina"
+        "delete": "Elimina",
+        "modify": "Modifica"
     },
     "navbar": {
         "button": {
@@ -35,7 +36,8 @@
         "signup": "Errore di registrazione",
         "login": "Errore di accesso",
         "recovery_link": "Errore nell'invio del link di recupero",
-        "category_loading_error": "Errore nel caricamento delle categorie"
+        "category_loading_error": "Errore nel caricamento delle categorie",
+        "checking_email": "Errore durante il controllo dell'email"
     },
     "message": {
         "2MB": "L'immagine deve pesare meno di 2MB",
@@ -202,7 +204,13 @@
         "no_users": "Nessun utente registrato.",
         "avatar_alt": "Avatar",
         "user_management_title": "Gestione Utenti",
-        "dashboard_title": "Pannello di Controllo"
+        "dashboard_title": "Pannello di Controllo",
+        "user_updated_success": "Nome aggiornato con successo",
+    "user_updated_error": "Errore durante l'aggiornamento: {{error}}",
+    "user_deleted_success": "Profilo eliminato con successo",
+    "user_deleted_error": "Impossibile eliminare il profilo: {{error}}",
+    "delete_user_title": "Elimina Utente",
+    "delete_user_msg": "Sei sicuro di voler eliminare {{name}}? Questa azione eliminerà in modo permanente il suo account e tutti i suoi dati."
     },
     "modal": {
         "delete_item_title": "Eliminare capo?",

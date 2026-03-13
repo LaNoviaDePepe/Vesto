@@ -64,7 +64,6 @@ export class SupabaseOutfitRepository implements OutfitRepository {
                     .upload(storagePath, data.url_imagen);
 
                 if (uploadError) {
-                    console.error("Error subiendo imagen:", uploadError);
                     return { error: uploadError };
                 }
 
@@ -91,7 +90,7 @@ export class SupabaseOutfitRepository implements OutfitRepository {
                 .single();
 
             // Si falla la inserción de la cabecera, limpiamos la imagen si se subió una 
-            if (outfitError) { 
+            if (outfitError) {
                 if (storagePath) {
                     await supabase.storage.from('conjuntos').remove([storagePath]);
                 }
@@ -109,7 +108,6 @@ export class SupabaseOutfitRepository implements OutfitRepository {
                 .insert(relations); // Inserción de múltiples tuplas en una única sentencia
 
             if (relationsError) {
-                console.error("Error vinculando prendas al conjunto:", relationsError);
                 // En el caso de haber un error en la inserción, evitamos que queden 'restos' de un conjunto 
                 // incompleto o fallido, borrando la tupla que acabamos de insertar.
                 await supabase
@@ -128,7 +126,6 @@ export class SupabaseOutfitRepository implements OutfitRepository {
             return { data: newOutfit };
 
         } catch (error) {
-            console.error("Error inesperado al crear conjunto:", error);
             return { error };
         }
     }
@@ -159,26 +156,17 @@ export class SupabaseOutfitRepository implements OutfitRepository {
 
             return { data: true };
         } catch (error) {
-            console.error("Error al eliminar conjunto:", error);
             return { error };
         }
     }
 
 
     async isFavorito(id_conjunto: number, nuevoEstado: boolean) {
-        console.log(`Intentando guardar conjunto ${id_conjunto} como favorito: ${nuevoEstado}`);
-
         const { data, error } = await supabase
             .from('conjuntos')
             .update({ favorito: nuevoEstado })
             .eq('id', id_conjunto)
             .select();
-
-        if (error) {
-            console.error("Error en Supabase al guardar favorito:", error.message);
-        } else {
-            console.log("Guardado en Supabase con éxito", data);
-        }
 
         return { data, error };
     }
