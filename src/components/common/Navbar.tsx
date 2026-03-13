@@ -26,7 +26,7 @@ export default function Navbar({ links, isUser = false, onLinkClick }: NavbarPro
                             key={link.path}
                             to={link.path}
                             onClick={() => onLinkClick && sectionId && onLinkClick(sectionId)}
-                            className={`font-medium ${isUser ? 'text-white hover:text-black hover:font-semibold' : 'text-black hover:text-white'}`}
+                            className={`font-medium transition-all ${isUser ? 'text-white hover:opacity-70' : 'text-black hover:text-white'}`}
                         >
                             {link.label}
                         </Link>
