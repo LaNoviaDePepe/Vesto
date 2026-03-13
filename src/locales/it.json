@@ -53,7 +53,11 @@
         "help": "Aiuto",
         "terms": "Termini",
         "copyright_policy": "Politica di copyright",
-        "download": "Scarica"
+        "download": "Scarica",
+        "coming_soon": "Prossimamente",
+        "follow_us": "Seguici",
+        "app_store_coming": "Prossimamente su App Store",
+        "google_play_coming": "Prossimamente su Google Play"
     },
     "filter": {
         "choose_category": "Scegli una categoria",
@@ -206,11 +210,11 @@
         "user_management_title": "Gestione Utenti",
         "dashboard_title": "Pannello di Controllo",
         "user_updated_success": "Nome aggiornato con successo",
-    "user_updated_error": "Errore durante l'aggiornamento: {{error}}",
-    "user_deleted_success": "Profilo eliminato con successo",
-    "user_deleted_error": "Impossibile eliminare il profilo: {{error}}",
-    "delete_user_title": "Elimina Utente",
-    "delete_user_msg": "Sei sicuro di voler eliminare {{name}}? Questa azione eliminerà in modo permanente il suo account e tutti i suoi dati."
+        "user_updated_error": "Errore durante l'aggiornamento: {{error}}",
+        "user_deleted_success": "Profilo eliminato con successo",
+        "user_deleted_error": "Impossibile eliminare il profilo: {{error}}",
+        "delete_user_title": "Elimina Utente",
+        "delete_user_msg": "Sei sicuro di voler eliminare {{name}}? Questa azione eliminerà in modo permanente il suo account e tutti i suoi dati."
     },
     "modal": {
         "delete_item_title": "Eliminare capo?",

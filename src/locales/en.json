@@ -53,7 +53,11 @@
     "help": "Help",
     "terms": "Terms",
     "copyright_policy": "Copyright policy",
-    "download": "Download"
+    "download": "Download",
+    "coming_soon": "Coming Soon",
+    "follow_us": "Follow us",
+    "app_store_coming": "Coming soon to the App Store",
+    "google_play_coming": "Coming soon to Google Play"
   },
   "filter": {
     "choose_category": "Choose a category",

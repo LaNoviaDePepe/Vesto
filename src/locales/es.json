@@ -47,13 +47,17 @@
     "user_registered": "Usuario registrado y logueado"
   },
   "footer": {
-    "feed": "",
+    "feed": "Novedades",
     "products": "Productos",
     "discover": "Descubrir",
     "help": "Ayuda",
     "terms": "Términos",
     "copyright_policy": "Política de copyright",
-    "download": "Descargar"
+    "download": "Descargar",
+    "coming_soon": "Próximamente",
+    "follow_us": "Síguenos",
+    "app_store_coming": "Próximamente en la App Store",
+    "google_play_coming": "Próximamente en Google Play"
   },
   "filter": {
     "choose_category": "Elige una categoría",

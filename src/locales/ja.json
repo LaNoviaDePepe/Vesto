@@ -53,7 +53,11 @@
         "help": "ヘルプ",
         "terms": "利用規約",
         "copyright_policy": "著作権ポリシー",
-        "download": "ダウンロード"
+        "download": "ダウンロード",
+        "coming_soon": "近日公開",
+        "follow_us": "公式SNS",
+        "app_store_coming": "App Storeで近日公開予定",
+        "google_play_coming": "Google Playで近日公開予定"
     },
     "filter": {
         "choose_category": "カテゴリーを選択",
