@@ -46,7 +46,7 @@ export default function Footer({ isUser = false }: FooterProps) {
                     <li><button
                         type="button"
                         onClick={() => setIsTermsOpen(true)}
-                        className="hover:opacity-70 text-sm font-medium">{t('footer.terms')}
+                        className="hover:opacity-70 text-sm font-medium hover:shadow-none hover:translate-0">{t('footer.terms')}
                     </button></li>
 
                     <li><Link to="/copyright" className="hover:opacity-70 text-sm font-medium">{t('footer.copyright_policy')}</Link></li>
