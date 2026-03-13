@@ -123,7 +123,7 @@ export default function LoginForm() {
     };
 
     return (
-        <div className="mx-4 max-w-[360px] sm:mx-auto sm:max-w-md py-5 px-4 sm:px-6 md:px-8 bg-white dark:bg-gray-900 border-2 border-auxiliary-700 dark:border-gray-700 rounded-2xl shadow-xl dark:shadow-none transition-colors duration-300">
+        <div className="max-w-[310px] mx-auto sm:max-w-md py-5 px-4 sm:px-6 md:px-8 bg-white dark:bg-gray-900 border-2 border-auxiliary-700 dark:border-gray-700 rounded-2xl shadow-xl dark:shadow-none transition-colors duration-300">
             <h3 className="text-center mb-8 text-gray-900 dark:text-white transition-colors duration-300">{t('form.login_title')}</h3>
 
             {authError && (
