@@ -19,7 +19,7 @@ export default function Modal({ isOpen, onClose, onConfirm, title, message, conf
   const isDanger = !confirmText || confirmText === t('actions.delete');
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-auxiliary-700/30 backdrop-blur-sm p-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
       {/* Contenedor del modal */}
       <div className="bg-white p-8 rounded-xl shadow-2xl max-w-sm w-full transform transition-all animate-in fade-in zoom-in duration-200">
         <h3 className="text-2xl font-semibold mb-3 text-black">{title}</h3>

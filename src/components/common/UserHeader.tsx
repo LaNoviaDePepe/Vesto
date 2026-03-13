@@ -137,7 +137,7 @@ export default function UserHeader({ children }: UserHeaderProps) {
                     <Button 
                         variant='icon' 
                         onClick={handleLogout} 
-                        className='min-w-0 group text-white hover:text-gray-300 transition-colors' 
+                        className='min-w-0 group text-white hover:text-black' 
                         title={t('actions.logout')}
                     >
                         <MotionLogOut 

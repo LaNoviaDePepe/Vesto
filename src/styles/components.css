@@ -1,29 +1,31 @@
-/* src/styles/components.css */
 @layer components {
 
-  /* --- BOTONES --- */
-  .btn {
-    /* Si tienes alguna regla general extra para todos los botones con la clase .btn, déjala aquí */
+  .btn-primary,
+  .btn-secondary {
+    @apply text-white border-2 border-transparent;
+    @apply hover:bg-white;
   }
 
   .btn-primary {
-    /* Modo claro: Fondo azul oscuro, texto blanco. Modo oscuro: Un azul un poco más claro para destacar mejor */
-    @apply bg-[var(--color-primary-700)] text-white dark:bg-[var(--color-primary-500)] dark:hover:bg-[var(--color-primary-400)];
+    @apply bg-primary-700;
+    @apply hover:text-primary-700 hover:border-primary-700;
   }
 
   .btn-secondary {
-    /* Modo claro: Fondo blanco, borde gris. Modo oscuro: Fondo gris oscuro, texto blanco, borde sutil */
-    @apply bg-white border border-gray-300 text-gray-900 hover:bg-gray-50 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700;
+    @apply bg-auxiliary-700;
+    @apply hover:text-auxiliary-700 hover:border-auxiliary-700;
   }
 
   .btn-auxiliar {
-    /* Modo claro: Fondo naranja, texto negro. Modo oscuro: Naranja más vibrante, texto negro (o blanco si lo prefieres) */
-    @apply bg-[var(--color-auxiliary-700)] text-black hover:bg-[var(--color-auxiliary-600)] dark:bg-[var(--color-auxiliary-500)] dark:hover:bg-[var(--color-auxiliary-400)];
+    @apply bg-transparent text-black border-2 border-black;
+    @apply hover:bg-black hover:text-white hover:border-transparent;
   }
 
   .btn-icon {
-    /* Botones que solo tienen un icono (como el de volver arriba o cerrar modal) */
-    @apply bg-transparent text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-white;
+    @apply bg-transparent text-white border-2 border-white;
+    @apply hover:bg-white hover:text-black hover:border-transparent;
+    @apply rounded-full aspect-square flex items-center justify-center;
+    /* Redondeado total */
   }
 
   Input {
@@ -117,11 +119,8 @@
       justify-content: center;
       align-items: center;
       padding: 1.25rem;
-      /* equivalente a p-5 */
       background-color: white;
-      /* Asegura el fondo para la sombra */
       box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-      /* equivalente a shadow-lg */
       display: none;
       /* hidden por defecto en móvil */
       z-index: 40;
