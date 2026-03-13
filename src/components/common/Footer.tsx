@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import TermsModal from './Modal/TermsModal';
+import CopyrightModal from './Modal/CopyrightModal';
 import { useState } from 'react';
 
 // 1. Define la interfaz para las propiedades
@@ -14,6 +15,7 @@ export default function Footer({ isUser = false }: FooterProps) {
     const { t } = useTranslation();
 
     const [isTermsOpen, setIsTermsOpen] = useState(false);
+    const [isCopyrightOpen, setIsCopyrightOpen] = useState(false);
     // Configuración de colores sincronizada
     const bgColor = isUser ? "bg-[var(--color-auxiliary-700)]" : "bg-[var(--color-primary-700)]";
     const textColor = isUser ? "text-black" : "text-white";
@@ -46,10 +48,15 @@ export default function Footer({ isUser = false }: FooterProps) {
                     <li><button
                         type="button"
                         onClick={() => setIsTermsOpen(true)}
-                        className="hover:opacity-70 text-sm font-medium hover:shadow-none hover:translate-0">{t('footer.terms')}
+                        className="hover:opacity-70 text-sm font-medium h-auto py-1 leading-none hover:shadow-none hover:translate-0">{t('footer.terms')}
                     </button></li>
 
-                    <li><Link to="/copyright" className="hover:opacity-70 text-sm font-medium">{t('footer.copyright_policy')}</Link></li>
+                    {/* Copyright */}
+                    <li><button
+                        type="button"
+                        onClick={() => setIsCopyrightOpen(true)}
+                        className="hover:opacity-70 text-sm font-medium h-auto py-1 leading-none hover:shadow-none hover:translate-0">{t('footer.copyright_policy')}
+                    </button></li>
                 </ul>
             </div>
 
@@ -95,6 +102,14 @@ export default function Footer({ isUser = false }: FooterProps) {
                 onClose={() => setIsTermsOpen(false)}
                 onConfirm={() => {setIsTermsOpen(false);
                 }}
+            />
+
+            {/* Modal de Copyright*/}
+            <CopyrightModal
+                isOpen={isCopyrightOpen}
+                showCancel={false}
+                onClose={() => setIsCopyrightOpen(false)}
+                onConfirm={() => setIsCopyrightOpen(false)}
             />
         </footer>
     );

@@ -124,6 +124,14 @@
     "point_3": "Usage: The app is for personal garment and outfit management.",
     "point_4": "Responsibility: You are responsible for the security of your access credentials."
   },
+  "copyright": {
+    "title": "Copyright Policy",
+    "intro": "Vesto respects the intellectual property rights of others:",
+    "point_1": "Ownership: You are the legal owner of the garment photos you upload to your closet.",
+    "point_2": "License: By uploading content, you grant Vesto permission to store and display it on your account.",
+    "point_3": "Restrictions: You are not allowed to upload images for which you do not own the rights.",
+    "point_4": "Reports: If you believe your work has been copied, please contact us via support."
+  },
   "graph": {
     "analysing_categories": "Analyzing categories...",
     "not_enought_clothing": "Not enough clothes yet.",

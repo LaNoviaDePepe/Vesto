@@ -124,6 +124,14 @@
     "point_3": "Uso: La aplicación es para gestión personal de prendas y conjuntos.",
     "point_4": "Responsabilidad: Eres responsable de la seguridad de tus credenciales de acceso."
   },
+  "copyright": {
+    "title": "Política de Copyright",
+    "intro": "Vesto respeta los derechos de propiedad intelectual de terceros:",
+    "point_1": "Propiedad: Eres el dueño legal de las fotos de prendas que subes a tu armario.",
+    "point_2": "Licencia: Al subir contenido, otorgas a Vesto el permiso para almacenarlo y mostrarlo en tu cuenta.",
+    "point_3": "Restricciones: No está permitido subir imágenes de las que no poseas los derechos.",
+    "point_4": "Reportes: Si crees que tu obra ha sido copiada, contáctanos a través de soporte."
+  },
   "graph": {
     "analysing_categories": "Analizando categorías...",
     "not_enought_clothing": "Aún no hay prendas suficientes.",
@@ -142,7 +150,7 @@
   },
   "landing": {
     "hero": {
-      "title":"Viste mejor en segundos",
+      "title": "Viste mejor en segundos",
       "description": "Organiza tu armario y crea outfits personalizados sin perder tiempo cada mañana.",
       "goToCloset": "Ir a mi armario",
       "login": "Iniciar sesión",
