@@ -79,11 +79,11 @@ export default function OutfitCreatorPage() {
   return (
     <div className="flex flex-col lg:flex-row min-h-[calc(100vh-80px)] bg-primary-300 dark:bg-gray-950 transition-colors duration-300">
       {/* COLUMNA IZQUIERDA: ARMARIO */}
-      <div className="lg:w-1/2 flex flex-col overflow-hidden border-b border-gray-100 dark:border-gray-800 lg:border-b-0 lg:border-r lg:h-full transition-colors duration-300">
+      <div className="lg:w-1/2 flex flex-col   overflow-hidden border-b border-gray-100 dark:border-gray-800 lg:border-b-0 lg:border-r lg:h-full transition-colors duration-300">
         <Filter width={100} filters={filters} onFilterChange={handleFilterChange} />
         
-        <div className="flex-1 overflow-y-auto p-6 bg-gray-50/50 dark:bg-gray-900/50 transition-colors duration-300" id="closet-container">
-          <div className="flex flex-wrap gap-6 justify-center">
+        <div className="flex-1 overflow-y-auto p-6 mt-15  md:mt-0 bg-gray-50/50 dark:bg-gray-900/50 transition-colors duration-300" id="closet-container">
+          <div className="flex flex-wrap gap-6 pt-10 justify-center">
             {prendasFiltradas.length > 0 ? (
               prendasFiltradas.map((prenda) => (
                 <div
