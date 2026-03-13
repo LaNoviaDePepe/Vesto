@@ -12,12 +12,12 @@ import { useTranslation } from 'react-i18next';
 /**
  * Interfaz que define los campos del formulario de inicio de sesión.
  */
-interface LoginFormProps { email: string; password: string; rememberMe: boolean; }
+interface LoginFormProps { email: string; password: string; }
 
 /**
  * Interfaz que define los posibles errores de validación del formulario de login.
  */
-interface ErrorsProps { email: string; password: string; rememberMe: string; }
+interface ErrorsProps { email: string; password: string; }
 
 /**
  * Componente `LoginForm`.
@@ -36,30 +36,27 @@ export default function LoginForm() {
     const [loading, setLoading] = useState(false);
     const [authError, setAuthError] = useState<string | null>(null);
 
-    const [formData, setFormData] = useState<LoginFormProps>({ email: "", password: "", rememberMe: false });
-    const [errors, setErrors] = useState<ErrorsProps>({ email: "", password: "", rememberMe: "" });
+    const [formData, setFormData] = useState<LoginFormProps>({ email: "", password: "" });
+    const [errors, setErrors] = useState<ErrorsProps>({ email: "", password: "" });
 
-    /**
+/**
      * Actualiza el estado del formulario conforme el usuario escribe o interactúa.
      * @param {ChangeEvent<HTMLInputElement>} e - Evento de cambio del input.
      */
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-        const { name, value, type, checked } = e.target;
-        const finalValue = type === "checkbox" ? checked : value;
-        setFormData((prev) => ({ ...prev, [name]: finalValue }));
-        if (type !== "checkbox") setErrors((prev) => ({ ...prev, [name]: "" }));
+        const { name, value } = e.target;
+        setFormData((prev) => ({ ...prev, [name]: value }));
+        setErrors((prev) => ({ ...prev, [name]: "" }));
     };
 
-    /**
+/**
      * Ejecuta la validación de un campo específico cuando el usuario pierde el foco.
      * @param {FocusEvent<HTMLInputElement>} e - Evento de pérdida de foco.
      */
     const handleBlur = (e: FocusEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-        if (e.target.type !== "checkbox") {
-            const error = validateVestoField(name, value);
-            setErrors((prev) => ({ ...prev, [name]: error }));
-        }
+        const error = validateVestoField(name, value);
+        setErrors((prev) => ({ ...prev, [name]: error }));
     };
 
     /**
@@ -99,7 +96,6 @@ export default function LoginForm() {
         const newErrors = {
             email: validateVestoField("email", formData.email),
             password: validateVestoField("password", formData.password),
-            rememberMe: ""
         };
         setErrors(newErrors);
 
