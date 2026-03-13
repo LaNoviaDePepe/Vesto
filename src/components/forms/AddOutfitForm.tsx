@@ -110,7 +110,7 @@ export default function AddOutfitForm({ outfit, onResetOutfit }: AddOutfitFormPr
         <OutfitSlot label={t('outfit.shoes')} item={outfit.calzado} />
       </div>
 
-      <div className="flex flex-col items-center justify-center space-y-6 mt-10 pb-20 mb-10">
+      <div className="flex flex-col items-center justify-center space-y-6 mt-10 mb-10">
         <div className="w-full max-w-75">
           <input type="file" accept="image/*" onChange={handleFileChange} className="block w-full text-sm text-gray-500 dark:text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-gray-100 dark:file:bg-gray-700 file:text-gray-700 dark:file:text-gray-200 hover:file:bg-gray-200 dark:hover:file:bg-gray-600 cursor-pointer border dark:border-gray-700 rounded-md transition-colors duration-300" />
         </div>

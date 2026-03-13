@@ -10,7 +10,7 @@ interface PrendasLayoutProps {
 
 export default function PrendasLayout({ prendas, onToggleFavorito, onDelete }: PrendasLayoutProps) {
     return (
-        <div className="flex flex-wrap justify-center gap-x-12.5 gap-y-12.5 container p-10">
+        <div className="flex flex-wrap justify-center gap-x-12.5 gap-y-12.5 container p-10 mt-25  md:mt-0">
             {prendas.map((prenda) => (
                 // Spread operator: Pasa todas las props de golpe en vez de una a una
                 <Prenda 
