@@ -7,40 +7,20 @@ import { LanguageSwitcher } from './LanguageSwitcher';
 import { useTranslation } from "react-i18next";
 
 /**
- * Componente que renderiza la cabecera de navegación para usuarios no autenticados (invitados).
- * Incluye un menú responsive tipo hamburguesa para pantallas menores a 720px y
- * enlaces ancla para navegación suave (smooth scroll) dentro de la Landing Page.
- *
- * @returns {JSX.Element} La estructura de la cabecera para visitantes.
+ * Componente `GuestHeader`.
+ * * Cabecera de navegación para usuarios no autenticados.
+ * El logo se invierte dinámicamente (`dark:invert`) para verse blanco sobre fondos oscuros.
+ * * @returns {JSX.Element} La estructura de la cabecera para visitantes.
  */
-
 export default function GuestHeader() {
-    /**
-     * Estado que controla la visibilidad del menú desplegable en dispositivos móviles.
-     * @type {[boolean, React.Dispatch<React.SetStateAction<boolean>>]}
-     */
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-    /**
-     * Maneja el desplazamiento suave hacia una sección específica de la página.
-     * Una vez activado el scroll, cierra el menú móvil de forma automática.
-     *
-     * @param {string} id - El identificador (ID) del elemento HTML destino (ej. 'hero', 'equipo').
-     */
-    const handleScrollToSection = (id: string) => {
-        const element = document.getElementById(id);
-        if (element) {
-            element.scrollIntoView({ behavior: 'smooth' });
-        }
-        setIsMenuOpen(false);
-    };
-
     const { t } = useTranslation();
 
-    /**
-     * Lista de enlaces de navegación pública para la vista de invitado.
-     * @type {Array<{label: string, path: string}>}
-     */
+    const handleScrollToSection = (id: string) => {
+        const element = document.getElementById(id);
+        if (element) { element.scrollIntoView({ behavior: 'smooth' }); }
+        setIsMenuOpen(false);
+    };
 
     const guestLinks = [
         { label: t('navbar.links.home'), path: '/#hero' },
@@ -49,38 +29,20 @@ export default function GuestHeader() {
         { label: t('navbar.links.team'), path: '/#equipo' }
     ];
 
-
     return (
-        <header className="bg-auxiliary-700 header-container">
-            {/* Hidden en general, pero block en lg para que aparezca solo en escritorio */}
+        <header className="bg-auxiliary-700 dark:bg-gray-950 header-container transition-colors duration-500">
             <div className="logo hidden lg:block">
                 <Link to="/#hero" onClick={() => handleScrollToSection('hero')}>
-                    <img src="/img/black-logo.png" alt="Logo de Vesto" className="h-15 w-auto" />
+                    <img src="/img/black-logo.png" alt="Logo de Vesto" className="h-15 w-auto dark:invert transition-all duration-300" />
                 </Link>
             </div>
 
-            {/* Botón de menú hamburguesa (solo visible en móvil) */}
-            <button
-                className="hamburger-btn md:hidden text-black"
-                onClick={() => setIsMenuOpen(!isMenuOpen)}
-                aria-label="Alternar menú"
-            >
-                {/* Renderizado Condicional (Operador Ternario):
-                Pregunta: ¿isMenuOpen es true (está abierto)?
-                - Si SÍ: Muestra el icono <X /> (para poder cerrarlo).
-                - Si NO: Muestra el icono <Menu /> (las 3 rayitas, para poder abrirlo).
-                Ambos iconos tendrán un tamaño de 28 píxeles.
-                */}
+            <button className="hamburger-btn md:hidden text-black dark:text-white transition-colors duration-300" onClick={() => setIsMenuOpen(!isMenuOpen)}>
                 {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
             </button>
 
-            {/* Contenedor colapsable del menú y acciones */}
-            <div className={`nav-menu bg-auxiliary-700 ${isMenuOpen ? 'is-open' : ''}`}>
-                <button
-                    className="absolute top-4 left-4 text-black p-2 rounded-full hover:bg-gray-200 focus:outline-none md:hidden"
-                    onClick={() => setIsMenuOpen(false)}
-                    aria-label="Cerrar menú"
-                >
+            <div className={`nav-menu bg-auxiliary-700 dark:bg-gray-950 ${isMenuOpen ? 'is-open' : ''} transition-colors duration-500`}>
+                <button className="absolute top-4 left-4 text-black dark:text-white p-2 hover:bg-gray-200 dark:hover:bg-gray-800 md:hidden transition-colors duration-300" onClick={() => setIsMenuOpen(false)}>
                     <X size={24} />
                 </button>
                 <Navbar links={guestLinks} onLinkClick={handleScrollToSection} />

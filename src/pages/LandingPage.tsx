@@ -12,65 +12,54 @@ import Aurora from '../components/common/Aurora';
 import { useAuthStore } from '../stores/authStore';
 import AnimatedCard from '../components/common/AnimatedCard';
 
+/**
+ * Componente `LandingPage`.
+ * * Representa la página de inicio pública de la aplicación.
+ * Contiene el Hero principal, explicación del funcionamiento, reseñas y presentación del equipo.
+ * Incluye scroll suave hacia las secciones utilizando el hash de la URL.
+ * Soporta Modo Oscuro de forma integral en sus tarjetas y fondos.
+ * @returns {JSX.Element} La vista completa de la Landing Page.
+ */
 export default function LandingPage() {
     const { t } = useTranslation();
-
-    // Ejemplo de funcionamiento de translate
-    // <h1>{t('welcome', { user: sessionUser?.profile?.username || 'Invitado' })}</h1>
-    // <button>{t('actions.save')}</button>
-    // Obtenemos el hash de la URL (ej: #funcionamiento)
     const { hash } = useLocation();
+    const { isAuthenticated } = useAuthStore();
 
-    // Este efecto se ejecuta cada vez que el hash cambia
+    /**
+     * Efecto que escucha los cambios en el hash de la URL (ej: /#equipo) 
+     * y realiza un scroll suave hacia la sección correspondiente.
+     */
     useEffect(() => {
         if (hash) {
-            // Quitamos el símbolo '#' para obtener solo el ID
             const id = hash.replace('#', '');
             const element = document.getElementById(id);
-
             if (element) {
-                // Hacemos scroll suave hacia el elemento
                 element.scrollIntoView({ behavior: 'smooth' });
             }
         }
     }, [hash]);
 
-    const { isAuthenticated } = useAuthStore();
-
-
     return (
-
-        <main className="w-full bg-auxiliary-50">
-
+        <main className="w-full bg-auxiliary-50 dark:bg-gray-950 transition-colors duration-500">
             {/* --- SECCIÓN 1: HERO --- */}
-            <section id="hero" className="w-full bg-linear-to-br from-auxiliary-700 to-auxiliary-50 flex items-start justify-start md:items-center md:justify-center font-sans py-10 sm:py-14 md:min-h-[50vh] lg:min-h-screen">
-
+            <section id="hero" className="w-full bg-linear-to-br from-auxiliary-700 to-auxiliary-50 dark:from-gray-900 dark:to-gray-950 flex items-start justify-start md:items-center md:justify-center font-sans py-10 sm:py-14 md:min-h-[50vh] lg:min-h-screen transition-colors duration-500">
                 <div className="container mx-auto max-w-6xl px-4 sm:px-6 md:px-8">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-start md:items-center">
-
-                        {/* --- COLUMNA IZQUIERDA --- */}
+                        {/* COLUMNA IZQUIERDA */}
                         <div className="flex flex-col items-start text-left gap-6 w-full">
-
-                            {/* LOGO */}
                             <Link to="#hero">
-                                <img
-                                    src="/img/black-logo.png"
-                                    alt="Logo de Vesto"
-                                    className="h-20 md:h-24 lg:h-32 w-auto"
-                                />
+                                <img src="/img/black-logo.png" alt="Logo de Vesto" className="h-20 md:h-24 lg:h-32 w-auto dark:invert transition-all duration-300" />
                             </Link>
 
-                            {/* TEXTO */}
                             <div className="flex flex-col gap-4 max-w-xl">
-                                <h1 className="font-(--font-display) text-3xl md:text-4xl lg:text-5xl font-bold text-black">
+                                <h1 className="font-(--font-display) text-3xl md:text-4xl lg:text-5xl font-bold text-black dark:text-white transition-colors duration-300">
                                     {t('landing.hero.title')}
                                 </h1>
-                                <p className="font-(--font-display) text-base md:text-lg lg:text-xl text-black">
+                                <p className="font-(--font-display) text-base md:text-lg lg:text-xl text-black dark:text-gray-300 transition-colors duration-300">
                                     {t('landing.hero.description')}
                                 </p>
                             </div>
 
-                            {/* BOTONES */}
                             {isAuthenticated ? (
                                 <Link to="/closet" className="w-full sm:w-auto">
                                     <Button className="w-full sm:w-auto" variant='primary'>{t('landing.hero.goToCloset')}</Button>
@@ -83,170 +72,128 @@ export default function LandingPage() {
                             )}
                         </div>
 
-                        {/* --- COLUMNA DERECHA(animación walkingman): oculta en móvil, visible en iPad+ --- */}
+                        {/* COLUMNA DERECHA */}
                         <div className="hidden md:flex justify-end items-center h-full">
-                            <img
-                                src="/img/walking-man.png"
-                                alt="Ilustración persona caminando"
-                                className="w-full max-w-xs lg:max-w-md animate-walkInLeft"
-                            />
+                            <img src="/img/walking-man.png" alt="Ilustración persona caminando" className="w-full max-w-xs lg:max-w-md animate-walkInLeft" />
                         </div>
-
                     </div>
                 </div>
             </section>
 
             {/* --- SECCIÓN 2: INFO CARDS --- */}
             <section className="relative w-full py-12 md:py-20 overflow-hidden">
-
-                {/* --- ORBS DECORATIVAS DE FONDO --- */}
-                <div className="hidden md:block absolute top-2 left-2 w-96 h-96 opacity-50 pointer-events-none z-0">
-                    <Orb hoverIntensity={0.5} />
-                </div>
-                <div className="hidden md:block absolute top-100 right-2 w-80 h-80 opacity-50 pointer-events-none z-0">
-                    <Orb hoverIntensity={0.5} />
-                </div>
-                <div className="hidden md:block absolute bottom-20 left-2 w-72 h-72 opacity-50 pointer-events-none z-0">
-                    <Orb hoverIntensity={0.5} />
-                </div>
+                {/* ORBS DECORATIVAS */}
+                <div className="hidden md:block absolute top-2 left-2 w-96 h-96 opacity-50 pointer-events-none z-0"><Orb hoverIntensity={0.5} /></div>
+                <div className="hidden md:block absolute top-100 right-2 w-80 h-80 opacity-50 pointer-events-none z-0"><Orb hoverIntensity={0.5} /></div>
+                <div className="hidden md:block absolute bottom-20 left-2 w-72 h-72 opacity-50 pointer-events-none z-0"><Orb hoverIntensity={0.5} /></div>
 
                 <div className="container mx-auto px-4 sm:px-6 md:px-8 relative z-10 flex flex-col items-center gap-10 md:gap-16">
-
                     {/* CARD 1: CÓMO FUNCIONA */}
-                    <AnimatedCard id="funcionamiento" className="scroll-mt-25 w-full bg-white rounded-4xl shadow-xl p-6 md:p-12 grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-16 items-center">
+                    <AnimatedCard id="funcionamiento" className="scroll-mt-25 w-full bg-white dark:bg-gray-900 rounded-4xl shadow-xl dark:shadow-none p-6 md:p-12 grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-16 items-center transition-colors duration-500">
                         <div className="flex flex-col gap-6">
-                            <h2 className="text-2xl md:text-4xl font-bold text-black font-(--font-display)">
-                                {t('landing.howItWorks.title')}
-                            </h2>
-                            <p className="text-black text-base md:text-lg font-(--font-body)">
-                                {t('landing.howItWorks.description')}
-                            </p>
+                            <h2 className="text-2xl md:text-4xl font-bold text-black dark:text-white font-(--font-display) transition-colors duration-300">{t('landing.howItWorks.title')}</h2>
+                            <p className="text-black dark:text-gray-300 text-base md:text-lg font-(--font-body) transition-colors duration-300">{t('landing.howItWorks.description')}</p>
                         </div>
-
                         <div className="relative w-full aspect-video rounded-xl overflow-hidden shadow-2xl bg-black flex items-center justify-center">
-                            <div className="absolute inset-0 z-0">
-                                <Aurora
-                                    colorStops={["#7cff67", "#B19EEF", "#5227FF"]}
-                                    blend={0.5}
-                                    amplitude={1.0}
-                                    speed={1}
-                                />
-                            </div>
+                            <div className="absolute inset-0 z-0"><Aurora colorStops={["#7cff67", "#B19EEF", "#5227FF"]} blend={0.5} amplitude={1.0} speed={1} /></div>
                             <div className="relative z-10 text-center px-4 pointer-events-none">
-                                <h3 className="text-white text-xl md:text-2xl font-bold mb-2 font-(--font-display)">
-                                    {t('landing.howItWorks.demoTitle')}
-                                </h3>
-                                <p className="text-gray-300 text-sm font-(--font-body)">
-                                    {t('landing.howItWorks.demoSubtitle')}
-                                </p>
+                                <h3 className="text-white text-xl md:text-2xl font-bold mb-2 font-(--font-display)">{t('landing.howItWorks.demoTitle')}</h3>
+                                <p className="text-gray-300 text-sm font-(--font-body)">{t('landing.howItWorks.demoSubtitle')}</p>
                             </div>
                         </div>
                     </AnimatedCard>
 
-                    {/* CARD 2: RECOMENDACIONES */}
-                    <AnimatedCard id="reviews" delay={100} className="scroll-mt-25 w-full bg-white rounded-4xl shadow-xl p-6 md:p-12 flex flex-col items-center gap-8 md:gap-12">
-                        <h2 className="text-2xl md:text-4xl font-bold text-black text-center font-(--font-display)">
-                            {t('landing.reviews.title')}
-                        </h2>
-                        {/* 1 columna en móvil, 2 en sm e iPad, 4 en desktop */}
+                    {/* CARD 2: REVIEWS */}
+                    <AnimatedCard id="reviews" delay={100} className="scroll-mt-25 w-full bg-white dark:bg-gray-900 rounded-4xl shadow-xl dark:shadow-none p-6 md:p-12 flex flex-col items-center gap-8 md:gap-12 transition-colors duration-500">
+                        <h2 className="text-2xl md:text-4xl font-bold text-black dark:text-white text-center font-(--font-display) transition-colors duration-300">{t('landing.reviews.title')}</h2>
                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 md:gap-8 w-full">
+                            {/* Review Ángel */}
                             <div className="flex flex-col items-center text-center gap-2">
                                 <img src="/img/angel.png" alt="Usuario" className="w-20 h-20 md:w-24 md:h-24 rounded-full object-cover avatar-interactive" />
-                                <h3 className="font-bold text-base md:text-lg text-black font-(--font-body)">Ángel</h3>
+                                <h3 className="font-bold text-base md:text-lg text-black dark:text-white font-(--font-body) transition-colors duration-300">Ángel</h3>
                                 <img src="/img/stars.png" alt="5 estrellas" className="h-4 md:h-5 w-auto" />
-                                <p className="text-xs md:text-sm text-black px-2 font-(--font-body)">{t('landing.reviews.angel')}</p>
+                                <p className="text-xs md:text-sm text-black dark:text-gray-300 px-2 font-(--font-body) transition-colors duration-300">{t('landing.reviews.angel')}</p>
                             </div>
+                            {/* Review Jesús */}
                             <div className="flex flex-col items-center text-center gap-2">
                                 <img src="/img/jesus.png" alt="Usuario" className="w-20 h-20 md:w-24 md:h-24 rounded-full object-cover avatar-interactive" />
-                                <h3 className="font-bold text-base md:text-lg text-black font-(--font-body)">Jesús</h3>
+                                <h3 className="font-bold text-base md:text-lg text-black dark:text-white font-(--font-body) transition-colors duration-300">Jesús</h3>
                                 <img src="/img/stars.png" alt="5 estrellas" className="h-4 md:h-5 w-auto" />
-                                <p className="text-xs md:text-sm text-black px-2 font-(--font-body)">{t('landing.reviews.jesus')}</p>
+                                <p className="text-xs md:text-sm text-black dark:text-gray-300 px-2 font-(--font-body) transition-colors duration-300">{t('landing.reviews.jesus')}</p>
                             </div>
+                            {/* Review Paco */}
                             <div className="flex flex-col items-center text-center gap-2">
                                 <img src="/img/paco.png" alt="Usuario" className="w-20 h-20 md:w-24 md:h-24 rounded-full object-cover avatar-interactive" />
-                                <h3 className="font-bold text-base md:text-lg text-black font-(--font-body)">Paco</h3>
+                                <h3 className="font-bold text-base md:text-lg text-black dark:text-white font-(--font-body) transition-colors duration-300">Paco</h3>
                                 <img src="/img/stars.png" alt="5 estrellas" className="h-4 md:h-5 w-auto" />
-                                <p className="text-xs md:text-sm text-black px-2 font-(--font-body)">{t('landing.reviews.paco')}</p>
+                                <p className="text-xs md:text-sm text-black dark:text-gray-300 px-2 font-(--font-body) transition-colors duration-300">{t('landing.reviews.paco')}</p>
                             </div>
+                            {/* Review Elías */}
                             <div className="flex flex-col items-center text-center gap-2">
                                 <img src="/img/elias.png" alt="Usuario" className="w-20 h-20 md:w-24 md:h-24 rounded-full object-cover avatar-interactive" />
-                                <h3 className="font-bold text-base md:text-lg text-black font-(--font-body)">Elías</h3>
+                                <h3 className="font-bold text-base md:text-lg text-black dark:text-white font-(--font-body) transition-colors duration-300">Elías</h3>
                                 <img src="/img/stars.png" alt="5 estrellas" className="h-4 md:h-5 w-auto" />
-                                <p className="text-xs md:text-sm text-black px-2 font-(--font-body)">{t('landing.reviews.elias')}</p>
+                                <p className="text-xs md:text-sm text-black dark:text-gray-300 px-2 font-(--font-body) transition-colors duration-300">{t('landing.reviews.elias')}</p>
                             </div>
                         </div>
                     </AnimatedCard>
 
                     {/* CARD 3: EQUIPO */}
-                    <AnimatedCard id="equipo" delay={200} className="scroll-mt-25 w-full bg-white rounded-4xl shadow-xl p-6 md:p-12 flex flex-col items-center gap-8 md:gap-12">
+                    <AnimatedCard id="equipo" delay={200} className="scroll-mt-25 w-full bg-white dark:bg-gray-900 rounded-4xl shadow-xl dark:shadow-none p-6 md:p-12 flex flex-col items-center gap-8 md:gap-12 transition-colors duration-500">
                         <div className="text-center max-w-3xl">
-                            <h2 className="text-2xl md:text-4xl font-bold text-black mb-4 font-(--font-display)">
-                                {t('landing.team.title')}
-                            </h2>
-                            <p className="text-black text-base md:text-lg font-(--font-body)">
-                                {t('landing.team.subtitle')}
-                            </p>
+                            <h2 className="text-2xl md:text-4xl font-bold text-black dark:text-white mb-4 font-(--font-display) transition-colors duration-300">{t('landing.team.title')}</h2>
+                            <p className="text-black dark:text-gray-300 text-base md:text-lg font-(--font-body) transition-colors duration-300">{t('landing.team.subtitle')}</p>
                         </div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 justify-items-center gap-6 md:gap-10 w-full max-w-5xl">
-
                             {/* Rodas */}
                             <div className="flex flex-col items-center text-center gap-2 w-full max-w-xs">
                                 <div className="relative w-24 h-24 md:w-28 md:h-28 mb-2 group cursor-pointer">
                                     <img src={RodasImg} alt="Rodas" className="absolute inset-0 w-full h-full rounded-full object-cover transition-opacity duration-500 ease-in-out group-hover:opacity-0 z-10" />
                                     <img src="/img/black-logo.png" alt="Logo de Vesto" className="absolute inset-0 w-full h-full rounded-full object-contain bg-orange-500 p-3 transition-opacity duration-500 ease-in-out opacity-0 group-hover:opacity-100 z-0 shadow-inner" />
                                 </div>
-                                <h3 className="font-bold text-base md:text-lg text-black font-(--font-body)">Rodas</h3>
-                                <p className="text-xs md:text-sm text-black font-(--font-body)">{t('landing.team.rodas')}</p>
+                                <h3 className="font-bold text-base md:text-lg text-black dark:text-white font-(--font-body) transition-colors duration-300">Rodas</h3>
+                                <p className="text-xs md:text-sm text-black dark:text-gray-300 font-(--font-body) transition-colors duration-300">{t('landing.team.rodas')}</p>
                             </div>
-
-                            {/* Gabino */}
+                            {/* Pepe */}
                             <div className="flex flex-col items-center text-center gap-2 w-full max-w-xs">
                                 <div className="relative w-24 h-24 md:w-28 md:h-28 mb-2 group cursor-pointer">
                                     <img src={GabinoImg} alt="Gabino" className="absolute inset-0 w-full h-full rounded-full object-cover transition-opacity duration-500 ease-in-out group-hover:opacity-0 z-10" />
                                     <img src="/img/black-logo.png" alt="Logo de Vesto" className="absolute inset-0 w-full h-full rounded-full object-contain bg-white p-3 transition-opacity duration-500 ease-in-out opacity-0 group-hover:opacity-100 z-0 shadow-inner" />
                                 </div>
-                                <h3 className="font-bold text-base md:text-lg text-black font-(--font-body)">Pepe</h3>
-                                <p className="text-xs md:text-sm text-black font-(--font-body)">{t('landing.team.pepe')}</p>
+                                <h3 className="font-bold text-base md:text-lg text-black dark:text-white font-(--font-body) transition-colors duration-300">Pepe</h3>
+                                <p className="text-xs md:text-sm text-black dark:text-gray-300 font-(--font-body) transition-colors duration-300">{t('landing.team.pepe')}</p>
                             </div>
-
                             {/* Gloria */}
                             <div className="flex flex-col items-center text-center gap-2 w-full max-w-xs">
                                 <div className="relative w-24 h-24 md:w-28 md:h-28 mb-2 group cursor-pointer">
                                     <img src={GloriajinImg} alt="Gloriajin" className="absolute inset-0 w-full h-full rounded-full object-cover transition-opacity duration-500 ease-in-out group-hover:opacity-0 z-10" />
                                     <img src="/img/black-logo.png" alt="Logo de Vesto" className="absolute inset-0 w-full h-full rounded-full object-contain bg-orange-500 p-3 transition-opacity duration-500 ease-in-out opacity-0 group-hover:opacity-100 z-0 shadow-inner" />
                                 </div>
-                                <h3 className="font-bold text-base md:text-lg text-black font-(--font-body)">Gloria</h3>
-                                <p className="text-xs md:text-sm text-black font-(--font-body)">{t('landing.team.gloria')}</p>
+                                <h3 className="font-bold text-base md:text-lg text-black dark:text-white font-(--font-body) transition-colors duration-300">Gloria</h3>
+                                <p className="text-xs md:text-sm text-black dark:text-gray-300 font-(--font-body) transition-colors duration-300">{t('landing.team.gloria')}</p>
                             </div>
-
                             {/* Miguel */}
                             <div className="flex flex-col items-center text-center gap-2 w-full max-w-xs">
                                 <div className="relative w-24 h-24 md:w-28 md:h-28 mb-2 group cursor-pointer">
                                     <img src={MiguelImg} alt="Miguel" className="absolute inset-0 w-full h-full rounded-full object-cover transition-opacity duration-500 ease-in-out group-hover:opacity-0 z-10" />
                                     <img src="/img/black-logo.png" alt="Logo de Vesto" className="absolute inset-0 w-full h-full rounded-full object-contain bg-white p-3 transition-opacity duration-500 ease-in-out opacity-0 group-hover:opacity-100 z-0 shadow-inner" />
                                 </div>
-                                <h3 className="font-bold text-base md:text-lg text-black font-(--font-body)">Miguel</h3>
-                                <p className="text-xs md:text-sm text-black font-(--font-body)">{t('landing.team.miguel')}</p>
+                                <h3 className="font-bold text-base md:text-lg text-black dark:text-white font-(--font-body) transition-colors duration-300">Miguel</h3>
+                                <p className="text-xs md:text-sm text-black dark:text-gray-300 font-(--font-body) transition-colors duration-300">{t('landing.team.miguel')}</p>
                             </div>
-
                             {/* Lucía */}
                             <div className="flex flex-col items-center text-center gap-2 w-full max-w-xs">
                                 <div className="relative w-24 h-24 md:w-28 md:h-28 mb-2 group cursor-pointer">
                                     <img src={LuciaImg} alt="Lucía" className="absolute inset-0 w-full h-full rounded-full object-cover transition-opacity duration-500 ease-in-out group-hover:opacity-0 z-10" />
                                     <img src="/img/black-logo.png" alt="Logo de Vesto" className="absolute inset-0 w-full h-full rounded-full object-contain bg-orange-500 p-3 transition-opacity duration-500 ease-in-out opacity-0 group-hover:opacity-100 z-0 shadow-inner" />
                                 </div>
-                                <h3 className="font-bold text-base md:text-lg text-black font-(--font-body)">Lucía</h3>
-                                <p className="text-xs md:text-sm text-black font-(--font-body)">{t('landing.team.lucia')}</p>
+                                <h3 className="font-bold text-base md:text-lg text-black dark:text-white font-(--font-body) transition-colors duration-300">Lucía</h3>
+                                <p className="text-xs md:text-sm text-black dark:text-gray-300 font-(--font-body) transition-colors duration-300">{t('landing.team.lucia')}</p>
                             </div>
-
                         </div>
                     </AnimatedCard>
-
                 </div>
             </section>
-
         </main>
-
     );
 }
-
