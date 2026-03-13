@@ -18,62 +18,63 @@ interface FilterProps {
 export default function Filter({ width, filters, onFilterChange }: FilterProps) {
     const { t } = useTranslation();
 
-    const handleSelectChange = (key: string, e: React.ChangeEvent<HTMLSelectElement>) => {
-        const selectedValue = e.target.value;
-        const finalValue = selectedValue === "quitar" ? "" : selectedValue;
-
-        onFilterChange(key, finalValue);
+    const handleValueChange = (name: string, value: string) => {
+        onFilterChange(name, value);
     };
 
     return (
-        <div className="bg-primary-50 fixed top-20 left-0 right-0 z-40 px-2 py-3 sm:px-4"
-            style={{ width: width ? `${width}%` : '100%', maxWidth: '100%' }}>
-            <div className="mx-auto flex flex-wrap items-center justify-center gap-2 sm:justify-evenly sm:flex-nowrap" style={{ maxWidth: `${width}%` }}>
+        <div 
+            className="bg-primary-50 fixed top-20 left-1/2 -translate-x-1/2 z-40 px-4 py-3 shadow-sm border-b border-primary-100"
+            style={{ width: width ? `${width}%` : '100%', maxWidth: '100%' }}
+        >
+            <div className="mx-auto flex flex-wrap items-center justify-center gap-4 sm:justify-evenly sm:flex-nowrap">
 
-            {/* Recibe FilterSelects que se han formado en FilterSelect.tsx, los cuales
-            inlcuyen eventos para saber qué filtros se han seleccionado  */}
+                <div className="flex-1 min-w-[140px]">
+                    <FilterSelect
+                        name="categoria"
+                        placeholder={t('filter.choose_category')}
+                        options={CONSTANTES.CATEGORIA_PRENDA}
+                        value={filters.categoria}
+                        onChange={handleValueChange}
+                    />
+                </div>
 
-            <FilterSelect
-                name="categoria"
-                placeholder={t('filter.choose_category')}
-                options={CONSTANTES.CATEGORIA_PRENDA}
-                value={filters.categoria}
-                onChange={(e) => handleSelectChange('categoria', e)}
-            />
+                <div className="flex-1 min-w-[140px]">
+                    <FilterSelect
+                        name="temporada"
+                        placeholder={t('filter.choose_season')}
+                        options={CONSTANTES.TEMPORADA_PRENDA}
+                        value={filters.temporada}
+                        onChange={handleValueChange}
+                    />
+                </div>
 
-            <FilterSelect
-                name="temporada"
-                placeholder={t('filter.choose_season')}
-                options={CONSTANTES.TEMPORADA_PRENDA}
-                value={filters.temporada}
-                onChange={(e) => handleSelectChange('temporada', e)}
-            />
+                <div className="flex-1 min-w-[140px]">
+                    <FilterSelect
+                        name="color"
+                        placeholder={t('filter.choose_color')}
+                        options={CONSTANTES.COLOR_PRENDA}
+                        value={filters.color}
+                        onChange={handleValueChange}
+                    />
+                </div>
 
-            <FilterSelect
-                name="color"
-                placeholder={t('filter.choose_color')}
-                options={CONSTANTES.COLOR_PRENDA}
-                value={filters.color}
-                onChange={(e) => handleSelectChange('color', e)}
-            />
-
-            {/* CHECKBOX FAVORITOS */}
-            <div className="flex items-center gap-2 cursor-pointer">
-                <input
-                    type="checkbox"
-                    id="fav-checkbox"
-                    checked={filters.favorito}
-                    onChange={(e) => onFilterChange('favorito', e.target.checked)}
-                    className="w-5 h-5 cursor-pointer rounded"
-                />
-                <label
-                    htmlFor="fav-checkbox"
-                    className="flex items-center gap-1"
-                >
-                    {t('filter.favorites')}
-                </label>
-            </div>
+                <div className="flex items-center gap-2 cursor-pointer whitespace-nowrap px-2">
+                    <input
+                        type="checkbox"
+                        id="fav-checkbox"
+                        checked={filters.favorito}
+                        onChange={(e) => onFilterChange('favorito', e.target.checked)}
+                        className="w-5 h-5 cursor-pointer rounded border-gray-300 text-primary-600 focus:ring-primary-500"
+                    />
+                    <label
+                        htmlFor="fav-checkbox"
+                        className="flex items-center gap-1 cursor-pointer font-medium text-sm text-gray-700 select-none"
+                    >
+                        {t('filter.favorites')}
+                    </label>
+                </div>
             </div>
         </div>
-    )
+    );
 }
