@@ -145,7 +145,7 @@ export default function LoginForm() {
                 </Button>
                 <p className="mt-8 text-start text-sm text-gray-600">
                     {t('form.does_not_have_account')}{" "}
-                    <Link to="/signup" className="text-primary-500 text-sm hover:underline hover:text-primary-700 hover:font-semibold">
+                    <Link to="/signup" className="text-primary-500 text-sm hover:underline hover:text-primary-700 hover:font-semibold dark:hover:text-primary-300">
                         {t('form.here')}
                     </Link>
                 </p>

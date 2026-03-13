@@ -11,13 +11,17 @@
     @apply hover:text-primary-700 hover:border-primary-700;
 
     @variant dark{
-      @apply hover:bg-primary-500 hover:text-white hover:border-white
+      @apply bg-primary-700;
+      @apply hover:bg-primary-600 hover:text-white hover:border-white
     }
   }
 
   .btn-secondary {
     @apply bg-auxiliary-700;
     @apply hover:text-auxiliary-700 hover:border-auxiliary-700;
+    @variant dark{
+      @apply hover:bg-auxiliary-600 hover:text-white hover:border-white
+    }
   }
 
   .btn-auxiliar {
