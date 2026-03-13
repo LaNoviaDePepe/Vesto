@@ -10,7 +10,7 @@
     @apply bg-primary-700;
     @apply hover:text-primary-700 hover:border-primary-700;
 
-    @variant dark{
+    @variant dark {
       @apply bg-primary-700;
       @apply hover:bg-primary-600 hover:text-white hover:border-white
     }
@@ -19,7 +19,8 @@
   .btn-secondary {
     @apply bg-auxiliary-700;
     @apply hover:text-auxiliary-700 hover:border-auxiliary-700;
-    @variant dark{
+
+    @variant dark {
       @apply hover:bg-auxiliary-600 hover:text-white hover:border-white
     }
   }
@@ -27,7 +28,8 @@
   .btn-auxiliar {
     @apply bg-transparent text-black border-2 border-black;
     @apply hover:bg-black hover:text-white hover:border-transparent;
-    @variant dark{
+
+    @variant dark {
       @apply text-white border-white;
       @apply hover:bg-white hover:text-black hover:border-transparent;
     }
@@ -38,6 +40,14 @@
     @apply hover:bg-white hover:text-black hover:border-transparent;
     @apply rounded-full aspect-square flex items-center justify-center;
     /* Redondeado total */
+  }
+
+
+  .text-outline {
+    /* Usamos stroke en lugar de shadow para textos pequeños */
+    -webkit-text-stroke: 0.4px var(--color-white);
+    /* Fallback por si acaso */
+    paint-order: stroke fill;
   }
 
   Input {
