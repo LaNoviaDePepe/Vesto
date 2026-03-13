@@ -144,8 +144,6 @@ export default function LoginForm() {
                     </div>
                 </div>
 
-                <Input label={t('form.remember_me')} name="rememberMe" type="checkbox" checked={formData.rememberMe} onChange={handleChange} error={errors.rememberMe} />
-
                 <Button type="submit" disabled={loading} className="btn btn-primary w-full mt-4">
                     {loading ? t('actions.loading') : t('actions.access')}
                 </Button>
