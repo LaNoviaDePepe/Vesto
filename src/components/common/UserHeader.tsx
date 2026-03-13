@@ -1,7 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
 import Navbar from './Navbar';
 import Button from './Button';
-import ThemeToggle from './ThemeToggle';
 import { createUserRepository } from '../../database/repositories';
 import { useAuthStore } from '../../stores/authStore';
 import toast from 'react-hot-toast';
@@ -89,7 +88,7 @@ export default function UserHeader({ children }: UserHeaderProps) {
     const avatarImg = sessionUser?.profile?.url_avatar ? sessionUser.profile.url_avatar : "/img/Default-Profile-Picture.jfif";
 
     return (
-        <header className="bg-primary-700 header-container">
+        <header className="bg-primary-700 dark:bg-gray-950 header-container transition-colors duration-500">
 
             <div className="logo">
                 <Link to="/">
@@ -113,7 +112,7 @@ export default function UserHeader({ children }: UserHeaderProps) {
             </button>
 
             {/* Contenedor colapsable del menú y acciones */}
-            <div className={`nav-menu bg-primary-700 ${isMenuOpen ? 'is-open' : ''}`}>
+            <div className={`nav-menu bg-primary-700 dark:bg-gray-950 ${isMenuOpen ? 'is-open' : ''} transition-colors duration-500`}>
                 <button
                     className="absolute top-4 left-4 text-white p-2 rounded-full hover:bg-white/20 focus:outline-none md:hidden"
                     onClick={() => setIsMenuOpen(false)}
@@ -140,7 +139,7 @@ export default function UserHeader({ children }: UserHeaderProps) {
                     <Button 
                         variant='icon' 
                         onClick={handleLogout} 
-                        className='min-w-0 group' 
+                        className='min-w-0 group text-white hover:text-gray-300 transition-colors' 
                         title={t('actions.logout')}
                     >
                         <MotionLogOut 

@@ -1,38 +1,26 @@
 import { Link } from 'react-router-dom';
 
-// Estructura de cada enlace
-interface NavLinkItem {
-    label: string;
-    path: string;
-}
-
-// El elemento recibe una lista de links de typo NavLinkItem
-interface NavbarProps {
-    links: NavLinkItem[],
-    isUser?: boolean //Determina si la navbar corresponde al usuario o no, para controlar el color del texto
-    onLinkClick?: (id: string) => void
-}
+interface NavLinkItem { label: string; path: string; }
+interface NavbarProps { links: NavLinkItem[], isUser?: boolean, onLinkClick?: (id: string) => void }
 
 export default function Navbar({ links, isUser = false, onLinkClick }: NavbarProps) {
-
     return (
         <nav className={`p-4 nav-links-container ${!isUser ? 'nav-links-guest-grid' : ''}`}>
-            {
-                links.map((link) => {
-                    const sectionId = link.path.split('#')[1];
-
-                    return (
-                        <Link
-                            key={link.path}
-                            to={link.path}
-                            onClick={() => onLinkClick && sectionId && onLinkClick(sectionId)}
-                            className={`font-medium ${isUser ? 'text-white hover:text-black hover:font-semibold' : 'text-black hover:text-white'}`}
-                        >
-                            {link.label}
-                        </Link>
-                    );
-                })
-            }
+            {links.map((link) => {
+                const sectionId = link.path.split('#')[1];
+                return (
+                    <Link
+                        key={link.path} to={link.path} onClick={() => onLinkClick && sectionId && onLinkClick(sectionId)}
+                        className={`font-medium transition-colors duration-300 ${
+                            isUser 
+                            ? 'text-white hover:text-auxiliary-100 dark:hover:text-primary-400 hover:font-semibold' 
+                            : 'text-black dark:text-white hover:text-primary-500 dark:hover:text-primary-400'
+                        }`}
+                    >
+                        {link.label}
+                    </Link>
+                );
+            })}
         </nav>
     );
 }

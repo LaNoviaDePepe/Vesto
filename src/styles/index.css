@@ -2,6 +2,8 @@
 @import "./components.css";
 @import "./base.css";
 
+@variant dark (&:where(.dark, .dark *));
+
 @theme {
     --color-black: #000000;
     --color-white: #FFFFFF;
