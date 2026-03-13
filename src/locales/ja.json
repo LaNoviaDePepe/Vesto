@@ -104,8 +104,9 @@
         "email_taken": "このメールアドレスは既に登録されています",
         "accept_terms_error": "利用規約に同意する必要があります",
         "repeat_password": "パスワード（確認用）",
-        "accept_terms": "利用規約に同意します",
+        "accept_terms": "に同意します",
         "already_have_account": "すでにアカウントをお持ちですか？ ログインは",
+        "does_not_have_account": "まだ会員ではありませんか？アカウントを作成",
         "here": "こちら",
         "email_required_recovery": "アカウントを復元するための有効なメールアドレスを入力してください",
         "email_required": "メールアドレスは必須です",
@@ -114,6 +115,15 @@
         "email_placeholder": "example@email.com",
         "forgot_password": "パスワードをお忘れですか？"
     },
+    "terms": {
+    "title": "利用規約",
+    "accept": "了解しました",
+    "intro": "Vestoを使用してワードローブを管理する場合、以下の条件に同意するものとします：",
+    "point_1": "保存：あなたの写真とデータはSupabaseに安全に保存されます。",
+    "point_2": "プライバシー：Vestoはあなたの情報を第三者に共有または販売しません。",
+    "point_3": "用途：このアプリは個人の衣類およびコーディネート管理用です。",
+    "point_4": "責任：アクセス資格情報のセキュリティは利用者の責任となります。"
+  },
     "graph": {
         "analysing_categories": "カテゴリーを分析中...",
         "not_enought_clothing": "十分な服がまだありません。",

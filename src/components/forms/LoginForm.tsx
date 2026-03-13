@@ -6,7 +6,7 @@ import { SupabaseUserRepository } from "../../database/supabase/SupabaseUserRepo
 import { toast } from "react-hot-toast";
 import { isEmailTaken } from "../../database/supabase/RPCs/isEmailTaken";
 import { useAuthStore } from "../../stores/authStore";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from 'react-i18next';
 
 /**
@@ -200,7 +200,8 @@ export default function LoginForm() {
                         </button>
                     </div>
                 </div>
-
+                {/* El remember me lo quitamos de momento */}
+                {/* 
                 <Input
                     label={t('form.remember_me')}
                     name="rememberMe"
@@ -208,7 +209,7 @@ export default function LoginForm() {
                     checked={formData.rememberMe}
                     onChange={handleChange}
                     error={errors.rememberMe}
-                />
+                /> */}
 
                 <Button
                     type="submit"
@@ -217,6 +218,12 @@ export default function LoginForm() {
                 >
                     {loading ? t('actions.loading') : t('actions.access')}
                 </Button>
+                <p className="mt-8 text-start text-sm text-gray-600">
+                    {t('form.does_not_have_account')}{" "}
+                    <Link to="/signup" className="text-primary-500 text-sm hover:underline hover:text-primary-700 hover:font-semibold">
+                        {t('form.here')}
+                    </Link>
+                </p>
             </form>
         </div>
     );

@@ -102,10 +102,11 @@
     "signup_title": "Sign Up",
     "login_title": "Login",
     "email_taken": "This email is already registered",
-    "accept_terms_error": "You must accept the terms and conditions",
+    "accept_terms_error": "You must accept the",
     "repeat_password": "Repeat password",
-    "accept_terms": "I accept the terms and conditions",
+    "accept_terms": "I accept ",
     "already_have_account": "Already have an account? Log in",
+    "does_not_have_account": "Not a member yet? Create an account",
     "here": "here",
     "email_required_recovery": "Enter a valid email to recover your account",
     "email_required": "Email required",
@@ -113,6 +114,15 @@
     "email_not_registered_short": "Unregistered email",
     "email_placeholder": "example@email.com",
     "forgot_password": "Forgot your password?"
+  },
+  "terms": {
+    "title": "Terms and Conditions",
+    "accept": "Understood",
+    "intro": "By using Vesto to manage your wardrobe, you agree to the following conditions:",
+    "point_1": "Storage: Your photos and data are securely stored in Supabase.",
+    "point_2": "Privacy: Vesto does not share or sell your information to third parties.",
+    "point_3": "Usage: The app is for personal garment and outfit management.",
+    "point_4": "Responsibility: You are responsible for the security of your access credentials."
   },
   "graph": {
     "analysing_categories": "Analyzing categories...",

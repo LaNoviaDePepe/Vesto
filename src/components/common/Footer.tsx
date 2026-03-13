@@ -1,5 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
+import TermsModal from './Modal/TermsModal';
+import { useState } from 'react';
 
 // 1. Define la interfaz para las propiedades
 interface FooterProps {
@@ -10,6 +12,8 @@ interface FooterProps {
 export default function Footer({ isUser = false }: FooterProps) {
 
     const { t } = useTranslation();
+
+    const [isTermsOpen, setIsTermsOpen] = useState(false);
     // Configuración de colores sincronizada
     const bgColor = isUser ? "bg-[var(--color-auxiliary-700)]" : "bg-[var(--color-primary-700)]";
     const textColor = isUser ? "text-black" : "text-white";
@@ -38,7 +42,13 @@ export default function Footer({ isUser = false }: FooterProps) {
 
                 <ul className="flex flex-col items-center gap-1 text-inherit">
                     <li><Link to="/help" className="hover:opacity-70 text-sm font-medium">{t('footer.help')}</Link></li>
-                    <li><Link to="/terms" className="hover:opacity-70 text-sm font-medium">{t('footer.terms')}</Link></li>
+                    {/* Términos y condiciones */}
+                    <li><button
+                        type="button"
+                        onClick={() => setIsTermsOpen(true)}
+                        className="hover:opacity-70 text-sm font-medium hover:shadow-none hover:translate-0">{t('footer.terms')}
+                    </button></li>
+
                     <li><Link to="/copyright" className="hover:opacity-70 text-sm font-medium">{t('footer.copyright_policy')}</Link></li>
                 </ul>
             </div>
@@ -77,6 +87,15 @@ export default function Footer({ isUser = false }: FooterProps) {
                 </div>
 
             </div>
+
+            {/* Modal de términos y condiciones */}
+            <TermsModal
+                isOpen={isTermsOpen}
+                showCancel={false}
+                onClose={() => setIsTermsOpen(false)}
+                onConfirm={() => {setIsTermsOpen(false);
+                }}
+            />
         </footer>
     );
 }

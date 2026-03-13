@@ -3,7 +3,7 @@ import Conjunto from "../components/clothing/Conjunto";
 import { SupabaseOutfitRepository } from "../database/supabase/SupabaseOutfitRepository";
 import { useAuthStore } from "../stores/authStore";
 import toast from "react-hot-toast";
-import Modal from "../components/common/Modal";
+import Modal from "../components/common/Modal/Modal";
 import { useTranslation } from "react-i18next";
 
 export default function OutfitsPage() {
