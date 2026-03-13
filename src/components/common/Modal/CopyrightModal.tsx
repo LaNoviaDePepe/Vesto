@@ -20,10 +20,9 @@ export default function CopyrightModal({ isOpen, onClose, onConfirm, showCancel 
             title={t('copyright.title')}
             confirmText={t('terms.accept')} // Reutilizamos "Entendido"
             message={
-                /* */
                 <div className="flex flex-col gap-4">
-                    <p className="font-semibold text-primary-900">{t('copyright.intro')}</p>
-                    <ul className="list-disc pl-5 space-y-2 text-gray-600">
+                    <p className="font-semibold text-primary-900 dark:text-white transition-colors duration-300">{t('copyright.intro')}</p>
+                    <ul className="list-disc pl-5 space-y-2 text-gray-600 dark:text-gray-300 transition-colors duration-300">
                         <li>{t('copyright.point_1')}</li>
                         <li>{t('copyright.point_2')}</li>
                         <li>{t('copyright.point_3')}</li>
