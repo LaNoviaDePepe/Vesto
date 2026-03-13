@@ -127,19 +127,12 @@ export default function OutfitCreatorPage() {
               </div>
             )}
 
-          </div>
-          
-          {/* Botón de subida del contenedor de prendas */}
-          <div className="absolute bottom-6 right-6 z-20">
-            <Button variant="icon" onClick={() => document.getElementById("closet-container")?.scrollTo({ top: 0, behavior: 'smooth' })}>
-              <CircleChevronUp size={28} className="text-white bg-auxiliary-700 rounded-full hover:bg-primary-700" />
-            </Button>
-          </div>
+          </div>        
         </div>
       </div>
 
       {/* COLUMNA DERECHA: FORMULARIO */}
-      <div className="lg:w-1/2 flex-1 overflow-y-auto p-4 lg:p-6">
+      <div className="lg:w-1/2 lg:fixed lg:right-0 flex-1 overflow-y-auto p-4 lg:p-6">
         <AddOutfitForm
           outfit={outfit}
           onResetOutfit={resetOutfit} />

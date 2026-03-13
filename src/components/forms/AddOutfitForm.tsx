@@ -126,7 +126,7 @@ export default function AddOutfitForm({ outfit, onResetOutfit }: AddOutfitFormPr
       </div>
 
       {/* Grid de Slots */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-5 gap-3 mb-4">
+      <div className="flex flex-row flex-wrap justify-center gap-3 mb-4">
         <OutfitSlot label={t('outfit.head')} item={outfit.cabeza} />
         <OutfitSlot label={t('outfit.top')} item={outfit.parte_arriba} />
         <OutfitSlot label={t('outfit.accessory')} item={outfit.complemento} />
