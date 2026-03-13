@@ -11,8 +11,8 @@ interface GraphProps {
 
 export default function Graph({ title, data, xKey, yKey, lineColor = "#3b82f6" }: GraphProps) {
     return (
-        <div className="p-4 bg-white rounded-xl shadow-md">
-            <h2 className="text-lg font-semibold mb-2">{title}</h2>
+        <div className="p-4 bg-white dark:bg-gray-900 rounded-xl shadow-md">
+            <h2 className="text-lg font-semibold mb-2 dark:text-white">{title}</h2>
 
             <div style={{ width: '100%', height: 300 }}>
                 <ResponsiveContainer>

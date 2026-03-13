@@ -34,8 +34,8 @@ export const PrendasChart = () => {
     }
 
     return (
-        <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-            <h2 className="text-lg font-semibold text-gray-700 mb-6">{t('graph.items_history')}</h2>
+        <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 dark:bg-gray-900">
+            <h2 className="text-lg font-semibold text-gray-700  dark:text-white mb-6">{t('graph.items_history')}</h2>
             {data.length > 0 ? (
                 <Graph
                     title={t('graph.items_per_day')}
