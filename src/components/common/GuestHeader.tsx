@@ -48,11 +48,11 @@ export default function GuestHeader() {
                 <Navbar links={guestLinks} onLinkClick={handleScrollToSection} />
 
                 <div className="nav-actions">
-                    <Link to="/login" className="nav-btn-mobile" onClick={() => setIsMenuOpen(false)}>
-                        <Button variant='primary' className="w-full">{t('navbar.button.login')}</Button>
+                    <Link to="/login" className="nav-btn-mobile" >
+                        <Button variant='primary' className="w-full" onClick={() => setIsMenuOpen(false)}>{t('navbar.button.login')}</Button>
                     </Link>
-                    <Link to="/signup" className="nav-btn-mobile" onClick={() => setIsMenuOpen(false)}>
-                        <Button variant='auxiliar' className="w-full">{t('navbar.button.signup')}</Button>
+                    <Link to="/signup" className="nav-btn-mobile" >
+                        <Button variant='auxiliar' className="w-full" onClick={() => setIsMenuOpen(false)}>{t('navbar.button.signup')}</Button>
                     </Link>
                 </div>
                 <LanguageSwitcher />
