@@ -158,25 +158,26 @@
         },
         "howItWorks": {
             "title": "Come funziona Vesto?",
-            "description": "Abbiamo un design intuitivo e facile da usare, con funzioni come caricare foto dei tuoi vestiti, creare outfit personalizzati, salvare nei preferiti... Tutto affinché scegliere il tuo look quotidiano sia veloce, divertente e senza complicazioni.",
+            "description": "Carica i capi del tuo guardaroba con una foto, combinali per creare outfit personalizzati e documenta i tuoi look caricando selfie con ogni outfit. Tutto in un unico posto, in modo semplice e intuitivo.",
             "demoTitle": "Demo di Vesto",
-            "demoSubtitle": "Prossimamente nel video dell'App..."
+            "demoSubtitle": "Prossimamente nel video dell'App...",
+            "cta": "Inizia a usare Vesto"
         },
         "reviews": {
-            "title": "+50K utenti soddisfatti",
-            "angel": "Un'opera d'arte, si nota il tocco di Manuel in questa app, mi ha cambiato la vita, ora scegliere cosa indossare è un piacere e non una tortura. Grazie Vesto!",
-            "jesus": "Da quando la uso sono più felice, grazie a Vesto ho scoperto abbinamenti di vestiti a cui non avrei mai pensato, e ora mi sento più sicuro del mio stile. Consigliata al 100%!",
-            "paco": "I tuoi occhi sono come due padelle, quando li vedo mi si friggono le uova. Sei così bella che ti mangerei con i vestiti e tutto... anche se passassi un mese a cagare stracci.",
+            "title": "Apprezzato dalla nostra community",
+            "angel": "Vesto ha completamente trasformato la mia routine mattutina. Avere tutti i miei capi organizzati digitalmente mi fa risparmiare tempo e mi aiuta a scoprire abbinamenti che non avrei mai immaginato. Un'app indispensabile!",
+            "jesus": "Cercavo da tempo un modo per valorizzare meglio il mio guardaroba, e Vesto ci è riuscito. La funzione per creare outfit personalizzati è incredibile; finalmente posso pianificare i miei look in anticipo. Consigliata al 100%!",
+            "paco": "L'interfaccia è molto intuitiva e il caricamento dei capi è semplice. In pochi giorni avevo digitalizzato tutto il mio guardaroba e ho iniziato a scoprire abbinamenti che non avrei mai indossato. Uno strumento fantastico.",
             "elias": "Non avevo mai visto un'app così completa e funzionale. Vesto ha rivoluzionato il mio modo di scegliere i vestiti! Adoro la funzione per creare outfit personalizzati, è come avere un personal stylist in tasca. Altamente consigliata!"
         },
         "team": {
             "title": "Il nostro team",
-            "subtitle": "I veri creatori di Vesto.",
-            "rodas": "Capra assoluta (GOAT), non ha bisogno di presentazioni.",
-            "pepe": "Porta molta esperienza, ha più anni di un bosco.",
-            "gloria": "Diva assoluta, dà il tocco chic.",
-            "miguel": "Ossessionato dal lavoro, dentro e fuori dal campo.",
-            "lucia": "Sa troppo di tutto, ma non lo dice. Falsa umiltà?"
+            "subtitle": "Gli sviluppatori dietro Vesto.",
+            "rodas": "Sviluppatore full-stack e leader tecnico del progetto, con particolare attenzione all'architettura del sistema.",
+            "pepe": "Sviluppatore backend con ampia esperienza tecnica, responsabile della solidità e integrità del server.",
+            "gloria": "Sviluppatrice frontend specializzata nel design delle interfacce e nell'esperienza utente.",
+            "miguel": "Sviluppatore frontend impegnato nella qualità del codice e nelle prestazioni dell'applicazione.",
+            "lucia": "Sviluppatrice full-stack con competenze trasversali nei diversi livelli del progetto."
         }
     },
     "outfit": {

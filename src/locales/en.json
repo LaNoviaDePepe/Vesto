@@ -158,25 +158,26 @@
     },
     "howItWorks": {
       "title": "How does Vesto work?",
-      "description": "We have an intuitive and easy-to-use design, with features like uploading photos of your clothes, creating personalized outfits, saving to favorites... Everything so that choosing your daily look is fast, fun, and hassle-free.",
+      "description": "Upload your wardrobe items with a photo, combine them to create personalized outfits, and document your looks by uploading selfies with each outfit. All in one place, simple and intuitive.",
       "demoTitle": "Vesto Demo",
-      "demoSubtitle": "App video coming soon..."
+      "demoSubtitle": "App video coming soon...",
+      "cta": "Start using Vesto"
     },
     "reviews": {
-      "title": "+50K satisfied users",
-      "angel": "A work of art, you can tell Manuel's touch is in this app. It has changed my life; now choosing what to wear is a pleasure and not a torture. Thanks Vesto!",
-      "jesus": "Since I've been using it I'm happier. Thanks to Vesto I've discovered clothing combinations I wouldn't have thought of, and now I feel more confident with my style. 100% recommended!",
-      "paco": "Your eyes are like two frying pans, when I see them my eggs fry. You're so hot I'd eat you clothes and all... even if I spent a month shitting rags.",
+      "title": "Valued by our community",
+      "angel": "Vesto has completely transformed my morning routine. Having all my clothes organized digitally saves me time and helps me discover combinations I never would have imagined. An essential app!",
+      "jesus": "I had been looking for a way to get more out of my wardrobe for a long time, and Vesto has delivered. The personalized outfit creation feature is incredible; I can finally plan my looks in advance. 100% recommended!",
+      "paco": "The interface is very intuitive and uploading items is straightforward. Within a few days I had my entire wardrobe digitized and started discovering combinations I never would have worn. A fantastic tool.",
       "elias": "I hadn't seen such a complete and functional app. Vesto has revolutionized how I choose my clothes! I love the feature to create custom outfits, it's like having a personal stylist in your pocket. Highly recommended!"
     },
     "team": {
       "title": "Our team",
-      "subtitle": "The true creators of Vesto.",
-      "rodas": "Absolute GOAT, needs no introduction.",
-      "pepe": "Brings a lot of experience, older than a forest.",
-      "gloria": "Absolute diva, gives it the chic touch.",
-      "miguel": "Obsessed with work, on and off the field.",
-      "lucia": "Knows too much about everything, but doesn't say it. False modesty?"
+      "subtitle": "The developers behind Vesto.",
+      "rodas": "Full-stack developer and technical lead of the project, with a focus on system architecture.",
+      "pepe": "Backend developer with extensive technical experience, responsible for server reliability and integrity.",
+      "gloria": "Frontend developer specialized in interface design and user experience.",
+      "miguel": "Frontend developer committed to code quality and application performance.",
+      "lucia": "Full-stack developer with cross-cutting expertise across the different layers of the project."
     }
   },
   "outfit": {
