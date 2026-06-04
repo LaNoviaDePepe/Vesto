@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import Button from '../components/common/Button';
 import { useTranslation } from "react-i18next";
-import RodasImg from "../img/Rodas.png";
+import RodasImg from "../img/Rodas.jpeg";
 import GabinoImg from "../img/Gabino.png";
 import GloriaImg from "../img/Gloria.jpeg";
 import LuciaImg from "../img/Lucia.jpeg";
